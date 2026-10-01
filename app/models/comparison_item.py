@@ -28,6 +28,8 @@ class ComparisonItem:
     duration: float = 8.0
     animation: str = "slide_left"
     image_fit: str = ""
+    image_crop_x: float = 0.0
+    image_crop_y: float = 0.0
     image_height_percent_3: int = 0
     image_height_percent_4: int = 0
     image_height_percent_5: int = 0
@@ -62,6 +64,8 @@ class ComparisonItem:
             duration=max(0.1, float(data.get("duration") or 0.1)),
             animation=str(data.get("animation") or "slide_left"),
             image_fit=str(data.get("image_fit") or ""),
+            image_crop_x=_crop_offset(data.get("image_crop_x")),
+            image_crop_y=_crop_offset(data.get("image_crop_y")),
             image_height_percent_3=_height_override(data.get("image_height_percent_3")),
             image_height_percent_4=_height_override(data.get("image_height_percent_4")),
             image_height_percent_5=_height_override(data.get("image_height_percent_5")),
@@ -120,6 +124,13 @@ def _height_override(value: object) -> int:
     if value in (None, "", 0, "0"):
         return 0
     return max(35, min(75, int(value)))
+
+
+def _crop_offset(value: object) -> float:
+    try:
+        return max(-1.0, min(1.0, float(value)))
+    except (TypeError, ValueError):
+        return 0.0
 
 
 def _field(field_type: str, label: str, value: str, role: str = "") -> dict[str, str]:

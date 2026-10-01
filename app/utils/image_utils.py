@@ -15,7 +15,14 @@ class ImageCache:
         self._source_cache.clear()
         self._scaled_cache.clear()
 
-    def pixmap(self, path: str, size: QSize | None = None, fit: str = "contain") -> QPixmap:
+    def pixmap(
+        self,
+        path: str,
+        size: QSize | None = None,
+        fit: str = "contain",
+        crop_x: float = 0.0,
+        crop_y: float = 0.0,
+    ) -> QPixmap:
         if not path or not Path(path).exists():
             return placeholder_pixmap(size or QSize(320, 220))
         key = str(Path(path).resolve())
@@ -27,7 +34,16 @@ class ImageCache:
         pixmap = self._source_cache[key]
         if size is None:
             return pixmap
-        scaled_key = (key, size.width(), size.height(), fit)
+        crop_x = max(-1.0, min(1.0, float(crop_x)))
+        crop_y = max(-1.0, min(1.0, float(crop_y)))
+        scaled_key = (
+            key,
+            size.width(),
+            size.height(),
+            fit,
+            round(crop_x, 3),
+            round(crop_y, 3),
+        )
         if scaled_key not in self._scaled_cache:
             aspect_mode = (
                 Qt.AspectRatioMode.KeepAspectRatioByExpanding
@@ -40,8 +56,10 @@ class ImageCache:
                 Qt.TransformationMode.SmoothTransformation,
             )
             if fit == "cover":
-                left = max(0, (scaled.width() - size.width()) // 2)
-                top = max(0, (scaled.height() - size.height()) // 2)
+                extra_width = max(0, scaled.width() - size.width())
+                extra_height = max(0, scaled.height() - size.height())
+                left = int(round(extra_width * ((crop_x + 1.0) / 2.0)))
+                top = int(round(extra_height * ((crop_y + 1.0) / 2.0)))
                 scaled = scaled.copy(left, top, size.width(), size.height())
             self._scaled_cache[scaled_key] = scaled
         return self._scaled_cache[scaled_key]
