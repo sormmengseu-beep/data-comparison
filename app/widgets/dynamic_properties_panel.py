@@ -167,8 +167,8 @@ class InputFieldRow(QWidget):
         self.label_edit.setText(field_data.get("label", ""))
         self.value_edit.setText(field_data.get("value", ""))
         self._update_type_ui()
-        self.label_edit.textEdited.connect(self.changed.emit)
-        self.value_edit.textEdited.connect(self.changed.emit)
+        self.label_edit.textEdited.connect(lambda _text: self.changed.emit())
+        self.value_edit.textEdited.connect(lambda _text: self.changed.emit())
         self.browse_button.clicked.connect(self._upload_image)
         self.remove_button.clicked.connect(lambda: self.remove_requested.emit(self))
         for child in (
