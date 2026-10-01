@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
+from math import isfinite
 from uuid import uuid4
 
 
@@ -43,6 +44,7 @@ class ComparisonItem:
     value_background_color: str = ""
     value_text_color: str = ""
     custom_fields: list[dict[str, str]] = field(default_factory=list)
+    image_transforms: dict[str, dict[str, float | str]] = field(default_factory=dict)
     id: str = field(default_factory=new_item_id)
 
     def to_dict(self) -> dict:
@@ -79,6 +81,7 @@ class ComparisonItem:
             value_background_color=str(data.get("value_background_color") or ""),
             value_text_color=str(data.get("value_text_color") or ""),
             custom_fields=_normalized_fields(data.get("custom_fields")),
+            image_transforms=_image_transforms(data.get("image_transforms")),
         )
 
     def display_fields(self) -> list[dict[str, str]]:
@@ -93,8 +96,20 @@ class ComparisonItem:
         ]
 
     def set_fields(self, fields: list[dict[str, str]]) -> None:
+        old_images = {
+            field_data["id"]: field_data["value"]
+            for field_data in self.display_fields() if field_data["type"] == "image"
+        }
         self.custom_fields = _normalized_fields(fields)
         image_fields = [field for field in self.custom_fields if field["type"] == "image"]
+        unchanged_images = {
+            field_data["id"] for field_data in image_fields
+            if old_images.get(field_data["id"]) == field_data["value"]
+        }
+        self.image_transforms = {
+            field_id: transform for field_id, transform in self.image_transforms.items()
+            if field_id in unchanged_images
+        }
         self.image_path = image_fields[0]["value"] if image_fields else ""
         for field_data in self.custom_fields:
             value = field_data["value"]
@@ -109,15 +124,43 @@ class ComparisonItem:
                 self.value = value
 
     def set_image_path(self, path: str) -> None:
-        self.image_path = path
         fields = self.display_fields()
         for field_data in fields:
             if field_data["type"] == "image":
                 field_data["value"] = path
-                self.custom_fields = fields
+                self.set_fields(fields)
                 return
         fields.insert(0, _field("image", "Image", path, "image"))
-        self.custom_fields = fields
+        self.set_fields(fields)
+
+
+def normalize_image_transform(value: object) -> dict[str, float | str]:
+    raw = value if isinstance(value, dict) else {}
+    result: dict[str, float | str] = {}
+    fit = str(raw.get("fit") or "")
+    if fit in {"cover", "contain", "stretch"}:
+        result["fit"] = fit
+    for key, default, minimum, maximum in (
+        ("scale_x", 1.0, 0.1, 5.0),
+        ("scale_y", 1.0, 0.1, 5.0),
+        ("offset_x", 0.0, -5.0, 5.0),
+        ("offset_y", 0.0, -5.0, 5.0),
+    ):
+        try:
+            number = float(raw.get(key, default))
+            result[key] = max(minimum, min(maximum, number)) if isfinite(number) else default
+        except (TypeError, ValueError):
+            result[key] = default
+    return result
+
+
+def _image_transforms(value: object) -> dict[str, dict[str, float | str]]:
+    if not isinstance(value, dict):
+        return {}
+    return {
+        str(field_id): normalize_image_transform(transform)
+        for field_id, transform in value.items() if isinstance(transform, dict)
+    }
 
 
 def _height_override(value: object) -> int:

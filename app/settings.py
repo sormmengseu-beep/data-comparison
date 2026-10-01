@@ -238,6 +238,144 @@ QLabel#Thumbnail {
 QWidget#PropertiesContent {
     background: @panel;
 }
+QWidget#TransportBar {
+    background: @chrome;
+    border-top: 1px solid @border;
+}
+QWidget#PlaybackGroup, QWidget#ColumnsGroup {
+    background: @input;
+    border: 1px solid @border;
+    border-radius: 12px;
+}
+QToolButton#TransportIconButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0;
+    color: @textMuted;
+}
+QToolButton#TransportIconButton:hover {
+    background: @controlHover;
+    color: @text;
+}
+QToolButton#TransportIconButton:pressed {
+    background: @border;
+}
+QToolButton#PlaybackButton {
+    background: @accent;
+    border: 1px solid @accent;
+    border-radius: 10px;
+    padding: 0;
+    color: white;
+}
+QToolButton#PlaybackButton:hover {
+    background: @accentHover;
+}
+QToolButton#PlaybackButton:pressed {
+    background: @accentPressed;
+}
+QToolButton#TransportIconButton:focus, QToolButton#PlaybackButton:focus,
+QToolButton#ItemEditButton:focus {
+    border: 1px solid @accentBorder;
+}
+QPushButton#ColumnButton {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+    color: @textMuted;
+}
+QPushButton#ColumnButton:hover {
+    background: @controlHover;
+}
+QPushButton#ColumnButton:checked {
+    background: @accent;
+    color: white;
+}
+QLabel#TransportCaption, QLabel#TransportTime {
+    color: @textMuted;
+}
+QLabel#TransportTime {
+    font-family: "Consolas";
+    font-size: 11px;
+}
+QLabel#ItemCount {
+    background: @input;
+    color: @textMuted;
+    border: 1px solid @border;
+    border-radius: 10px;
+    padding: 3px 8px;
+    font-size: 11px;
+}
+QListWidget#ComparisonItemList {
+    background: @panel;
+    border: none;
+}
+QListWidget#ComparisonItemList::item {
+    padding: 0;
+    margin: 3px 0;
+    color: transparent;
+    background: transparent;
+    border: none;
+}
+QListWidget#ComparisonItemList::item:selected {
+    color: transparent;
+    background: transparent;
+}
+QWidget#ComparisonItemRow {
+    background: @input;
+    border: 1px solid @border;
+    border-radius: 10px;
+}
+QWidget#ComparisonItemRow:hover {
+    border-color: @borderStrong;
+}
+QWidget#ComparisonItemRow[selected="true"] {
+    background: @selectedSurface;
+    border-color: @selectedBorder;
+}
+QLabel#ItemThumbnail {
+    background: @control;
+    color: @textMuted;
+    border: none;
+    border-radius: 7px;
+}
+QLabel#ComparisonItemName {
+    color: @text;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+}
+QLabel#ComparisonItemDetails {
+    color: @textMuted;
+    font-size: 11px;
+    border: none;
+    background: transparent;
+}
+QWidget#ComparisonItemRow[selected="true"] QLabel#ComparisonItemName {
+    color: @selectedText;
+}
+QWidget#ComparisonItemRow[selected="true"] QLabel#ComparisonItemDetails {
+    color: @selectedMuted;
+}
+QToolButton#ItemEditButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0;
+    color: @textMuted;
+}
+QToolButton#ItemEditButton:hover {
+    background: @controlHover;
+    color: @text;
+}
+QToolButton#ItemEditButton:pressed {
+    background: @border;
+}
+QWidget#ComparisonItemRow[selected="true"] QToolButton#ItemEditButton {
+    color: @selectedText;
+}
 """
 
 
@@ -253,6 +391,10 @@ DARK_COLORS = {
     "@text": "#f1f3f5",
     "@textMuted": "#aeb6c2",
     "@selection": "#275da8",
+    "@selectedSurface": "#182d4b",
+    "@selectedBorder": "#3b82f6",
+    "@selectedText": "#dbeafe",
+    "@selectedMuted": "#93b5df",
     "@accent": "#2563eb",
     "@accentHover": "#2f6ff4",
     "@accentPressed": "#1f66d1",
@@ -274,6 +416,10 @@ LIGHT_COLORS = {
     "@text": "#172033",
     "@textMuted": "#667085",
     "@selection": "#2563eb",
+    "@selectedSurface": "#eff6ff",
+    "@selectedBorder": "#93c5fd",
+    "@selectedText": "#1d4ed8",
+    "@selectedMuted": "#52739b",
     "@accent": "#2563eb",
     "@accentHover": "#1d4ed8",
     "@accentPressed": "#1e40af",

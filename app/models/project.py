@@ -37,6 +37,7 @@ class Project:
     value_background_color: str = "#087be8"
     value_text_color: str = "#ffffff"
     text_font_family: str = "Segoe UI"
+    text_font_size: int = 0
     image_fit: str = "cover"
     image_height_percent_3: int = 56
     image_height_percent_4: int = 58
@@ -67,6 +68,7 @@ class Project:
                 "value_background_color": self.value_background_color,
                 "value_text_color": self.value_text_color,
                 "text_font_family": self.text_font_family,
+                "text_font_size": self.text_font_size,
                 "image_fit": self.image_fit,
                 "image_height_percent_3": self.image_height_percent_3,
                 "image_height_percent_4": self.image_height_percent_4,
@@ -105,6 +107,7 @@ class Project:
             value_background_color=str(style.get("value_background_color") or "#087be8"),
             value_text_color=str(style.get("value_text_color") or "#ffffff"),
             text_font_family=str(style.get("text_font_family") or "Segoe UI"),
+            text_font_size=_font_size(style.get("text_font_size")),
             image_fit=(
                 str(style.get("image_fit") or "cover")
                 if str(style.get("image_fit") or "cover") in {"cover", "contain", "stretch"}
@@ -188,6 +191,13 @@ class Project:
             item.start_time = index * fixed_duration
             item.duration = fixed_duration
         self.duration = self.content_duration()
+
+
+def _font_size(value: object) -> int:
+    try:
+        return max(0, min(120, int(value)))
+    except (TypeError, ValueError):
+        return 0
 
 
 def _layout_height(value: object, default: int) -> int:

@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt, QSize, QRect, QRectF
 from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
+
+from app.models.comparison_item import normalize_image_transform
 
 
 class ImageCache:
@@ -64,6 +66,67 @@ class ImageCache:
                 scaled = scaled.copy(left, top, size.width(), size.height())
             self._scaled_cache[scaled_key] = scaled
         return self._scaled_cache[scaled_key]
+
+
+def image_target_rect(
+    source_size: QSize,
+    frame: QRectF,
+    fit: str,
+    transform: dict | None = None,
+    crop_x: float = 0.0,
+    crop_y: float = 0.0,
+) -> QRectF:
+    """Map the original image into a frame using saved relative size and position."""
+    values = normalize_image_transform(transform)
+    fit = str(values.get("fit") or fit)
+    source_width = max(1, source_size.width())
+    source_height = max(1, source_size.height())
+    if fit == "stretch":
+        width, height = frame.width(), frame.height()
+    else:
+        ratios = (frame.width() / source_width, frame.height() / source_height)
+        scale = max(ratios) if fit == "cover" else min(ratios)
+        width, height = source_width * scale, source_height * scale
+    center = frame.center()
+    if fit == "cover":
+        center.setX(center.x() - max(0.0, width - frame.width()) * crop_x / 2)
+        center.setY(center.y() - max(0.0, height - frame.height()) * crop_y / 2)
+    width *= float(values["scale_x"])
+    height *= float(values["scale_y"])
+    center.setX(center.x() + float(values["offset_x"]) * frame.width())
+    center.setY(center.y() + float(values["offset_y"]) * frame.height())
+    return QRectF(center.x() - width / 2, center.y() - height / 2, width, height)
+
+
+def draw_image(
+    painter: QPainter,
+    cache: ImageCache,
+    path: str,
+    frame: QRect,
+    fit: str,
+    transform: dict | None = None,
+    crop_x: float = 0.0,
+    crop_y: float = 0.0,
+) -> None:
+    if frame.isEmpty():
+        return
+    painter.save()
+    painter.setClipRect(frame, Qt.ClipOperation.IntersectClip)
+    painter.fillRect(frame, QColor("#111827"))
+    if transform and path and Path(path).is_file():
+        pixmap = cache.pixmap(path)
+        target = image_target_rect(pixmap.size(), QRectF(frame), fit, transform, crop_x, crop_y)
+        painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
+        painter.drawPixmap(target, pixmap, QRectF(pixmap.rect()))
+    else:
+        pixmap = cache.pixmap(path, frame.size(), fit=fit, crop_x=crop_x, crop_y=crop_y)
+        target = QRect(
+            frame.x() + (frame.width() - pixmap.width()) // 2,
+            frame.y() + (frame.height() - pixmap.height()) // 2,
+            pixmap.width(), pixmap.height(),
+        )
+        painter.drawPixmap(target, pixmap)
+    painter.restore()
 
 
 def placeholder_pixmap(size: QSize) -> QPixmap:

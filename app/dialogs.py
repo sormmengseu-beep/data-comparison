@@ -6,11 +6,14 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QComboBox,
+    QCheckBox,
     QDialog,
     QDialogButtonBox,
+    QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
     QHBoxLayout,
@@ -23,7 +26,132 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from app.settings import ROOT_DIR, SUPPORTED_TEXT_FILTER
+from app.settings import ROOT_DIR, SUPPORTED_TEXT_FILTER, SUPPORTED_IMAGE_FILTER
+from app.models.comparison_item import normalize_image_transform
+from app.widgets.image_editor import ImageEditorCanvas
+
+
+class ImageEditorDialog(QDialog):
+    def __init__(self, path: str, frame_size: QSize, fit: str = "cover",
+                 transform: dict | None = None, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setWindowTitle("Edit Image")
+        self.resize(800, 650)
+        self.image_path = path
+        self._default_fit = fit
+        self._updating = False
+        values = normalize_image_transform(transform)
+        values.setdefault("fit", fit)
+        layout = QVBoxLayout(self)
+        title = QLabel("Drag the image to move it. Drag a white handle to resize it.")
+        title.setWordWrap(True)
+        layout.addWidget(title)
+        self.canvas = ImageEditorCanvas(frame_size, fit, values)
+        layout.addWidget(self.canvas, 1)
+        controls = QHBoxLayout()
+        self.choose_button = QPushButton("Choose Image")
+        self.fit_combo = QComboBox()
+        for label, mode in (("Cover", "cover"), ("Contain", "contain"), ("Stretch", "stretch")):
+            self.fit_combo.addItem(label, mode)
+        self.width_spin = QDoubleSpinBox()
+        self.height_spin = QDoubleSpinBox()
+        for spin in (self.width_spin, self.height_spin):
+            spin.setRange(10, 500)
+            spin.setDecimals(1)
+            spin.setSuffix(" %")
+            spin.setSingleStep(5)
+        self.aspect_check = QCheckBox("Lock proportions")
+        self.aspect_check.setChecked(True)
+        self.reset_button = QPushButton("Reset")
+        controls.addWidget(self.choose_button)
+        controls.addWidget(self.fit_combo)
+        controls.addWidget(QLabel("Width"))
+        controls.addWidget(self.width_spin)
+        controls.addWidget(QLabel("Height"))
+        controls.addWidget(self.height_spin)
+        layout.addLayout(controls)
+        options = QHBoxLayout()
+        options.addWidget(self.aspect_check)
+        options.addStretch(1)
+        options.addWidget(self.reset_button)
+        layout.addLayout(options)
+        layout.addWidget(QLabel("Dashed outline: image area in the box. Areas outside it are cropped."))
+        self.buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+        self.buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Apply")
+        self.buttons.button(QDialogButtonBox.StandardButton.Ok).setObjectName("PrimaryButton")
+        layout.addWidget(self.buttons)
+        self.choose_button.clicked.connect(self._choose_image)
+        self.fit_combo.currentIndexChanged.connect(self._change_fit)
+        self.width_spin.valueChanged.connect(lambda value: self._change_size("scale_x", value))
+        self.height_spin.valueChanged.connect(lambda value: self._change_size("scale_y", value))
+        self.aspect_check.toggled.connect(lambda checked: setattr(self.canvas, "keep_aspect", checked))
+        self.reset_button.clicked.connect(self._reset)
+        self.canvas.transform_changed.connect(self._sync_controls)
+        self.buttons.accepted.connect(self.accept)
+        self.buttons.rejected.connect(self.reject)
+        self._load_image()
+        self._sync_controls()
+
+    def image_transform(self) -> dict[str, float | str]:
+        return dict(self.canvas.transform)
+
+    def _load_image(self) -> None:
+        pixmap = QPixmap(self.image_path) if self.image_path else QPixmap()
+        self.canvas.set_image(pixmap)
+        self.buttons.button(QDialogButtonBox.StandardButton.Ok).setEnabled(self.canvas.has_image)
+        for widget in (self.fit_combo, self.width_spin, self.height_spin, self.reset_button):
+            widget.setEnabled(self.canvas.has_image)
+
+    def _choose_image(self) -> None:
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Choose Image", str(Path.home()), SUPPORTED_IMAGE_FILTER
+        )
+        if not path:
+            return
+        if QPixmap(path).isNull():
+            QMessageBox.warning(self, "Choose Image", "This image could not be opened.")
+            return
+        self.image_path = path
+        self._load_image()
+        self._reset()
+
+    def _sync_controls(self, *_args) -> None:
+        self._updating = True
+        values = self.canvas.transform
+        self.fit_combo.setCurrentIndex(self.fit_combo.findData(values.get("fit", self._default_fit)))
+        self.width_spin.setValue(float(values["scale_x"]) * 100)
+        self.height_spin.setValue(float(values["scale_y"]) * 100)
+        self._updating = False
+
+    def _change_size(self, key: str, percent: float) -> None:
+        if self._updating:
+            return
+        values = self.image_transform()
+        ratio = percent / 100 / float(values[key])
+        if self.aspect_check.isChecked():
+            other = "scale_y" if key == "scale_x" else "scale_x"
+            ratio = max(0.1 / float(values[other]), min(5 / float(values[other]), ratio))
+            values[other] = float(values[other]) * ratio
+        values[key] = float(values[key]) * ratio
+        self.canvas.set_transform(values)
+        self._sync_controls()
+
+    def _change_fit(self) -> None:
+        if self._updating:
+            return
+        values = self.image_transform()
+        values["fit"] = str(self.fit_combo.currentData())
+        self.canvas.set_transform(values)
+
+    def _reset(self) -> None:
+        self.canvas.set_transform({"fit": self._default_fit})
+        self._sync_controls()
+
+    def accept(self) -> None:
+        if self.canvas.has_image:
+            super().accept()
 
 
 ITEM_FIELDS = ("name", "rank", "category", "value", "image_path")

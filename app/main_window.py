@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from PySide6.QtCore import QElapsedTimer, QRect, QSettings, QSize, QTimer, Qt, Signal
-from PySide6.QtGui import QAction, QColor, QFont, QKeySequence, QPainter, QPen, QShortcut
+from PySide6.QtGui import QAction, QColor, QFont, QFontMetrics, QKeySequence, QPainter, QPen, QShortcut
 from PySide6.QtWidgets import (
     QComboBox,
     QApplication,
@@ -33,7 +33,7 @@ from PySide6.QtWidgets import (
 
 from app.models.comparison_item import ComparisonItem
 from app.models.project import Project
-from app.dialogs import ExportDialog, TextImportDialog
+from app.dialogs import ExportDialog, ImageEditorDialog, TextImportDialog
 from app.exporter import ExportError, export_preview
 from app.project_manager import ProjectError, ProjectManager
 from app.settings import (
@@ -50,7 +50,7 @@ from app.settings import (
     app_style,
 )
 from app.utils.time_utils import clamp, format_timestamp
-from app.utils.image_utils import ImageCache
+from app.utils.image_utils import ImageCache, draw_image
 from app.widgets.asset_panel import AssetPanel
 from app.widgets.preview_widget import PreviewWidget
 from app.widgets.dynamic_properties_panel import PropertiesPanel
@@ -205,6 +205,8 @@ BOX_STYLE_PRESETS_BY_NAME = {
 
 
 class BoxStylePreview(QWidget):
+    image_clicked = Signal(str)
+
     def __init__(self, item: ComparisonItem, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.item = item
@@ -212,9 +214,30 @@ class BoxStylePreview(QWidget):
         self.image_height_percent = 56
         self.border_color = "#05070a"
         self.text_font_family = "Segoe UI"
+        self.text_font_size = 0
+        self.columns = MIN_PREVIEW_COLUMNS_1080P
         self.field_styles: dict[str, dict[str, str]] = {}
         self._image_cache = ImageCache()
+        self._image_regions: list[tuple[QRect, str]] = []
+        self.setMouseTracking(True)
+        self.setToolTip("Click an image to resize or reposition it")
         self.setFixedSize(270, 430)
+
+    def mousePressEvent(self, event) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            for region, field_id in self._image_regions:
+                if region.contains(event.position().toPoint()):
+                    self.image_clicked.emit(field_id)
+                    event.accept()
+                    return
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event) -> None:
+        if any(region.contains(event.position().toPoint()) for region, _ in self._image_regions):
+            self.setCursor(Qt.CursorShape.PointingHandCursor)
+        else:
+            self.unsetCursor()
+        super().mouseMoveEvent(event)
 
     def set_style(
         self,
@@ -223,15 +246,20 @@ class BoxStylePreview(QWidget):
         border_color: str,
         text_font_family: str,
         field_styles: dict[str, dict[str, str]],
+        text_font_size: int = 0,
+        columns: int = MIN_PREVIEW_COLUMNS_1080P,
     ) -> None:
         self.image_fit = image_fit
         self.image_height_percent = image_height_percent
         self.border_color = border_color
         self.text_font_family = text_font_family
         self.field_styles = field_styles
+        self.text_font_size = text_font_size
+        self.columns = columns
         self.update()
 
     def paintEvent(self, event) -> None:
+        self._image_regions = []
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.fillRect(self.rect(), QColor("#0b0d10"))
@@ -258,17 +286,13 @@ class BoxStylePreview(QWidget):
             images_left = len(image_fields) - index
             slice_height = (image_rect.bottom() - image_y + 1) // images_left
             image_slice = QRect(image_rect.x(), image_y, image_rect.width(), slice_height)
-            painter.fillRect(image_slice, QColor("#111827"))
-            pixmap = self._image_cache.pixmap(
-                str(image_field.get("value", "")), image_slice.size(), fit=self.image_fit
+            field_id = str(image_field.get("id", ""))
+            draw_image(
+                painter, self._image_cache, str(image_field.get("value", "")),
+                image_slice, self.image_fit, self.item.image_transforms.get(field_id),
+                self.item.image_crop_x, self.item.image_crop_y,
             )
-            target = QRect(
-                image_slice.x() + (image_slice.width() - pixmap.width()) // 2,
-                image_slice.y() + (image_slice.height() - pixmap.height()) // 2,
-                pixmap.width(),
-                pixmap.height(),
-            )
-            painter.drawPixmap(target, pixmap)
+            self._image_regions.append((image_slice, field_id))
             image_y += slice_height
 
         row_y = image_rect.bottom() + 1
@@ -282,12 +306,28 @@ class BoxStylePreview(QWidget):
                 row, QColor(style.get("background_color", "#111827"))
             )
             painter.setPen(QColor(style.get("text_color", "#ffffff")))
-            painter.setFont(
-                QFont(self.text_font_family, 15 if role in {"name", "rank"} else 13, QFont.Weight.Bold)
-            )
+            font_size = 15 if role in {"name", "rank"} else 13
+            target = row.adjusted(8, 2, -8, -2)
+            flags = Qt.AlignmentFlag.AlignCenter | Qt.TextFlag.TextWordWrap
+            if self.text_font_size:
+                scale = card.width() / (CANVAS_WIDTH / self.columns)
+                size = self.text_font_size if role in {"name", "rank"} else max(
+                    1, int(self.text_font_size * 0.88)
+                )
+                font_size = max(1, round(size * scale))
+                minimum_size = max(1, round(min(12, size) * scale))
+                while font_size > minimum_size:
+                    font = QFont(self.text_font_family, font_size, QFont.Weight.Bold)
+                    bounds = QFontMetrics(font).boundingRect(
+                        target, int(flags), str(field_data.get("value", ""))
+                    )
+                    if bounds.width() <= target.width() and bounds.height() <= target.height():
+                        break
+                    font_size -= 1
+            painter.setFont(QFont(self.text_font_family, font_size, QFont.Weight.Bold))
             painter.drawText(
-                row.adjusted(8, 2, -8, -2),
-                Qt.AlignmentFlag.AlignCenter | Qt.TextFlag.TextWordWrap,
+                target,
+                flags,
                 str(field_data.get("value", "")),
             )
             row_y += row_height
@@ -431,6 +471,8 @@ class BoxCustomizationDialog(QDialog):
         super().__init__(parent)
         self.project = project
         self.item = item
+        self._image_item = ComparisonItem.from_dict(item.to_dict())
+        self._images_changed = False
         self.preferences = QSettings("DataCompareTools", "DataComparisonVideoMaker")
         self.custom_presets = self._load_custom_presets()
         self.setWindowTitle("Customize All Boxes")
@@ -490,6 +532,17 @@ class BoxCustomizationDialog(QDialog):
         self.text_font_combo.setCurrentFont(QFont(project.text_font_family))
         form.addRow("Text font", self.text_font_combo)
 
+        self.text_font_size_spin = QSpinBox()
+        self.text_font_size_spin.setRange(0, 120)
+        self.text_font_size_spin.setSpecialValueText("Auto")
+        self.text_font_size_spin.setSuffix(" pt")
+        self.text_font_size_spin.setValue(project.text_font_size)
+        self.text_font_size_spin.setToolTip(
+            "Text size at 1080p. Auto sizes text to the box width. "
+            "Long text shrinks to fit; category and value text are slightly smaller."
+        )
+        form.addRow("Font size", self.text_font_size_spin)
+
         self.border_color_button = ColorButton(project.card_border_color)
         form.addRow("Border", self.border_color_button)
 
@@ -529,7 +582,8 @@ class BoxCustomizationDialog(QDialog):
         preview_layout = QVBoxLayout()
         preview_title = QLabel("BOX PREVIEW")
         preview_title.setObjectName("PanelTitle")
-        self.box_preview = BoxStylePreview(item)
+        self.box_preview = BoxStylePreview(self._image_item)
+        self.box_preview.image_clicked.connect(self._edit_image)
         preview_layout.addWidget(preview_title)
         preview_layout.addWidget(self.box_preview)
         preview_layout.addStretch(1)
@@ -548,6 +602,7 @@ class BoxCustomizationDialog(QDialog):
         )
         self.image_fit_combo.currentIndexChanged.connect(self._update_preview)
         self.text_font_combo.currentFontChanged.connect(self._update_preview)
+        self.text_font_size_spin.valueChanged.connect(self._update_preview)
         self.apply_preset_button.clicked.connect(self._apply_selected_preset)
         self.save_preset_button.clicked.connect(self._save_custom_preset)
         self.delete_preset_button.clicked.connect(self._delete_custom_preset)
@@ -602,6 +657,10 @@ class BoxCustomizationDialog(QDialog):
             image_height = int(preset.get("image_height_percent") or 56)
         except (TypeError, ValueError):
             image_height = 56
+        try:
+            font_size = max(0, min(120, int(preset.get("text_font_size") or 0)))
+        except (TypeError, ValueError):
+            font_size = 0
         roles = preset.get("roles")
         normalized_roles: dict[str, dict[str, str]] = {}
         if isinstance(roles, dict):
@@ -617,6 +676,7 @@ class BoxCustomizationDialog(QDialog):
         return {
             "border_color": self._valid_color(preset.get("border_color"), "#05070a"),
             "text_font_family": str(preset.get("text_font_family") or "Segoe UI"),
+            "text_font_size": font_size,
             "image_fit": fit,
             "image_height_percent": max(35, min(75, image_height)),
             "roles": normalized_roles,
@@ -648,6 +708,7 @@ class BoxCustomizationDialog(QDialog):
         if fit_index >= 0:
             self.image_fit_combo.setCurrentIndex(fit_index)
         self.text_font_combo.setCurrentFont(QFont(str(preset["text_font_family"])))
+        self.text_font_size_spin.setValue(int(preset["text_font_size"]))
         self.border_color_button.set_color(str(preset["border_color"]))
         role_styles = preset.get("roles", {})
         if isinstance(role_styles, dict):
@@ -702,12 +763,19 @@ class BoxCustomizationDialog(QDialog):
         return {
             "border_color": self.border_color_button.color(),
             "text_font_family": self.text_font_combo.currentFont().family(),
+            "text_font_size": self.text_font_size_spin.value(),
             "image_fit": str(self.image_fit_combo.currentData() or "cover"),
             "image_height_percent": int(self.image_height_slider.value()),
             "roles": roles,
         }
 
     def apply_changes(self) -> None:
+        if self._images_changed:
+            self.item.set_fields(self._image_item.display_fields())
+            self.item.image_transforms = {
+                field_id: dict(transform)
+                for field_id, transform in self._image_item.image_transforms.items()
+            }
         columns = int(self.columns_combo.currentData())
         self.project.preview_max_columns = columns
         setattr(
@@ -717,6 +785,7 @@ class BoxCustomizationDialog(QDialog):
         )
         self.project.image_fit = str(self.image_fit_combo.currentData())
         self.project.text_font_family = self.text_font_combo.currentFont().family()
+        self.project.text_font_size = self.text_font_size_spin.value()
         self.project.card_border_color = self.border_color_button.color()
         self.project.field_styles = {
             field_id: {
@@ -733,6 +802,30 @@ class BoxCustomizationDialog(QDialog):
             existing_item.image_fit = ""
             for key in self.STYLE_KEYS:
                 setattr(existing_item, key, "")
+
+    def _edit_image(self, field_id: str) -> None:
+        fields = self._image_item.display_fields()
+        image_fields = [field for field in fields if field.get("type") == "image"]
+        field = next((field for field in image_fields if field.get("id") == field_id), None)
+        if field is None:
+            return
+        columns = int(self.columns_combo.currentData())
+        image_height = int(self.project.height * self.image_height_slider.value() / 100)
+        if len(image_fields) == len(fields):
+            image_height = self.project.height
+        frame = QSize(CANVAS_WIDTH // columns, max(1, image_height // len(image_fields)))
+        dialog = ImageEditorDialog(
+            str(field.get("value", "")), frame,
+            str(self.image_fit_combo.currentData() or "cover"),
+            self._image_item.image_transforms.get(field_id), self,
+        )
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        field["value"] = dialog.image_path
+        self._image_item.set_fields(fields)
+        self._image_item.image_transforms[field_id] = dialog.image_transform()
+        self._images_changed = True
+        self._update_preview()
 
     def _load_values(self, *_args) -> None:
         columns = int(self.columns_combo.currentData())
@@ -765,6 +858,8 @@ class BoxCustomizationDialog(QDialog):
             self.border_color_button.color(),
             self.text_font_combo.currentFont().family(),
             field_styles,
+            self.text_font_size_spin.value(),
+            int(self.columns_combo.currentData()),
         )
 
     def _field_role(self, field_data: dict[str, str], index: int) -> str:
@@ -921,6 +1016,7 @@ class MainWindow(QMainWindow):
         self.assets.add_audio_requested.connect(self.import_audio)
         self.assets.item_selected.connect(self.select_item)
         self.assets.customize_item_requested.connect(self.open_box_customization)
+        self.preview.image_edit_requested.connect(self.open_image_editor)
         self.properties.item_changed.connect(self.update_item_properties)
         self.properties.fields_changed.connect(self.update_item_fields)
         self.properties.browse_image_requested.connect(self.import_image)
@@ -1089,6 +1185,36 @@ class MainWindow(QMainWindow):
         dialog.apply_changes()
         self._refresh_all()
         self.statusBar().showMessage("Updated design for all boxes", 3500)
+
+    def open_image_editor(self, item_id: str, field_id: str) -> None:
+        item = self.project.item_by_id(item_id)
+        if item is None:
+            return
+        fields = item.display_fields()
+        images = [field for field in fields if field.get("type") == "image"]
+        field = next((field for field in images if field.get("id") == field_id), None)
+        if field is None:
+            return
+        self.pause_playback()
+        self.select_item(item_id)
+        columns = self.project.preview_max_columns
+        percent = (getattr(item, f"image_height_percent_{columns}", 0)
+                   or getattr(self.project, f"image_height_percent_{columns}"))
+        height = int(self.project.height * percent / 100)
+        if len(images) == len(fields):
+            height = self.project.height
+        frame = QSize(CANVAS_WIDTH // columns, max(1, height // len(images)))
+        dialog = ImageEditorDialog(
+            str(field.get("value", "")), frame, item.image_fit or self.project.image_fit,
+            item.image_transforms.get(field_id), self,
+        )
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        field["value"] = dialog.image_path
+        item.set_fields(fields)
+        item.image_transforms[field_id] = dialog.image_transform()
+        self._refresh_all()
+        self.statusBar().showMessage(f"Updated image for {item.name}", 3500)
 
     def import_image(self) -> None:
         if not self.selected_item_id:

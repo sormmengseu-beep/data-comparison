@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from PySide6.QtCore import QRect, QSize, Qt
+from PySide6.QtCore import QPoint, QRect, QSize, Qt, Signal
 from PySide6.QtGui import QColor, QFont, QFontMetrics, QImage, QPainter, QPen, QPixmap
 from PySide6.QtWidgets import QSizePolicy, QWidget
 
@@ -12,10 +12,12 @@ from app.settings import (
     MAX_PREVIEW_COLUMNS_1080P,
     MIN_PREVIEW_COLUMNS_1080P,
 )
-from app.utils.image_utils import ImageCache
+from app.utils.image_utils import ImageCache, draw_image
 
 
 class PreviewWidget(QWidget):
+    image_edit_requested = Signal(str, str)
+
     def __init__(self) -> None:
         super().__init__()
         self.setMinimumSize(480, 270)
@@ -24,6 +26,9 @@ class PreviewWidget(QWidget):
         self._current_time = 0.0
         self._selected_id = ""
         self._image_cache = ImageCache()
+        self._image_regions: list[tuple[QRect, str, str]] = []
+        self.setMouseTracking(True)
+        self.setToolTip("Click an image to resize or reposition it")
 
     def set_project(self, project: Project) -> None:
         self._project = project
@@ -40,6 +45,7 @@ class PreviewWidget(QWidget):
     def render_frame(self, seconds: float, size: QSize | None = None) -> QImage:
         previous_time = self._current_time
         previous_selection = self._selected_id
+        previous_regions = self._image_regions
         self._current_time = max(0.0, seconds)
         self._selected_id = ""
         try:
@@ -54,6 +60,37 @@ class PreviewWidget(QWidget):
         finally:
             self._current_time = previous_time
             self._selected_id = previous_selection
+            self._image_regions = previous_regions
+
+    def _image_at(self, point: QPoint) -> tuple[str, str] | None:
+        preview = self._preview_rect()
+        if preview.isEmpty() or not preview.contains(point):
+            return None
+        canvas_point = QPoint(
+            int((point.x() - preview.x()) * CANVAS_WIDTH / preview.width()),
+            int((point.y() - preview.y()) * CANVAS_HEIGHT / preview.height()),
+        )
+        for region, item_id, field_id in self._image_regions:
+            if region.contains(canvas_point):
+                return item_id, field_id
+        return None
+
+    def mousePressEvent(self, event) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._render_canvas()
+            target = self._image_at(event.position().toPoint())
+            if target is not None:
+                self.image_edit_requested.emit(*target)
+                event.accept()
+                return
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event) -> None:
+        if self._image_at(event.position().toPoint()) is not None:
+            self.setCursor(Qt.CursorShape.PointingHandCursor)
+        else:
+            self.unsetCursor()
+        super().mouseMoveEvent(event)
 
     def paintEvent(self, event) -> None:
         painter = QPainter(self)
@@ -77,6 +114,7 @@ class PreviewWidget(QWidget):
         return QRect(x, y, width, height)
 
     def _render_canvas(self) -> QPixmap:
+        self._image_regions = []
         canvas = QPixmap(CANVAS_WIDTH, CANVAS_HEIGHT)
         painter = QPainter(canvas)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
@@ -159,20 +197,18 @@ class PreviewWidget(QWidget):
                 images_left = len(image_fields) - index
                 slice_height = (image_rect.bottom() - image_y + 1) // images_left
                 image_slice = QRect(image_rect.x(), image_y, image_rect.width(), slice_height)
-                painter.fillRect(image_slice, QColor("#111827"))
-                pixmap = self._image_cache.pixmap(
-                    str(image_field.get("value", "")), image_slice.size(), fit=image_fit
+                field_id = str(image_field.get("id", ""))
+                draw_image(
+                    painter, self._image_cache, str(image_field.get("value", "")),
+                    image_slice, image_fit, item.image_transforms.get(field_id),
+                    item.image_crop_x, item.image_crop_y,
                 )
-                image_target = QRect(
-                    image_slice.x() + (image_slice.width() - pixmap.width()) // 2,
-                    image_slice.y() + (image_slice.height() - pixmap.height()) // 2,
-                    pixmap.width(),
-                    pixmap.height(),
-                )
-                painter.drawPixmap(image_target, pixmap)
+                self._image_regions.append((image_slice, item.id, field_id))
                 image_y += slice_height
 
-        base_font_size = max(18, min(40, int(rect.width() * 0.072)))
+        base_font_size = self._project.text_font_size or max(
+            18, min(40, int(rect.width() * 0.072))
+        )
         row_y = image_rect.bottom() + 1
         for index, field_data in enumerate(content_fields):
             rows_left = len(content_fields) - index
@@ -180,7 +216,8 @@ class PreviewWidget(QWidget):
             row_rect = QRect(rect.x(), row_y, rect.width(), row_height)
             role = self._field_role(field_data, index)
             font_size = base_font_size if role in {"name", "rank"} else max(
-                17, int(base_font_size * 0.88)
+                1 if self._project.text_font_size else 17,
+                int(base_font_size * 0.88),
             )
             self._draw_text_band(
                 painter,
