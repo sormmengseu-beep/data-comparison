@@ -43,6 +43,7 @@ from app.settings import (
     MAX_PREVIEW_COLUMNS_1080P,
     MIN_PREVIEW_COLUMNS_1080P,
     MIN_CLIP_DURATION,
+    OPENING_ANIMATION_OPTIONS,
     PROJECT_EXTENSION,
     PROJECTS_DIR,
     SUPPORTED_AUDIO_FILTER,
@@ -366,6 +367,12 @@ class ProjectSettingsDialog(QDialog):
         self.preview_columns_spin = QSpinBox()
         self.preview_columns_spin.setRange(MIN_PREVIEW_COLUMNS_1080P, MAX_PREVIEW_COLUMNS_1080P)
         self.preview_columns_spin.setValue(project.preview_max_columns)
+        self.opening_animation_combo = QComboBox()
+        for label, value in OPENING_ANIMATION_OPTIONS:
+            self.opening_animation_combo.addItem(label, value)
+        self.opening_animation_combo.setCurrentIndex(
+            max(0, self.opening_animation_combo.findData(project.opening_animation))
+        )
         self.item_duration_spin = QDoubleSpinBox()
         self.item_duration_spin.setRange(MIN_CLIP_DURATION, 120.0)
         self.item_duration_spin.setDecimals(3)
@@ -375,6 +382,7 @@ class ProjectSettingsDialog(QDialog):
         form.addRow("Resolution", QLabel(f"{project.width} x {project.height}"))
         form.addRow("FPS", self.fps_combo)
         form.addRow("Preview Columns", self.preview_columns_spin)
+        form.addRow("Opening Animation", self.opening_animation_combo)
         form.addRow("Box Duration", self.item_duration_spin)
         self.animation_length_label = QLabel()
         form.addRow("Animation Length", self.animation_length_label)
@@ -434,6 +442,7 @@ class ProjectSettingsDialog(QDialog):
         project.name = self.name_edit.text().strip() or "Untitled Project"
         project.fps = int(self.fps_combo.currentText())
         project.preview_max_columns = int(self.preview_columns_spin.value())
+        project.opening_animation = str(self.opening_animation_combo.currentData())
         project.item_fixed_duration = float(self.item_duration_spin.value())
         project.canvas_background_color = self.canvas_color_button.color()
         project.card_border_color = self.border_color_button.color()
@@ -1032,6 +1041,7 @@ class MainWindow(QMainWindow):
         self.transport.step_forward_requested.connect(lambda: self.set_current_time(self.current_time + 1.0))
         self.transport.jump_end_requested.connect(lambda: self.set_current_time(self.project.total_duration()))
         self.transport.columns_changed.connect(self.set_preview_columns)
+        self.transport.opening_animation_changed.connect(self.set_opening_animation)
         self.transport.customize_requested.connect(self.open_box_customization)
         self.import_data_button.clicked.connect(self.add_text)
         self.settings_button.clicked.connect(self.open_project_settings)
@@ -1054,6 +1064,7 @@ class MainWindow(QMainWindow):
         self.timeline.set_project(self.project)
         self.assets.set_items(self.project.comparison_items, self.selected_item_id)
         self.transport.set_columns(self.project.preview_max_columns)
+        self.transport.set_opening_animation(self.project.opening_animation)
         self.select_item(self.selected_item_id, update_asset_panel=False)
         self.set_current_time(self.current_time)
         self._update_status()
@@ -1109,6 +1120,13 @@ class MainWindow(QMainWindow):
         self.transport.set_columns(self.project.preview_max_columns)
         self.preview.update()
         self._update_status()
+
+    def set_opening_animation(self, animation: str) -> None:
+        if animation not in {value for _, value in OPENING_ANIMATION_OPTIONS}:
+            animation = "slide_left"
+        self.project.opening_animation = animation
+        self.transport.set_opening_animation(animation)
+        self.preview.update()
 
     def add_comparison_item(self) -> None:
         schema = (

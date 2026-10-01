@@ -11,6 +11,7 @@ from app.settings import (
     MAX_PREVIEW_COLUMNS_1080P,
     MIN_PREVIEW_COLUMNS_1080P,
     MIN_CLIP_DURATION,
+    OPENING_ANIMATION_OPTIONS,
 )
 from app.models.comparison_item import ComparisonItem
 from app.models.timeline_item import TimelineItem
@@ -26,6 +27,7 @@ class Project:
     background: str = "Dark"
     preview_max_columns: int = MIN_PREVIEW_COLUMNS_1080P
     item_fixed_duration: float = DEFAULT_ITEM_DURATION
+    opening_animation: str = "slide_left"
     canvas_background_color: str = "#05070a"
     card_border_color: str = "#05070a"
     name_background_color: str = "#f45b69"
@@ -56,6 +58,7 @@ class Project:
             "background": self.background,
             "preview_max_columns": self.preview_max_columns,
             "item_fixed_duration": self.item_fixed_duration,
+            "opening_animation": self.opening_animation,
             "style": {
                 "canvas_background_color": self.canvas_background_color,
                 "card_border_color": self.card_border_color,
@@ -84,6 +87,9 @@ class Project:
     def from_dict(cls, data: dict) -> "Project":
         resolution = data.get("resolution") or {}
         style = data.get("style") or {}
+        opening_animation = str(data.get("opening_animation") or "slide_left")
+        if opening_animation not in {value for _, value in OPENING_ANIMATION_OPTIONS}:
+            opening_animation = "slide_left"
         project = cls(
             name=str(data.get("project_name") or data.get("name") or "Untitled Project"),
             width=int(resolution.get("width") or CANVAS_WIDTH),
@@ -92,6 +98,7 @@ class Project:
             duration=max(1.0, float(data.get("duration") or DEFAULT_DURATION)),
             background=str(data.get("background") or "Dark"),
             preview_max_columns=int(data.get("preview_max_columns") or MIN_PREVIEW_COLUMNS_1080P),
+            opening_animation=opening_animation,
             item_fixed_duration=max(
                 MIN_CLIP_DURATION,
                 float(data.get("item_fixed_duration") or DEFAULT_ITEM_DURATION),

@@ -153,12 +153,86 @@ class PreviewWidget(QWidget):
         for index, item in enumerate(items):
             card_x = int(x + (index - slide_offset) * step)
             rect = QRect(card_x, y, card_width, card_height)
-            if rect.right() < viewport.left() or rect.left() > viewport.right():
+            if not viewport.intersects(rect):
                 continue
             selected = item.id == self._selected_id
             active = item.start_time <= self._current_time <= item.start_time + item.duration
-            self._draw_card(painter, rect, item, selected, active, max_columns)
+            self._draw_opening_card(painter, rect, item, selected, active, max_columns, index)
         painter.restore()
+
+    def _draw_opening_card(
+        self,
+        painter: QPainter,
+        rect: QRect,
+        item: ComparisonItem,
+        selected: bool,
+        active: bool,
+        columns: int,
+        index: int,
+    ) -> None:
+        animation = self._project.opening_animation
+        # Use the existing opening segment, then continue the horizontal scroll.
+        duration = max(0.1, self._project.item_fixed_duration)
+        if index >= columns or animation == "slide_left" or self._current_time >= duration:
+            self._draw_card(painter, rect, item, selected, active, columns)
+            return
+        progress = min(1.0, max(0.0, self._current_time / duration))
+        if animation in {"stagger_bottom", "stagger_top", "alternating"}:
+            count = min(columns, len(self._project.comparison_items))
+            delay = 0.3 * index / max(1, count - 1)
+            progress = min(1.0, max(0.0, (progress - delay) / 0.7))
+        if progress <= 0.0:
+            return
+        eased = 1.0 - (1.0 - progress) ** 3
+        opacity = 1.0
+        scale = 1.0
+        if animation in {"from_bottom", "from_top", "stagger_bottom", "stagger_top", "alternating"}:
+            direction = -1 if animation in {"from_top", "stagger_top"} else 1
+            if animation == "alternating":
+                direction = 1 if index % 2 == 0 else -1
+            rect = rect.translated(0, direction * round(rect.height() * (1.0 - eased)))
+        elif animation == "bounce_bottom":
+            # Ease-out bounce: each landing becomes smaller before settling.
+            bounce = self._ease_out_bounce(progress)
+            rect = rect.translated(0, round(rect.height() * (1.0 - bounce)))
+        elif animation == "fade_in":
+            opacity = eased
+        elif animation == "zoom_in":
+            scale = 0.55 + 0.45 * eased
+            opacity = eased
+        elif animation == "pop_in":
+            back = 1.0 + 2.70158 * (progress - 1.0) ** 3 + 1.70158 * (progress - 1.0) ** 2
+            scale = 0.65 + 0.35 * back
+            opacity = eased
+
+        painter.save()
+        painter.setOpacity(opacity)
+        if animation == "reveal_left":
+            reveal = QRect(0, 0, round(CANVAS_WIDTH * eased), CANVAS_HEIGHT)
+            painter.setClipRect(reveal, Qt.ClipOperation.IntersectClip)
+        # Keep all content, including fonts and image crops, at the same scale.
+        if scale != 1.0:
+            # A pop may briefly overshoot; keep each box inside its own slot.
+            painter.setClipRect(rect, Qt.ClipOperation.IntersectClip)
+            center = rect.center()
+            painter.translate(center)
+            painter.scale(scale, scale)
+            painter.translate(-center)
+        self._draw_card(painter, rect, item, selected, active, columns)
+        painter.restore()
+
+    @staticmethod
+    def _ease_out_bounce(progress: float) -> float:
+        if progress < 1.0 / 2.75:
+            return 7.5625 * progress * progress
+        if progress < 2.0 / 2.75:
+            progress -= 1.5 / 2.75
+            return 7.5625 * progress * progress + 0.75
+        if progress < 2.5 / 2.75:
+            progress -= 2.25 / 2.75
+            return 7.5625 * progress * progress + 0.9375
+        progress -= 2.625 / 2.75
+        return 7.5625 * progress * progress + 0.984375
 
     def _slide_offset_units(self, item_count: int) -> float:
         max_offset = max(0, item_count)
@@ -203,7 +277,12 @@ class PreviewWidget(QWidget):
                     image_slice, image_fit, item.image_transforms.get(field_id),
                     item.image_crop_x, item.image_crop_y,
                 )
-                self._image_regions.append((image_slice, item.id, field_id))
+                visible_slice = image_slice.intersected(painter.clipBoundingRect().toAlignedRect())
+                image_region = painter.transform().mapRect(visible_slice).intersected(
+                    QRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+                )
+                if not image_region.isEmpty():
+                    self._image_regions.append((image_region, item.id, field_id))
                 image_y += slice_height
 
         base_font_size = self._project.text_font_size or max(

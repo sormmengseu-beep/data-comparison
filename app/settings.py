@@ -13,6 +13,19 @@ DEFAULT_ITEM_DURATION = 3.0
 MIN_PREVIEW_COLUMNS_1080P = 3
 MAX_PREVIEW_COLUMNS_1080P = 5
 MIN_CLIP_DURATION = 0.1
+OPENING_ANIMATION_OPTIONS = (
+    ("Left to right (default)", "slide_left"),
+    ("Bottom to fit", "from_bottom"),
+    ("Top to fit", "from_top"),
+    ("Staggered bottom to fit", "stagger_bottom"),
+    ("Staggered top to fit", "stagger_top"),
+    ("Alternating top and bottom", "alternating"),
+    ("Fade in", "fade_in"),
+    ("Zoom in", "zoom_in"),
+    ("Pop in", "pop_in"),
+    ("Bounce from bottom", "bounce_bottom"),
+    ("Reveal left to right", "reveal_left"),
+)
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 PROJECTS_DIR = ROOT_DIR / "projects"
