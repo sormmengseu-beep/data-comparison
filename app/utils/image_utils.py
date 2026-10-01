@@ -9,7 +9,7 @@ from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
 class ImageCache:
     def __init__(self) -> None:
         self._source_cache: dict[str, QPixmap] = {}
-        self._scaled_cache: dict[tuple[str, int, int, str], QPixmap] = {}
+        self._scaled_cache: dict[tuple[str, int, int, str, float, float], QPixmap] = {}
 
     def clear(self) -> None:
         self._source_cache.clear()
@@ -45,11 +45,12 @@ class ImageCache:
             round(crop_y, 3),
         )
         if scaled_key not in self._scaled_cache:
-            aspect_mode = (
-                Qt.AspectRatioMode.KeepAspectRatioByExpanding
-                if fit == "cover"
-                else Qt.AspectRatioMode.KeepAspectRatio
-            )
+            if fit == "stretch":
+                aspect_mode = Qt.AspectRatioMode.IgnoreAspectRatio
+            elif fit == "cover":
+                aspect_mode = Qt.AspectRatioMode.KeepAspectRatioByExpanding
+            else:
+                aspect_mode = Qt.AspectRatioMode.KeepAspectRatio
             scaled = pixmap.scaled(
                 size,
                 aspect_mode,

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from PySide6.QtCore import QElapsedTimer, QRect, QSettings, QSize, QTimer, Qt, Signal
@@ -12,7 +13,9 @@ from PySide6.QtWidgets import (
     QDialogButtonBox,
     QFileDialog,
     QFormLayout,
+    QFontComboBox,
     QHBoxLayout,
+    QInputDialog,
     QLabel,
     QLineEdit,
     QMainWindow,
@@ -90,6 +93,117 @@ class ColorButton(QPushButton):
         )
 
 
+BOX_STYLE_PRESETS: list[dict[str, object]] = [
+    {
+        "name": "Sport Classic",
+        "border_color": "#05070a",
+        "text_font_family": "Segoe UI",
+        "image_fit": "cover",
+        "image_height_percent": 56,
+        "roles": {
+            "name": {"background_color": "#f45b69", "text_color": "#ffffff"},
+            "category": {"background_color": "#050505", "text_color": "#ffffff"},
+            "rank": {"background_color": "#fbb10b", "text_color": "#080808"},
+            "value": {"background_color": "#087be8", "text_color": "#ffffff"},
+        },
+    },
+    {
+        "name": "Neon League",
+        "border_color": "#13f2c2",
+        "text_font_family": "Bahnschrift",
+        "image_fit": "cover",
+        "image_height_percent": 58,
+        "roles": {
+            "name": {"background_color": "#111827", "text_color": "#13f2c2"},
+            "category": {"background_color": "#050816", "text_color": "#ffffff"},
+            "rank": {"background_color": "#f0f757", "text_color": "#050816"},
+            "value": {"background_color": "#7c3aed", "text_color": "#ffffff"},
+        },
+    },
+    {
+        "name": "Broadcast Red",
+        "border_color": "#111111",
+        "text_font_family": "Arial",
+        "image_fit": "cover",
+        "image_height_percent": 55,
+        "roles": {
+            "name": {"background_color": "#d90429", "text_color": "#ffffff"},
+            "category": {"background_color": "#1f2937", "text_color": "#f8fafc"},
+            "rank": {"background_color": "#ffba08", "text_color": "#111111"},
+            "value": {"background_color": "#003566", "text_color": "#ffffff"},
+        },
+    },
+    {
+        "name": "Clean White",
+        "border_color": "#0f172a",
+        "text_font_family": "Segoe UI",
+        "image_fit": "contain",
+        "image_height_percent": 52,
+        "roles": {
+            "name": {"background_color": "#ffffff", "text_color": "#0f172a"},
+            "category": {"background_color": "#e2e8f0", "text_color": "#0f172a"},
+            "rank": {"background_color": "#0f172a", "text_color": "#ffffff"},
+            "value": {"background_color": "#2563eb", "text_color": "#ffffff"},
+        },
+    },
+    {
+        "name": "Gold Table",
+        "border_color": "#f59e0b",
+        "text_font_family": "Georgia",
+        "image_fit": "cover",
+        "image_height_percent": 54,
+        "roles": {
+            "name": {"background_color": "#18181b", "text_color": "#fef3c7"},
+            "category": {"background_color": "#78350f", "text_color": "#fef3c7"},
+            "rank": {"background_color": "#f59e0b", "text_color": "#111827"},
+            "value": {"background_color": "#27272a", "text_color": "#fef3c7"},
+        },
+    },
+    {
+        "name": "Ocean Stats",
+        "border_color": "#38bdf8",
+        "text_font_family": "Verdana",
+        "image_fit": "stretch",
+        "image_height_percent": 60,
+        "roles": {
+            "name": {"background_color": "#0369a1", "text_color": "#ffffff"},
+            "category": {"background_color": "#0f172a", "text_color": "#bae6fd"},
+            "rank": {"background_color": "#22d3ee", "text_color": "#083344"},
+            "value": {"background_color": "#0e7490", "text_color": "#ffffff"},
+        },
+    },
+    {
+        "name": "Esports Pulse",
+        "border_color": "#fb7185",
+        "text_font_family": "Impact",
+        "image_fit": "cover",
+        "image_height_percent": 62,
+        "roles": {
+            "name": {"background_color": "#be123c", "text_color": "#ffffff"},
+            "category": {"background_color": "#111827", "text_color": "#fda4af"},
+            "rank": {"background_color": "#a3e635", "text_color": "#1a2e05"},
+            "value": {"background_color": "#4c1d95", "text_color": "#ffffff"},
+        },
+    },
+    {
+        "name": "Minimal Dark",
+        "border_color": "#334155",
+        "text_font_family": "Segoe UI",
+        "image_fit": "contain",
+        "image_height_percent": 50,
+        "roles": {
+            "name": {"background_color": "#0f172a", "text_color": "#f8fafc"},
+            "category": {"background_color": "#1e293b", "text_color": "#cbd5e1"},
+            "rank": {"background_color": "#475569", "text_color": "#ffffff"},
+            "value": {"background_color": "#020617", "text_color": "#f8fafc"},
+        },
+    },
+]
+BOX_STYLE_PRESETS_BY_NAME = {
+    str(preset["name"]): preset for preset in BOX_STYLE_PRESETS
+}
+
+
 class BoxStylePreview(QWidget):
     def __init__(self, item: ComparisonItem, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -97,6 +211,7 @@ class BoxStylePreview(QWidget):
         self.image_fit = "cover"
         self.image_height_percent = 56
         self.border_color = "#05070a"
+        self.text_font_family = "Segoe UI"
         self.field_styles: dict[str, dict[str, str]] = {}
         self._image_cache = ImageCache()
         self.setFixedSize(270, 430)
@@ -106,11 +221,13 @@ class BoxStylePreview(QWidget):
         image_fit: str,
         image_height_percent: int,
         border_color: str,
+        text_font_family: str,
         field_styles: dict[str, dict[str, str]],
     ) -> None:
         self.image_fit = image_fit
         self.image_height_percent = image_height_percent
         self.border_color = border_color
+        self.text_font_family = text_font_family
         self.field_styles = field_styles
         self.update()
 
@@ -166,7 +283,7 @@ class BoxStylePreview(QWidget):
             )
             painter.setPen(QColor(style.get("text_color", "#ffffff")))
             painter.setFont(
-                QFont("Segoe UI", 15 if role in {"name", "rank"} else 13, QFont.Weight.Bold)
+                QFont(self.text_font_family, 15 if role in {"name", "rank"} else 13, QFont.Weight.Bold)
             )
             painter.drawText(
                 row.adjusted(8, 2, -8, -2),
@@ -229,8 +346,11 @@ class ProjectSettingsDialog(QDialog):
         design_form = QFormLayout(design_page)
         self.canvas_color_button = ColorButton(project.canvas_background_color)
         self.border_color_button = ColorButton(project.card_border_color)
+        self.text_font_combo = QFontComboBox()
+        self.text_font_combo.setCurrentFont(QFont(project.text_font_family))
         design_form.addRow("Canvas Background", self.canvas_color_button)
         design_form.addRow("Box Border", self.border_color_button)
+        design_form.addRow("Text Font", self.text_font_combo)
 
         self.band_color_buttons: dict[str, tuple[ColorButton, ColorButton]] = {}
         band_settings = (
@@ -259,7 +379,7 @@ class ProjectSettingsDialog(QDialog):
             row_layout.addStretch(1)
             design_form.addRow(label, row)
             self.band_color_buttons[key] = (background_button, text_button)
-        design_form.addRow("Image Fit", QLabel("Cover"))
+        design_form.addRow("Image Fit", QLabel(project.image_fit.title()))
         tabs.addTab(design_page, "Box Design")
         layout.addWidget(tabs)
 
@@ -277,6 +397,7 @@ class ProjectSettingsDialog(QDialog):
         project.item_fixed_duration = float(self.item_duration_spin.value())
         project.canvas_background_color = self.canvas_color_button.color()
         project.card_border_color = self.border_color_button.color()
+        project.text_font_family = self.text_font_combo.currentFont().family()
         for key, (background_button, text_button) in self.band_color_buttons.items():
             setattr(project, f"{key}_background_color", background_button.color())
             setattr(project, f"{key}_text_color", text_button.color())
@@ -310,6 +431,8 @@ class BoxCustomizationDialog(QDialog):
         super().__init__(parent)
         self.project = project
         self.item = item
+        self.preferences = QSettings("DataCompareTools", "DataComparisonVideoMaker")
+        self.custom_presets = self._load_custom_presets()
         self.setWindowTitle("Customize All Boxes")
         self.setMinimumWidth(920)
 
@@ -330,6 +453,21 @@ class BoxCustomizationDialog(QDialog):
         self.box_size_label = QLabel()
         form.addRow("Box size", self.box_size_label)
 
+        preset_row = QWidget()
+        preset_layout = QHBoxLayout(preset_row)
+        preset_layout.setContentsMargins(0, 0, 0, 0)
+        preset_layout.setSpacing(8)
+        self.preset_combo = QComboBox()
+        self.apply_preset_button = QPushButton("Apply")
+        self.save_preset_button = QPushButton("Save Custom")
+        self.delete_preset_button = QPushButton("Delete Custom")
+        preset_layout.addWidget(self.preset_combo, 1)
+        preset_layout.addWidget(self.apply_preset_button)
+        preset_layout.addWidget(self.save_preset_button)
+        preset_layout.addWidget(self.delete_preset_button)
+        form.addRow("Preset", preset_row)
+        self._populate_preset_combo()
+
         slider_row = QWidget()
         slider_layout = QHBoxLayout(slider_row)
         slider_layout.setContentsMargins(0, 0, 0, 0)
@@ -345,12 +483,18 @@ class BoxCustomizationDialog(QDialog):
         self.image_fit_combo = QComboBox()
         self.image_fit_combo.addItem("Cover - crop to fill", "cover")
         self.image_fit_combo.addItem("Contain - show full image", "contain")
+        self.image_fit_combo.addItem("Stretch - resize to box", "stretch")
         form.addRow("Image fit", self.image_fit_combo)
+
+        self.text_font_combo = QFontComboBox()
+        self.text_font_combo.setCurrentFont(QFont(project.text_font_family))
+        form.addRow("Text font", self.text_font_combo)
 
         self.border_color_button = ColorButton(project.card_border_color)
         form.addRow("Border", self.border_color_button)
 
         self.field_color_buttons: dict[str, tuple[ColorButton, ColorButton]] = {}
+        self.field_roles: dict[str, str] = {}
         content_fields = [
             field_data
             for field_data in item.display_fields()
@@ -372,6 +516,7 @@ class BoxCustomizationDialog(QDialog):
             background_button = ColorButton(background)
             text_button = ColorButton(text_color)
             self.field_color_buttons[field_id] = (background_button, text_button)
+            self.field_roles[field_id] = role
             row_layout.addWidget(QLabel("Background"))
             row_layout.addWidget(background_button)
             row_layout.addSpacing(8)
@@ -402,6 +547,10 @@ class BoxCustomizationDialog(QDialog):
             self._image_height_changed
         )
         self.image_fit_combo.currentIndexChanged.connect(self._update_preview)
+        self.text_font_combo.currentFontChanged.connect(self._update_preview)
+        self.apply_preset_button.clicked.connect(self._apply_selected_preset)
+        self.save_preset_button.clicked.connect(self._save_custom_preset)
+        self.delete_preset_button.clicked.connect(self._delete_custom_preset)
         self.border_color_button.color_changed.connect(self._update_preview)
         for background_button, text_button in self.field_color_buttons.values():
             background_button.color_changed.connect(self._update_preview)
@@ -409,6 +558,154 @@ class BoxCustomizationDialog(QDialog):
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         self._load_values()
+
+    def _populate_preset_combo(self, selected_data: str = "") -> None:
+        current_data = selected_data or str(self.preset_combo.currentData() or "")
+        self.preset_combo.clear()
+        for preset in BOX_STYLE_PRESETS:
+            name = str(preset["name"])
+            self.preset_combo.addItem(name, f"builtin:{name}")
+        if self.custom_presets:
+            self.preset_combo.insertSeparator(self.preset_combo.count())
+            for name in sorted(self.custom_presets):
+                self.preset_combo.addItem(f"{name} (Custom)", f"custom:{name}")
+        if current_data:
+            index = self.preset_combo.findData(current_data)
+            if index >= 0:
+                self.preset_combo.setCurrentIndex(index)
+
+    def _load_custom_presets(self) -> dict[str, dict[str, object]]:
+        raw_value = self.preferences.value("box_style_presets", "{}")
+        try:
+            parsed = json.loads(str(raw_value or "{}"))
+        except json.JSONDecodeError:
+            return {}
+        if not isinstance(parsed, dict):
+            return {}
+        presets: dict[str, dict[str, object]] = {}
+        for name, preset in parsed.items():
+            if isinstance(preset, dict):
+                presets[str(name)] = self._normalize_preset(preset)
+        return presets
+
+    def _save_custom_presets_to_preferences(self) -> None:
+        self.preferences.setValue(
+            "box_style_presets",
+            json.dumps(self.custom_presets, sort_keys=True),
+        )
+
+    def _normalize_preset(self, preset: dict[str, object]) -> dict[str, object]:
+        fit = str(preset.get("image_fit") or "cover")
+        if fit not in {"cover", "contain", "stretch"}:
+            fit = "cover"
+        try:
+            image_height = int(preset.get("image_height_percent") or 56)
+        except (TypeError, ValueError):
+            image_height = 56
+        roles = preset.get("roles")
+        normalized_roles: dict[str, dict[str, str]] = {}
+        if isinstance(roles, dict):
+            for role, style in roles.items():
+                if not isinstance(style, dict):
+                    continue
+                normalized_roles[str(role)] = {
+                    "background_color": self._valid_color(
+                        style.get("background_color"), "#111827"
+                    ),
+                    "text_color": self._valid_color(style.get("text_color"), "#ffffff"),
+                }
+        return {
+            "border_color": self._valid_color(preset.get("border_color"), "#05070a"),
+            "text_font_family": str(preset.get("text_font_family") or "Segoe UI"),
+            "image_fit": fit,
+            "image_height_percent": max(35, min(75, image_height)),
+            "roles": normalized_roles,
+        }
+
+    def _valid_color(self, value: object, fallback: str) -> str:
+        color = QColor(str(value or ""))
+        return color.name() if color.isValid() else fallback
+
+    def _selected_preset(self) -> dict[str, object] | None:
+        data = str(self.preset_combo.currentData() or "")
+        if ":" not in data:
+            return None
+        preset_type, name = data.split(":", 1)
+        if preset_type == "builtin":
+            preset = BOX_STYLE_PRESETS_BY_NAME.get(name)
+        elif preset_type == "custom":
+            preset = self.custom_presets.get(name)
+        else:
+            preset = None
+        return self._normalize_preset(preset) if isinstance(preset, dict) else None
+
+    def _apply_selected_preset(self) -> None:
+        preset = self._selected_preset()
+        if preset is None:
+            return
+        self.image_height_slider.setValue(int(preset["image_height_percent"]))
+        fit_index = self.image_fit_combo.findData(str(preset["image_fit"]))
+        if fit_index >= 0:
+            self.image_fit_combo.setCurrentIndex(fit_index)
+        self.text_font_combo.setCurrentFont(QFont(str(preset["text_font_family"])))
+        self.border_color_button.set_color(str(preset["border_color"]))
+        role_styles = preset.get("roles", {})
+        if isinstance(role_styles, dict):
+            for field_id, (background_button, text_button) in self.field_color_buttons.items():
+                role = self.field_roles.get(field_id, "category")
+                style = role_styles.get(role)
+                if not isinstance(style, dict):
+                    continue
+                background_button.set_color(
+                    self._valid_color(style.get("background_color"), background_button.color())
+                )
+                text_button.set_color(
+                    self._valid_color(style.get("text_color"), text_button.color())
+                )
+        self._update_preview()
+
+    def _save_custom_preset(self) -> None:
+        name, accepted = QInputDialog.getText(
+            self,
+            "Save Custom Preset",
+            "Preset name",
+        )
+        name = name.strip()
+        if not accepted or not name:
+            return
+        self.custom_presets[name] = self._preset_from_current_controls()
+        self._save_custom_presets_to_preferences()
+        self._populate_preset_combo(f"custom:{name}")
+
+    def _delete_custom_preset(self) -> None:
+        data = str(self.preset_combo.currentData() or "")
+        if not data.startswith("custom:"):
+            QMessageBox.information(
+                self,
+                "Custom Preset",
+                "Select a custom preset to delete.",
+            )
+            return
+        name = data.split(":", 1)[1]
+        self.custom_presets.pop(name, None)
+        self._save_custom_presets_to_preferences()
+        self._populate_preset_combo()
+
+    def _preset_from_current_controls(self) -> dict[str, object]:
+        roles: dict[str, dict[str, str]] = {}
+        for field_id, (background_button, text_button) in self.field_color_buttons.items():
+            role = self.field_roles.get(field_id, "category")
+            roles[role] = {
+                "background_color": background_button.color(),
+                "text_color": text_button.color(),
+            }
+        return {
+            "border_color": self.border_color_button.color(),
+            "text_font_family": self.text_font_combo.currentFont().family(),
+            "image_fit": str(self.image_fit_combo.currentData() or "cover"),
+            "image_height_percent": int(self.image_height_slider.value()),
+            "roles": roles,
+        }
 
     def apply_changes(self) -> None:
         columns = int(self.columns_combo.currentData())
@@ -419,6 +716,7 @@ class BoxCustomizationDialog(QDialog):
             self.image_height_slider.value(),
         )
         self.project.image_fit = str(self.image_fit_combo.currentData())
+        self.project.text_font_family = self.text_font_combo.currentFont().family()
         self.project.card_border_color = self.border_color_button.color()
         self.project.field_styles = {
             field_id: {
@@ -443,6 +741,7 @@ class BoxCustomizationDialog(QDialog):
         self.image_fit_combo.setCurrentIndex(
             max(0, self.image_fit_combo.findData(self.project.image_fit))
         )
+        self.text_font_combo.setCurrentFont(QFont(self.project.text_font_family))
         self.border_color_button.set_color(self.project.card_border_color)
         width = CANVAS_WIDTH // columns
         self.box_size_label.setText(f"{width} x {self.project.height} px per box")
@@ -464,6 +763,7 @@ class BoxCustomizationDialog(QDialog):
             str(self.image_fit_combo.currentData() or "cover"),
             self.image_height_slider.value(),
             self.border_color_button.color(),
+            self.text_font_combo.currentFont().family(),
             field_styles,
         )
 

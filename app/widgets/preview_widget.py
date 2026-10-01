@@ -241,12 +241,12 @@ class PreviewWidget(QWidget):
         flags = Qt.AlignmentFlag.AlignCenter | Qt.TextFlag.TextWordWrap
         fitted_size = font_size
         while fitted_size > 12:
-            font = QFont("Segoe UI", fitted_size, QFont.Weight.Bold)
+            font = QFont(self._project.text_font_family, fitted_size, QFont.Weight.Bold)
             bounds = QFontMetrics(font).boundingRect(target, int(flags), text)
             if bounds.width() <= target.width() and bounds.height() <= target.height():
                 break
             fitted_size -= 1
-        painter.setFont(QFont("Segoe UI", fitted_size, QFont.Weight.Bold))
+        painter.setFont(QFont(self._project.text_font_family, fitted_size, QFont.Weight.Bold))
         painter.drawText(
             target,
             flags,
@@ -255,5 +255,5 @@ class PreviewWidget(QWidget):
 
     def _draw_empty_state(self, painter: QPainter) -> None:
         painter.setPen(QColor("#9ca3af"))
-        painter.setFont(QFont("Segoe UI", 34, QFont.Weight.Bold))
+        painter.setFont(QFont(self._project.text_font_family, 34, QFont.Weight.Bold))
         painter.drawText(QRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT), Qt.AlignmentFlag.AlignCenter, "Add comparison items to preview your video")
