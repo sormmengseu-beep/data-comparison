@@ -189,7 +189,7 @@ def _field(field_type: str, label: str, value: str, role: str = "") -> dict[str,
 def _normalized_fields(value: object) -> list[dict[str, str]]:
     if not isinstance(value, list):
         return []
-    valid_types = {"name", "text", "number", "image"}
+    valid_types = {"name", "text", "number", "image", "shape"}
     result = []
     for raw_field in value:
         if not isinstance(raw_field, dict):

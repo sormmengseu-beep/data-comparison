@@ -244,11 +244,48 @@ def _field_styles(value: object) -> dict[str, dict[str, str]]:
         style["border_color"] = str(raw_style.get("border_color") or "#000000")
         style["container_color"] = str(raw_style.get("container_color") or "")
         style["parent_id"] = str(raw_style.get("parent_id") or "")
-        gradient_mode = str(raw_style.get("gradient_mode") or "bottom")
+        shape = str(raw_style.get("shape") or "rectangle")
+        style["shape"] = (
+            shape
+            if shape
+            in {
+                "rectangle",
+                "rounded",
+                "pill",
+                "circle",
+                "ellipse",
+                "triangle",
+                "diamond",
+                "hexagon",
+                "star",
+            }
+            else "rectangle"
+        )
+        fill_mode = str(raw_style.get("fill_mode") or "solid")
+        style["fill_mode"] = (
+            fill_mode
+            if fill_mode
+            in {
+                "solid",
+                "vertical",
+                "vertical_reverse",
+                "horizontal",
+                "horizontal_reverse",
+                "diagonal",
+                "diagonal_reverse",
+                "diagonal_up",
+                "diagonal_up_reverse",
+            }
+            else "solid"
+        )
+        style["gradient_color_2"] = str(
+            raw_style.get("gradient_color_2") or raw_style.get("background_color") or "#111827"
+        )
+        gradient_mode = str(raw_style.get("gradient_mode") or "none")
         style["gradient_mode"] = (
             gradient_mode
             if gradient_mode in {"none", "bottom", "top", "left", "right", "tint"}
-            else "bottom"
+            else "none"
         )
         style["gradient_color"] = str(
             raw_style.get("gradient_color") or "#000000"
@@ -268,7 +305,7 @@ def _field_styles(value: object) -> dict[str, dict[str, str]]:
             except (TypeError, ValueError):
                 style[key] = ""
                 continue
-            minimum = 50 if key in {"overlay_width", "overlay_height"} else 0
+            minimum = 20 if key in {"overlay_width", "overlay_height"} else 0
             style[key] = str(max(minimum, min(1000, number)))
         alignment = str(raw_style.get("alignment") or "center")
         style["alignment"] = alignment if alignment in {"left", "center", "right"} else "center"

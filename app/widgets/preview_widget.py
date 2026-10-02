@@ -22,6 +22,7 @@ from app.settings import (
     MIN_PREVIEW_COLUMNS_1080P,
 )
 from app.utils.image_utils import ImageCache, draw_image
+from app.utils.shape_utils import fill_brush, shape_path
 
 
 class PreviewWidget(QWidget):
@@ -79,7 +80,7 @@ class PreviewWidget(QWidget):
             int((point.x() - preview.x()) * CANVAS_WIDTH / preview.width()),
             int((point.y() - preview.y()) * CANVAS_HEIGHT / preview.height()),
         )
-        for region, item_id, field_id in self._image_regions:
+        for region, item_id, field_id in reversed(self._image_regions):
             if region.contains(canvas_point):
                 return item_id, field_id
         return None
@@ -348,8 +349,19 @@ class PreviewWidget(QWidget):
                         ),
                     )
                 )
-            row_rect = QRect(rect.x(), row_y, rect.width(), row_height)
+            fallback_rect = QRect(rect.x(), row_y, rect.width(), row_height)
+            field_style = self._project.field_styles.get(field_id, {})
+            row_rect = self._overlay_rect(rect, fallback_rect, field_style)
             if field_type == "image":
+                painter.save()
+                painter.setClipPath(
+                    shape_path(
+                        row_rect,
+                        field_style.get("shape", "rectangle"),
+                        self._style_int(field_style, "corner_radius", 0, 0, 64),
+                    ),
+                    Qt.ClipOperation.IntersectClip,
+                )
                 draw_image(
                     painter,
                     self._image_cache,
@@ -369,9 +381,9 @@ class PreviewWidget(QWidget):
                 if not image_region.isEmpty():
                     self._image_regions.append((image_region, item.id, field_id))
                 child_fields = children_by_parent.get(field_id, [])
+                self._draw_image_gradient(painter, row_rect, field_style)
+                painter.restore()
                 if child_fields:
-                    image_style = self._project.field_styles.get(field_id, {})
-                    self._draw_image_gradient(painter, row_rect, image_style)
                     child_styles = [
                         self._resolved_field_style(
                             item,
@@ -403,6 +415,9 @@ class PreviewWidget(QWidget):
                         )
                         child_rect = QRect(
                             row_rect.x(), child_y, row_rect.width(), child_height
+                        )
+                        child_rect = self._overlay_rect(
+                            row_rect, child_rect, child_styles[child_index]
                         )
                         child_role = self._field_role(child, child_index)
                         default_size = (
@@ -501,12 +516,25 @@ class PreviewWidget(QWidget):
             "padding": saved.get("padding", "14"),
             "font_weight": saved.get("font_weight", "700"),
             "parent_id": saved.get("parent_id", ""),
+            "shape": (
+                saved.get("shape", "rectangle")
+                if field_data.get("type") == "shape"
+                else "rectangle"
+            ),
+            "fill_mode": saved.get("fill_mode", "solid"),
+            "gradient_color_2": saved.get("gradient_color_2")
+            or saved.get("background_color")
+            or self._style(item, f"{role}_background_color"),
+            "overlay_x": saved.get("overlay_x", ""),
+            "overlay_y": saved.get("overlay_y", ""),
+            "overlay_width": saved.get("overlay_width", ""),
+            "overlay_height": saved.get("overlay_height", ""),
         }
 
     def _draw_image_gradient(
         self, painter: QPainter, rect: QRect, style: dict[str, str]
     ) -> None:
-        mode = str(style.get("gradient_mode") or "bottom")
+        mode = str(style.get("gradient_mode") or "none")
         if mode == "none":
             return
         opacity = self._style_int(style, "gradient_opacity", 65, 0, 100)
@@ -550,19 +578,32 @@ class PreviewWidget(QWidget):
         overlay: bool = False,
     ) -> None:
         background_color = QColor(style["background_color"])
-        container_color = QColor(style.get("container_color") or style["background_color"])
         inset = self._style_int(style, "inset", 0, 0, 96)
         band_rect = rect.adjusted(inset, 0, -inset, 0)
         corner_radius = self._style_int(style, "corner_radius", 0, 0, 64)
-        if not overlay:
-            painter.fillRect(rect, container_color)
         painter.setPen(Qt.PenStyle.NoPen)
-        if not overlay or inset or corner_radius:
-            painter.setBrush(background_color)
-            if corner_radius:
-                painter.drawRoundedRect(band_rect, corner_radius, corner_radius)
-            else:
-                painter.drawRect(band_rect)
+        if (
+            not overlay
+            or inset
+            or corner_radius
+            or style.get("shape", "rectangle") != "rectangle"
+            or style.get("fill_mode", "solid") != "solid"
+        ):
+            painter.setBrush(
+                fill_brush(
+                    band_rect,
+                    background_color.name(),
+                    style.get("gradient_color_2", background_color.name()),
+                    style.get("fill_mode", "solid"),
+                )
+            )
+            painter.drawPath(
+                shape_path(
+                    band_rect,
+                    style.get("shape", "rectangle"),
+                    corner_radius,
+                )
+            )
         padding = self._style_int(style, "padding", 14, 0, 64)
         target = band_rect.adjusted(padding, 4, -padding, -4)
         horizontal = {
@@ -606,10 +647,34 @@ class PreviewWidget(QWidget):
             painter.setPen(QPen(QColor(style.get("border_color", "#000000")), border_width))
             inset = max(1, border_width // 2)
             border_rect = band_rect.adjusted(inset, inset, -inset, -inset)
-            if corner_radius:
-                painter.drawRoundedRect(border_rect, corner_radius, corner_radius)
-            else:
-                painter.drawRect(border_rect)
+            painter.drawPath(
+                shape_path(
+                    border_rect,
+                    style.get("shape", "rectangle"),
+                    corner_radius,
+                )
+            )
+
+    @staticmethod
+    def _overlay_rect(parent: QRect, fallback: QRect, style: dict[str, str]) -> QRect:
+        keys = ("overlay_x", "overlay_y", "overlay_width", "overlay_height")
+        if any(style.get(key, "") in (None, "") for key in keys):
+            return fallback
+        try:
+            x_value = max(0, min(1000, int(style["overlay_x"])))
+            y_value = max(0, min(1000, int(style["overlay_y"])))
+            width_value = max(20, min(1000, int(style["overlay_width"])))
+            height_value = max(20, min(1000, int(style["overlay_height"])))
+        except (TypeError, ValueError):
+            return fallback
+        width_value = min(width_value, 1000 - x_value)
+        height_value = min(height_value, 1000 - y_value)
+        return QRect(
+            parent.x() + round(parent.width() * x_value / 1000),
+            parent.y() + round(parent.height() * y_value / 1000),
+            max(1, round(parent.width() * width_value / 1000)),
+            max(1, round(parent.height() * height_value / 1000)),
+        )
 
     @staticmethod
     def _style_int(

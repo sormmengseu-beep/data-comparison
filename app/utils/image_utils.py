@@ -8,6 +8,60 @@ from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
 from app.models.comparison_item import normalize_image_transform
 
 
+def image_field_frame_size(
+    fields: list[dict[str, str]],
+    field_id: str,
+    field_styles: dict[str, dict[str, str]],
+    card_size: QSize,
+    image_height_percent: int,
+) -> QSize:
+    """Return the actual rendered image-object size for the crop editor frame."""
+    card_width = max(1, card_size.width())
+    card_height = max(1, card_size.height())
+    style = field_styles.get(field_id, {})
+    geometry_keys = ("overlay_x", "overlay_y", "overlay_width", "overlay_height")
+    if all(style.get(key, "") not in (None, "") for key in geometry_keys):
+        try:
+            x = max(0, min(1000, int(style["overlay_x"])))
+            y = max(0, min(1000, int(style["overlay_y"])))
+            width = min(max(20, min(1000, int(style["overlay_width"]))), 1000 - x)
+            height = min(max(20, min(1000, int(style["overlay_height"]))), 1000 - y)
+            return QSize(
+                max(1, round(card_width * width / 1000)),
+                max(1, round(card_height * height / 1000)),
+            )
+        except (TypeError, ValueError):
+            pass
+
+    image_fields = [field for field in fields if field.get("type") == "image"]
+    if not image_fields:
+        return QSize(card_width, card_height)
+    total_height = card_height
+    if len(image_fields) != len(fields):
+        total_height = round(card_height * max(0, min(100, image_height_percent)) / 100)
+    weights = []
+    for field in image_fields:
+        image_id = str(field.get("id", ""))
+        try:
+            weight = int(field_styles.get(image_id, {}).get("height_weight", 100))
+        except (TypeError, ValueError):
+            weight = 100
+        weights.append(max(25, min(400, weight)))
+    remaining_pixels = total_height
+    remaining_weight = sum(weights)
+    for index, field in enumerate(image_fields):
+        row_height = (
+            remaining_pixels
+            if index == len(image_fields) - 1
+            else max(1, round(remaining_pixels * weights[index] / max(1, remaining_weight)))
+        )
+        if str(field.get("id", "")) == field_id:
+            return QSize(card_width, max(1, row_height))
+        remaining_pixels -= row_height
+        remaining_weight -= weights[index]
+    return QSize(card_width, max(1, total_height // len(image_fields)))
+
+
 class ImageCache:
     def __init__(self) -> None:
         self._source_cache: dict[str, QPixmap] = {}

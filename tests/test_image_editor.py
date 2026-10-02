@@ -17,7 +17,12 @@ from app.exporter import export_preview
 from app.main_window import BoxCustomizationDialog, MainWindow
 from app.models.comparison_item import ComparisonItem, normalize_image_transform
 from app.models.project import Project
-from app.utils.image_utils import ImageCache, draw_image, image_target_rect
+from app.utils.image_utils import (
+    ImageCache,
+    draw_image,
+    image_field_frame_size,
+    image_target_rect,
+)
 from app.widgets.preview_widget import PreviewWidget
 
 
@@ -117,6 +122,21 @@ class ImageEditorTests(unittest.TestCase):
         painter.end()
         self.assertEqual(image.pixelColor(100, 121), QColor("green"))
         self.assertNotEqual(image.pixelColor(100, 50), QColor("green"))
+        free_frame = image_field_frame_size(
+            self.item.display_fields(),
+            self.field_id,
+            {
+                self.field_id: {
+                    "overlay_x": "100",
+                    "overlay_y": "200",
+                    "overlay_width": "500",
+                    "overlay_height": "400",
+                }
+            },
+            QSize(640, 1080),
+            56,
+        )
+        self.assertEqual(free_frame, QSize(320, 432))
 
     def test_persistence_replacement_and_field_isolation(self):
         self.item.image_transforms[self.field_id] = {"scale_x": 1.5, "offset_x": 0.2, "fit": "contain"}
@@ -169,7 +189,18 @@ class ImageEditorTests(unittest.TestCase):
         self.widgets.append(dialog)
         dialog.show()
         self.app.processEvents()
+        dialog.field_styles[self.field_id].update(
+            {
+                "overlay_x": "0",
+                "overlay_y": "0",
+                "overlay_width": "500",
+                "overlay_height": "500",
+            }
+        )
+        dialog._update_preview()
+        self.app.processEvents()
         def accepted(editor):
+            self.assertEqual(editor.canvas.frame.size().toSize(), QSize(320, 540))
             editor.width_spin.setValue(150)
             return QDialog.DialogCode.Accepted
         with patch.object(ImageEditorDialog, "exec", accepted):
@@ -185,6 +216,12 @@ class ImageEditorTests(unittest.TestCase):
     def test_main_window_apply_cancel_and_export(self):
         window = MainWindow()
         self.widgets.append(window)
+        self.project.field_styles[self.field_id] = {
+            "overlay_x": "0",
+            "overlay_y": "0",
+            "overlay_width": "500",
+            "overlay_height": "500",
+        }
         window.project = self.project
         window.selected_item_id = self.item.id
         window._refresh_all()
@@ -194,6 +231,7 @@ class ImageEditorTests(unittest.TestCase):
         self.assertEqual(self.item.to_dict(), original)
         before = window.preview.render_frame(0)
         def accepted(editor):
+            self.assertEqual(editor.canvas.frame.size().toSize(), QSize(320, 540))
             editor.width_spin.setValue(50)
             return QDialog.DialogCode.Accepted
         with patch.object(ImageEditorDialog, "exec", accepted):

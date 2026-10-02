@@ -4,10 +4,21 @@ import json
 from pathlib import Path
 from uuid import uuid4
 
-from PySide6.QtCore import QElapsedTimer, QPoint, QRect, QSettings, QSize, QTimer, Qt, Signal
+from PySide6.QtCore import (
+    QElapsedTimer,
+    QMimeData,
+    QPoint,
+    QRect,
+    QSettings,
+    QSize,
+    QTimer,
+    Qt,
+    Signal,
+)
 from PySide6.QtGui import (
     QAction,
     QColor,
+    QDrag,
     QFont,
     QFontMetrics,
     QKeySequence,
@@ -18,6 +29,7 @@ from PySide6.QtGui import (
 )
 from PySide6.QtWidgets import (
     QAbstractItemView,
+    QCheckBox,
     QComboBox,
     QApplication,
     QColorDialog,
@@ -27,6 +39,7 @@ from PySide6.QtWidgets import (
     QFormLayout,
     QFontComboBox,
     QGroupBox,
+    QGridLayout,
     QHBoxLayout,
     QInputDialog,
     QLabel,
@@ -34,6 +47,7 @@ from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
     QMainWindow,
+    QMenu,
     QMessageBox,
     QProgressDialog,
     QPushButton,
@@ -45,6 +59,7 @@ from PySide6.QtWidgets import (
     QStyle,
     QStyledItemDelegate,
     QTabWidget,
+    QToolButton,
     QVBoxLayout,
     QWidget,
     QDoubleSpinBox,
@@ -70,20 +85,35 @@ from app.settings import (
     app_style,
 )
 from app.utils.time_utils import clamp, format_timestamp
-from app.utils.image_utils import ImageCache, draw_image
+from app.utils.image_utils import ImageCache, draw_image, image_field_frame_size
+from app.utils.shape_utils import FILL_OPTIONS, fill_brush, normalized_shape, shape_path
 from app.widgets.asset_panel import AssetPanel
 from app.widgets.preview_widget import PreviewWidget
 from app.widgets.timeline_widget import TimelineWidget
 from app.widgets.transport_controls import TransportControls
 
 
+SHAPE_ITEM_MIME_TYPE = "application/x-data-compare-shape-item"
+
+
 class ColorButton(QPushButton):
     color_changed = Signal(str)
 
-    def __init__(self, color: str, parent: QWidget | None = None) -> None:
+    def __init__(
+        self,
+        color: str,
+        parent: QWidget | None = None,
+        allow_alpha: bool = False,
+    ) -> None:
         super().__init__(parent)
         self._color = color
+        self._allow_alpha = allow_alpha
         self.setMinimumWidth(104)
+        if allow_alpha:
+            self.setToolTip(
+                "Choose a color and use Alpha in the color picker to make this "
+                "gradient stop partly or fully transparent."
+            )
         self.clicked.connect(self._choose_color)
         self._update_swatch()
 
@@ -98,23 +128,147 @@ class ColorButton(QPushButton):
         self.color_changed.emit(color)
 
     def _choose_color(self) -> None:
-        chosen = QColorDialog.getColor(QColor(self._color), self, "Choose Color")
+        if self._allow_alpha:
+            dialog = self._create_color_dialog()
+            if dialog.exec() != QDialog.DialogCode.Accepted:
+                return
+            chosen = dialog.currentColor()
+        else:
+            chosen = QColorDialog.getColor(QColor(self._color), self, "Choose Color")
         if chosen.isValid():
-            self.set_color(chosen.name())
+            color_format = (
+                QColor.NameFormat.HexArgb
+                if self._allow_alpha and chosen.alpha() < 255
+                else QColor.NameFormat.HexRgb
+            )
+            self.set_color(chosen.name(color_format))
+
+    def _create_color_dialog(self) -> QColorDialog:
+        dialog = QColorDialog(QColor(self._color), self)
+        dialog.setWindowTitle("Choose Color")
+        dialog.setOption(QColorDialog.ColorDialogOption.ShowAlphaChannel, True)
+        dialog.setOption(QColorDialog.ColorDialogOption.DontUseNativeDialog, True)
+
+        opacity_row = QWidget(dialog)
+        opacity_row.setObjectName("ColorOpacityRow")
+        opacity_layout = QHBoxLayout(opacity_row)
+        opacity_layout.setContentsMargins(12, 4, 12, 4)
+        opacity_layout.setSpacing(10)
+        opacity_layout.addWidget(QLabel("Opacity"))
+        opacity_slider = QSlider(Qt.Orientation.Horizontal)
+        opacity_slider.setObjectName("ColorOpacitySlider")
+        opacity_slider.setRange(0, 100)
+        opacity_slider.setValue(round(dialog.currentColor().alpha() * 100 / 255))
+        opacity_value = QLabel(f"{opacity_slider.value()}%")
+        opacity_value.setObjectName("ColorOpacityValue")
+        opacity_value.setMinimumWidth(42)
+        opacity_value.setAlignment(Qt.AlignmentFlag.AlignRight)
+        opacity_layout.addWidget(opacity_slider, 1)
+        opacity_layout.addWidget(opacity_value)
+
+        def set_opacity(value: int) -> None:
+            opacity_value.setText(f"{value}%")
+            color = dialog.currentColor()
+            color.setAlpha(round(255 * value / 100))
+            dialog.setCurrentColor(color)
+
+        def sync_opacity(color: QColor) -> None:
+            value = round(color.alpha() * 100 / 255)
+            opacity_value.setText(f"{value}%")
+            opacity_slider.blockSignals(True)
+            opacity_slider.setValue(value)
+            opacity_slider.blockSignals(False)
+
+        opacity_slider.valueChanged.connect(set_opacity)
+        dialog.currentColorChanged.connect(sync_opacity)
+        dialog.layout().addWidget(opacity_row)
+
+        buttons = dialog.findChild(QDialogButtonBox)
+        if buttons is not None:
+            transparent_button = buttons.addButton(
+                "Transparent", QDialogButtonBox.ButtonRole.ActionRole
+            )
+
+            def choose_transparent() -> None:
+                dialog.setCurrentColor(QColor(0, 0, 0, 0))
+                dialog.accept()
+
+            transparent_button.clicked.connect(choose_transparent)
+        return dialog
 
     def _update_swatch(self) -> None:
         color = QColor(self._color)
         foreground = "#111827" if color.lightness() > 150 else "#ffffff"
-        self.setText(self._color.upper())
+        self.setText(
+            "TRANSPARENT"
+            if self._allow_alpha and color.alpha() == 0
+            else self._color.upper()
+        )
+        background = (
+            f"rgba({color.red()}, {color.green()}, {color.blue()}, {color.alpha()})"
+            if color.isValid()
+            else self._color
+        )
         self.setStyleSheet(
-            f"QPushButton {{ background: {self._color}; color: {foreground}; "
+            f"QPushButton {{ background: {background}; color: {foreground}; "
             "border: 1px solid #64748b; font-weight: 700; }}"
         )
 
 
+class ShapeToolButton(QToolButton):
+    activated = Signal(str)
+
+    def __init__(
+        self,
+        item_kind: str,
+        label: str,
+        symbol: str,
+        parent: QWidget | None = None,
+    ) -> None:
+        super().__init__(parent)
+        self.item_kind = item_kind
+        self._press_position = QPoint()
+        self._dragging = False
+        self.setText(symbol)
+        self.setToolTip(f"Drag {label} onto the preview")
+        self.setAccessibleName(label)
+        self.setFixedSize(54, 46)
+        self.setStyleSheet("QToolButton { font-size: 22px; font-weight: 700; }")
+        self.clicked.connect(lambda: self.activated.emit(self.item_kind))
+
+    def mousePressEvent(self, event) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._press_position = event.position().toPoint()
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event) -> None:
+        if not event.buttons() & Qt.MouseButton.LeftButton:
+            return super().mouseMoveEvent(event)
+        if (
+            event.position().toPoint() - self._press_position
+        ).manhattanLength() < QApplication.startDragDistance():
+            return super().mouseMoveEvent(event)
+        drag = QDrag(self)
+        self._dragging = True
+        mime_data = QMimeData()
+        mime_data.setData(SHAPE_ITEM_MIME_TYPE, self.item_kind.encode("utf-8"))
+        drag.setMimeData(mime_data)
+        drag.setPixmap(self.grab())
+        drag.setHotSpot(event.position().toPoint())
+        drag.exec(Qt.DropAction.CopyAction)
+        self.setDown(False)
+
+    def mouseReleaseEvent(self, event) -> None:
+        if self._dragging:
+            self._dragging = False
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
+
+
 class ContentOrderDelegate(QStyledItemDelegate):
-    BUTTON_SIZE = 30
-    BUTTON_GAP = 6
+    BUTTON_SIZE = 28
+    BUTTON_GAP = 7
 
     @classmethod
     def action_rects(cls, rect: QRect) -> tuple[QRect, QRect]:
@@ -150,7 +304,7 @@ class ContentOrderDelegate(QStyledItemDelegate):
             text_color = QColor("#1d4ed8") if selected else QColor("#172033")
             muted_color = QColor("#52739b") if selected else QColor("#667085")
         painter.setBrush(background)
-        painter.setPen(QPen(border, 2 if selected else 1))
+        painter.setPen(QPen(border, 1))
         painter.drawRoundedRect(row_rect, 10, 10)
 
         grip_color = QColor("#3b82f6") if selected else muted_color
@@ -225,20 +379,23 @@ class ContentOrderDelegate(QStyledItemDelegate):
         painter: QPainter, rect: QRect, color: QColor, is_delete: bool
     ) -> None:
         fill = QColor(color)
-        fill.setAlpha(24)
+        fill.setAlpha(12)
         painter.setBrush(fill)
         painter.setPen(QPen(color, 1))
-        painter.drawRoundedRect(rect, 6, 6)
+        painter.drawEllipse(rect.adjusted(1, 1, -1, -1))
         painter.setBrush(Qt.BrushStyle.NoBrush)
-        painter.setPen(QPen(color, 2))
+        icon_pen = QPen(color, 1.35)
+        icon_pen.setCapStyle(Qt.PenCapStyle.RoundCap)
+        icon_pen.setJoinStyle(Qt.PenJoinStyle.RoundJoin)
+        painter.setPen(icon_pen)
         center = rect.center()
         if not is_delete:
-            painter.drawLine(center.x() - 5, center.y(), center.x() + 5, center.y())
-            painter.drawLine(center.x(), center.y() - 5, center.x(), center.y() + 5)
+            painter.drawLine(center.x() - 4, center.y(), center.x() + 4, center.y())
+            painter.drawLine(center.x(), center.y() - 4, center.x(), center.y() + 4)
             return
-        painter.drawRect(QRect(center.x() - 4, center.y() - 3, 8, 9))
-        painter.drawLine(center.x() - 6, center.y() - 6, center.x() + 6, center.y() - 6)
-        painter.drawLine(center.x() - 2, center.y() - 8, center.x() + 2, center.y() - 8)
+        painter.drawRoundedRect(QRect(center.x() - 3, center.y() - 2, 6, 7), 1, 1)
+        painter.drawLine(center.x() - 4, center.y() - 5, center.x() + 4, center.y() - 5)
+        painter.drawLine(center.x() - 1, center.y() - 7, center.x() + 1, center.y() - 7)
 
 
 class ContentOrderList(QListWidget):
@@ -675,10 +832,18 @@ class BoxStylePreview(QWidget):
     image_clicked = Signal(str)
     field_selected = Signal(str)
     field_reorder_requested = Signal(str, str, bool)
+    item_dropped = Signal(str, QPoint)
+    delete_requested = Signal(str)
 
-    def __init__(self, item: ComparisonItem, parent: QWidget | None = None) -> None:
+    def __init__(
+        self,
+        item: ComparisonItem,
+        project_height: int = 1080,
+        parent: QWidget | None = None,
+    ) -> None:
         super().__init__(parent)
         self.item = item
+        self.project_height = max(1, project_height)
         self.image_fit = "cover"
         self.image_height_percent = 56
         self.border_color = "#05070a"
@@ -699,12 +864,71 @@ class BoxStylePreview(QWidget):
         self._resize_handle = ""
         self._interaction_rect = QRect()
         self._interaction_parent_rect = QRect()
+        self._snap_guides: list[tuple[str, int]] = []
+        self.snap_enabled = True
         self.setMouseTracking(True)
+        self.setAcceptDrops(True)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setToolTip(
-            "Drag any block to reorder it. Click an image to crop or reposition it."
+            "Select and freely drag any object. Drag handles to resize; objects snap to edges and centers."
         )
-        self.setFixedSize(330, 557)
-        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.setMinimumSize(220, 280)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+
+    def dragEnterEvent(self, event) -> None:
+        if event.mimeData().hasFormat(SHAPE_ITEM_MIME_TYPE):
+            event.acceptProposedAction()
+            return
+        super().dragEnterEvent(event)
+
+    def dragMoveEvent(self, event) -> None:
+        if (
+            event.mimeData().hasFormat(SHAPE_ITEM_MIME_TYPE)
+            and self._canvas_rect().contains(event.position().toPoint())
+        ):
+            event.acceptProposedAction()
+            return
+        event.ignore()
+
+    def dropEvent(self, event) -> None:
+        if not event.mimeData().hasFormat(SHAPE_ITEM_MIME_TYPE):
+            return super().dropEvent(event)
+        position = event.position().toPoint()
+        if not self._canvas_rect().contains(position):
+            event.ignore()
+            return
+        item_kind = bytes(
+            event.mimeData().data(SHAPE_ITEM_MIME_TYPE)
+        ).decode("utf-8")
+        self.item_dropped.emit(item_kind, position)
+        event.acceptProposedAction()
+
+    def keyPressEvent(self, event) -> None:
+        if (
+            event.key() in {Qt.Key.Key_Delete, Qt.Key.Key_Backspace}
+            and self._selected_field_id
+        ):
+            self.delete_requested.emit(self._selected_field_id)
+            event.accept()
+            return
+        super().keyPressEvent(event)
+
+    def _canvas_rect(self) -> QRect:
+        """Fit one correctly proportioned comparison box into the available panel."""
+        available = self.rect().adjusted(8, 8, -8, -8)
+        if available.isEmpty():
+            return QRect()
+        source_width = CANVAS_WIDTH / max(1, self.columns)
+        scale = min(
+            available.width() / source_width,
+            available.height() / self.project_height,
+        )
+        width = max(1, round(source_width * scale))
+        height = max(1, round(self.project_height * scale))
+        return QRect(0, 0, width, height).translated(
+            available.center().x() - width // 2,
+            available.center().y() - height // 2,
+        )
 
     def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
@@ -728,6 +952,7 @@ class BoxStylePreview(QWidget):
                         self._resize_handle = handle
                         self._interaction_rect = QRect(region)
                         self._interaction_parent_rect = QRect(parent_rect)
+                        self.setFocus()
                     self.setCursor(Qt.CursorShape.ClosedHandCursor)
                     event.accept()
                     return
@@ -793,6 +1018,13 @@ class BoxStylePreview(QWidget):
     def mouseReleaseEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton and self._pressed_field_id:
             if self._overlay_interaction:
+                if (
+                    self._press_position is not None
+                    and (event.position().toPoint() - self._press_position).manhattanLength()
+                    < QApplication.startDragDistance()
+                    and self._pressed_field_type == "image"
+                ):
+                    self.image_clicked.emit(self._pressed_field_id)
                 self._reset_drag_state()
                 event.accept()
                 return
@@ -820,12 +1052,13 @@ class BoxStylePreview(QWidget):
         self._resize_handle = ""
         self._interaction_rect = QRect()
         self._interaction_parent_rect = QRect()
+        self._snap_guides = []
         self.unsetCursor()
         self.update()
 
     @staticmethod
     def _resize_handles(rect: QRect) -> dict[str, QRect]:
-        size = 9
+        size = 7
         half = size // 2
         points = {
             "nw": rect.topLeft(),
@@ -846,7 +1079,7 @@ class BoxStylePreview(QWidget):
         if rect is None or rect.isEmpty():
             return ""
         for name, handle_rect in self._resize_handles(rect).items():
-            if handle_rect.adjusted(-2, -2, 2, 2).contains(position):
+            if handle_rect.adjusted(-5, -5, 5, 5).contains(position):
                 return name
         return ""
 
@@ -854,8 +1087,8 @@ class BoxStylePreview(QWidget):
         delta = position - self._press_position
         original = self._interaction_rect
         parent = self._interaction_parent_rect
-        min_width = min(42, parent.width())
-        min_height = min(28, parent.height())
+        min_width = min(18, parent.width())
+        min_height = min(14, parent.height())
         if self._overlay_interaction == "move":
             x = max(parent.left(), min(original.x() + delta.x(), parent.right() - original.width() + 1))
             y = max(parent.top(), min(original.y() + delta.y(), parent.bottom() - original.height() + 1))
@@ -875,18 +1108,80 @@ class BoxStylePreview(QWidget):
             if "s" in handle:
                 bottom = min(parent.bottom() + 1, max(bottom + delta.y(), top + min_height))
             updated = QRect(left, top, right - left, bottom - top)
+        updated = self._snap_rect(updated, parent)
         self._store_overlay_rect(
             self._pressed_field_id, updated, self._interaction_parent_rect
         )
         self.update()
+
+    def _snap_rect(self, rect: QRect, parent: QRect) -> QRect:
+        self._snap_guides = []
+        if not self.snap_enabled:
+            return rect
+        threshold = 6
+        x_targets = {parent.left(), parent.center().x(), parent.right() + 1}
+        y_targets = {parent.top(), parent.center().y(), parent.bottom() + 1}
+        for region, field_id, _field_type in self._field_regions:
+            if field_id == self._pressed_field_id:
+                continue
+            x_targets.update((region.left(), region.center().x(), region.right() + 1))
+            y_targets.update((region.top(), region.center().y(), region.bottom() + 1))
+
+        result = QRect(rect)
+        if self._overlay_interaction == "move":
+            x_points = (result.left(), result.center().x(), result.right() + 1)
+            y_points = (result.top(), result.center().y(), result.bottom() + 1)
+            x_match = self._nearest_snap(x_points, x_targets, threshold)
+            y_match = self._nearest_snap(y_points, y_targets, threshold)
+            if x_match:
+                result.translate(x_match[1] - x_match[0], 0)
+                self._snap_guides.append(("v", x_match[1]))
+            if y_match:
+                result.translate(0, y_match[1] - y_match[0])
+                self._snap_guides.append(("h", y_match[1]))
+        else:
+            handle = self._resize_handle
+            if "w" in handle or "e" in handle:
+                edge = result.left() if "w" in handle else result.right() + 1
+                match = self._nearest_snap((edge,), x_targets, threshold)
+                if match:
+                    if "w" in handle:
+                        result.setLeft(match[1])
+                    else:
+                        result.setRight(match[1] - 1)
+                    self._snap_guides.append(("v", match[1]))
+            if "n" in handle or "s" in handle:
+                edge = result.top() if "n" in handle else result.bottom() + 1
+                match = self._nearest_snap((edge,), y_targets, threshold)
+                if match:
+                    if "n" in handle:
+                        result.setTop(match[1])
+                    else:
+                        result.setBottom(match[1] - 1)
+                    self._snap_guides.append(("h", match[1]))
+        result.moveLeft(max(parent.left(), min(result.left(), parent.right() - result.width() + 1)))
+        result.moveTop(max(parent.top(), min(result.top(), parent.bottom() - result.height() + 1)))
+        return result
+
+    @staticmethod
+    def _nearest_snap(
+        points: tuple[int, ...], targets: set[int], threshold: int
+    ) -> tuple[int, int] | None:
+        matches = [
+            (point, target)
+            for point in points
+            for target in targets
+            if abs(point - target) <= threshold
+        ]
+        return min(matches, key=lambda pair: abs(pair[0] - pair[1])) if matches else None
 
     def _store_overlay_rect(
         self, field_id: str, rect: QRect, parent_rect: QRect
     ) -> None:
         if parent_rect.width() <= 0 or parent_rect.height() <= 0:
             return
-        width = max(50, min(1000, round(rect.width() * 1000 / parent_rect.width())))
-        height = max(50, min(1000, round(rect.height() * 1000 / parent_rect.height())))
+        width = max(20, min(1000, round(rect.width() * 1000 / parent_rect.width())))
+        height = max(20, min(1000, round(rect.height() * 1000 / parent_rect.height())))
         x = max(0, min(1000 - width, round((rect.x() - parent_rect.x()) * 1000 / parent_rect.width())))
         y = max(0, min(1000 - height, round((rect.y() - parent_rect.y()) * 1000 / parent_rect.height())))
         style = self.field_styles.setdefault(field_id, {})
@@ -908,6 +1203,7 @@ class BoxStylePreview(QWidget):
         field_styles: dict[str, dict[str, str]],
         text_font_size: int = 0,
         columns: int = MIN_PREVIEW_COLUMNS_1080P,
+        snap_enabled: bool = True,
     ) -> None:
         self.image_fit = image_fit
         self.image_height_percent = image_height_percent
@@ -916,6 +1212,7 @@ class BoxStylePreview(QWidget):
         self.field_styles = field_styles
         self.text_font_size = text_font_size
         self.columns = columns
+        self.snap_enabled = snap_enabled
         self.update()
 
     def set_selected_field(self, field_id: str) -> None:
@@ -927,8 +1224,12 @@ class BoxStylePreview(QWidget):
         self._overlay_parent_regions = {}
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        painter.fillRect(self.rect(), QColor("#0b0d10"))
-        card = self.rect().adjusted(8, 8, -8, -8)
+        canvas = self._canvas_rect()
+        if canvas.isEmpty():
+            painter.end()
+            return
+        painter.fillRect(canvas, QColor("#0b0d10"))
+        card = canvas.adjusted(8, 8, -8, -8)
         fields = self.item.display_fields()
         fields_by_id = {str(field.get("id", "")): field for field in fields}
         children_by_parent: dict[str, list[dict[str, str]]] = {}
@@ -1007,9 +1308,21 @@ class BoxStylePreview(QWidget):
                         ),
                     )
                 )
-            row = QRect(card.x(), row_y, card.width(), row_height)
+            fallback_row = QRect(card.x(), row_y, card.width(), row_height)
+            field_style = self.field_styles.get(field_id, {})
+            row = self._overlay_rect(card, fallback_row, field_style)
             self._field_regions.append((row, field_id, field_type))
+            self._overlay_parent_regions[field_id] = QRect(card)
             if field_type == "image":
+                painter.save()
+                painter.setClipPath(
+                    shape_path(
+                        row,
+                        field_style.get("shape", "rectangle"),
+                        self._style_int(field_style, "corner_radius", 0, 0, 64),
+                    ),
+                    Qt.ClipOperation.IntersectClip,
+                )
                 draw_image(
                     painter,
                     self._image_cache,
@@ -1021,12 +1334,13 @@ class BoxStylePreview(QWidget):
                     self.item.image_crop_y,
                 )
                 child_fields = children_by_parent.get(field_id, [])
+                self._draw_image_gradient(
+                    painter,
+                    row,
+                    self.field_styles.get(field_id, {}),
+                )
+                painter.restore()
                 if child_fields:
-                    self._draw_image_gradient(
-                        painter,
-                        row,
-                        self.field_styles.get(field_id, {}),
-                    )
                     child_weights = [
                         self._style_int(
                             self.field_styles.get(str(child.get("id", "")), {}),
@@ -1083,10 +1397,6 @@ class BoxStylePreview(QWidget):
             style = self.field_styles.get(str(field_data.get("id", "")), {})
             scale = card.width() / (CANVAS_WIDTH / self.columns)
             background_color = QColor(style.get("background_color", "#111827"))
-            container_color = QColor(
-                style.get("container_color") or background_color.name()
-            )
-            painter.fillRect(row, container_color)
             inset = max(0, round(self._style_int(style, "inset", 0, 0, 96) * scale))
             band_rect = row.adjusted(inset, 0, -inset, 0)
             corner_radius = max(
@@ -1094,11 +1404,21 @@ class BoxStylePreview(QWidget):
                 round(self._style_int(style, "corner_radius", 0, 0, 64) * scale),
             )
             painter.setPen(Qt.PenStyle.NoPen)
-            painter.setBrush(background_color)
-            if corner_radius:
-                painter.drawRoundedRect(band_rect, corner_radius, corner_radius)
-            else:
-                painter.drawRect(band_rect)
+            painter.setBrush(
+                fill_brush(
+                    band_rect,
+                    background_color.name(),
+                    style.get("gradient_color_2", background_color.name()),
+                    style.get("fill_mode", "solid"),
+                )
+            )
+            painter.drawPath(
+                shape_path(
+                    band_rect,
+                    style.get("shape", "rectangle"),
+                    corner_radius,
+                )
+            )
             font_size = 15 if role in {"name", "rank"} else 13
             padding = self._style_int(style, "padding", 14, 0, 64)
             preview_padding = max(2, round(padding * scale))
@@ -1162,10 +1482,13 @@ class BoxStylePreview(QWidget):
                 painter.setPen(QPen(QColor(style.get("border_color", "#000000")), border_width))
                 inset = max(1, border_width // 2)
                 border_rect = band_rect.adjusted(inset, inset, -inset, -inset)
-                if corner_radius:
-                    painter.drawRoundedRect(border_rect, corner_radius, corner_radius)
-                else:
-                    painter.drawRect(border_rect)
+                painter.drawPath(
+                    shape_path(
+                        border_rect,
+                        style.get("shape", "rectangle"),
+                        corner_radius,
+                    )
+                )
             row_y += row_height
             remaining_text_pixels -= row_height
             remaining_text_weight -= weight
@@ -1178,13 +1501,13 @@ class BoxStylePreview(QWidget):
             for region, field_id, _field_type in self._field_regions:
                 if field_id == self._selected_field_id:
                     painter.setBrush(Qt.BrushStyle.NoBrush)
-                    painter.setPen(QPen(QColor("#60a5fa"), 2))
-                    painter.drawRect(region.adjusted(2, 2, -3, -3))
+                    painter.setPen(QPen(QColor("#2563eb"), 1))
+                    painter.drawRect(region.adjusted(0, 0, -1, -1))
                     if field_id in self._overlay_parent_regions:
                         painter.setBrush(QColor("#ffffff"))
                         painter.setPen(QPen(QColor("#2563eb"), 1))
                         for handle_rect in self._resize_handles(region).values():
-                            painter.drawRoundedRect(handle_rect, 2, 2)
+                            painter.drawRect(handle_rect)
                     else:
                         painter.setPen(Qt.PenStyle.NoPen)
                         painter.setBrush(QColor("#dbeafe"))
@@ -1208,6 +1531,13 @@ class BoxStylePreview(QWidget):
                         painter.setPen(QPen(QColor("#3b82f6"), 4))
                         painter.drawLine(card.left(), y, card.right(), y)
                         break
+        if self._snap_guides:
+            painter.setPen(QPen(QColor("#f43f5e"), 1, Qt.PenStyle.DashLine))
+            for orientation, coordinate in self._snap_guides:
+                if orientation == "v":
+                    painter.drawLine(coordinate, card.top(), coordinate, card.bottom())
+                else:
+                    painter.drawLine(card.left(), coordinate, card.right(), coordinate)
         painter.end()
 
     @staticmethod
@@ -1218,8 +1548,8 @@ class BoxStylePreview(QWidget):
         try:
             x_value = max(0, min(1000, int(style["overlay_x"])))
             y_value = max(0, min(1000, int(style["overlay_y"])))
-            width_value = max(50, min(1000, int(style["overlay_width"])))
-            height_value = max(50, min(1000, int(style["overlay_height"])))
+            width_value = max(20, min(1000, int(style["overlay_width"])))
+            height_value = max(20, min(1000, int(style["overlay_height"])))
         except (TypeError, ValueError):
             return fallback
         width_value = min(width_value, 1000 - x_value)
@@ -1233,7 +1563,7 @@ class BoxStylePreview(QWidget):
     def _draw_image_gradient(
         self, painter: QPainter, rect: QRect, style: dict[str, str]
     ) -> None:
-        mode = str(style.get("gradient_mode") or "bottom")
+        mode = str(style.get("gradient_mode") or "none")
         if mode == "none":
             return
         opacity = self._style_int(style, "gradient_opacity", 65, 0, 100)
@@ -1272,13 +1602,24 @@ class BoxStylePreview(QWidget):
             0, round(self._style_int(style, "corner_radius", 0, 0, 64) * scale)
         )
         background = QColor(style.get("background_color", "#111827"))
-        if inset or corner_radius:
+        if (
+            inset
+            or corner_radius
+            or style.get("shape", "rectangle") != "rectangle"
+            or style.get("fill_mode", "solid") != "solid"
+        ):
             painter.setPen(Qt.PenStyle.NoPen)
-            painter.setBrush(background)
-            if corner_radius:
-                painter.drawRoundedRect(band_rect, corner_radius, corner_radius)
-            else:
-                painter.drawRect(band_rect)
+            painter.setBrush(
+                fill_brush(
+                    band_rect,
+                    background.name(),
+                    style.get("gradient_color_2", background.name()),
+                    style.get("fill_mode", "solid"),
+                )
+            )
+            painter.drawPath(
+                shape_path(band_rect, style.get("shape", "rectangle"), corner_radius)
+            )
         role = self._preview_field_role(field_data, content_index)
         font_size = 15 if role in {"name", "rank"} else 13
         custom_size = self._style_int(style, "font_size", 0, 0, 120)
@@ -1328,10 +1669,13 @@ class BoxStylePreview(QWidget):
                 QPen(QColor(style.get("border_color", "#000000")), border_width)
             )
             border_rect = band_rect.adjusted(1, 1, -2, -2)
-            if corner_radius:
-                painter.drawRoundedRect(border_rect, corner_radius, corner_radius)
-            else:
-                painter.drawRect(border_rect)
+            painter.drawPath(
+                shape_path(
+                    border_rect,
+                    style.get("shape", "rectangle"),
+                    corner_radius,
+                )
+            )
 
     def _preview_field_role(self, field_data: dict[str, str], index: int) -> str:
         role = str(field_data.get("role", ""))
@@ -1491,8 +1835,10 @@ class BoxCustomizationDialog(QDialog):
         self.custom_presets = self._load_custom_presets()
         self.setObjectName("BoxCustomizationDialog")
         self.setWindowTitle("Customize All Boxes")
+        self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, True)
         self.setMinimumSize(1100, 700)
         self.resize(1320, 840)
+        self.setWindowState(self.windowState() | Qt.WindowState.WindowMaximized)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(20, 18, 20, 16)
@@ -1618,28 +1964,47 @@ class BoxCustomizationDialog(QDialog):
 
         self.border_color_button = ColorButton(project.card_border_color)
         form.addRow("Box border", self.border_color_button)
+        self.snap_objects_check = QCheckBox("Snap to edges, centers, and objects")
+        self.snap_objects_check.setChecked(True)
+        self.snap_objects_check.setToolTip(
+            "Shows smart guides and aligns objects while moving or resizing."
+        )
+        form.addRow("Free move", self.snap_objects_check)
         controls_layout.addWidget(layout_group)
 
-        order_group = QGroupBox("Content order")
-        order_group.setObjectName("DesignerSection")
-        order_layout = QVBoxLayout(order_group)
-        order_hint = QLabel(
-            "Drop a block onto the middle of an image to make it a child overlay. "
-            "Drop it between rows to return it to the main layout."
+        palette_group = QGroupBox("Drag an item onto the preview")
+        self.shape_palette_group = palette_group
+        palette_group.setObjectName("DesignerSection")
+        palette_layout = QGridLayout(palette_group)
+        palette_layout.setContentsMargins(10, 8, 10, 8)
+        palette_layout.setHorizontalSpacing(8)
+        palette_layout.setVerticalSpacing(6)
+        palette_items = (
+            ("text", "Text", "T"),
+            ("rectangle", "Rectangle", "▭"),
+            ("rounded", "Rounded rectangle", "▢"),
+            ("circle", "Circle", "●"),
+            ("ellipse", "Ellipse", "⬭"),
+            ("pill", "Pill", "▬"),
+            ("triangle", "Triangle", "▲"),
+            ("diamond", "Diamond", "◆"),
+            ("hexagon", "Hexagon", "⬢"),
+            ("star", "Star", "★"),
         )
-        order_hint.setObjectName("DesignerHint")
-        order_hint.setWordWrap(True)
-        order_layout.addWidget(order_hint)
-        self.field_order_list = ContentOrderList()
+        self.shape_tool_buttons: dict[str, ShapeToolButton] = {}
+        for index, (item_kind, label, symbol) in enumerate(palette_items):
+            button = ShapeToolButton(item_kind, label, symbol, palette_group)
+            button.activated.connect(self._palette_item_activated)
+            self.shape_tool_buttons[item_kind] = button
+            palette_layout.addWidget(button, index // 5, index % 5)
+        controls_layout.addWidget(palette_group)
+
+        # Keep the ordering model internally, but selection and item creation are
+        # now handled directly on the preview instead of through a visible list.
+        self.field_order_list = ContentOrderList(self)
         self.field_order_list.setObjectName("DesignerOrderList")
-        self.field_order_list.setMouseTracking(True)
-        self.field_order_list.setItemDelegate(ContentOrderDelegate(self.field_order_list))
-        self.field_order_list.setDragDropMode(QAbstractItemView.DragDropMode.InternalMove)
-        self.field_order_list.setDefaultDropAction(Qt.DropAction.MoveAction)
-        self.field_order_list.setDragDropOverwriteMode(False)
         self.field_order_list.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.field_order_list.setMinimumHeight(150)
-        self.field_order_list.setMaximumHeight(220)
+        self.field_order_list.hide()
 
         self.field_styles: dict[str, dict[str, str]] = {}
         self.field_roles: dict[str, str] = {}
@@ -1661,8 +2026,12 @@ class BoxCustomizationDialog(QDialog):
                     getattr(project, f"{role}_background_color"),
                     getattr(project, f"{role}_text_color"),
                 )
+                if field_type != "shape":
+                    self.field_styles[field_id].update(
+                        {"shape": "rectangle", "inset": "0", "corner_radius": "0"}
+                    )
                 content_index += 1
-            type_label = "IMAGE" if field_type == "image" else "TEXT"
+            type_label = self._field_type_label(field_type)
             list_item = QListWidgetItem(
                 f"{type_label}  ·  {str(field_data.get('label') or 'Input')}"
             )
@@ -1677,8 +2046,6 @@ class BoxCustomizationDialog(QDialog):
             )
             self.field_order_list.addItem(list_item)
         self._sync_order_item_hierarchy()
-        order_layout.addWidget(self.field_order_list)
-        controls_layout.addWidget(order_group)
 
         self.content_group = QGroupBox("Selected content")
         self.content_group.setObjectName("DesignerSection")
@@ -1731,18 +2098,41 @@ class BoxCustomizationDialog(QDialog):
         style_form = QFormLayout(self.style_group)
         style_form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         self.band_background_button = ColorButton("#111827")
-        self.band_container_button = ColorButton("#111827")
+        self.band_fill_combo = QComboBox()
+        for label, value in (
+            ("Solid", "solid"),
+            ("Top to bottom", "vertical"),
+            ("Bottom to top", "vertical_reverse"),
+            ("Left to right", "horizontal"),
+            ("Right to left", "horizontal_reverse"),
+            ("Top-left to bottom-right", "diagonal"),
+            ("Bottom-right to top-left", "diagonal_reverse"),
+            ("Bottom-left to top-right", "diagonal_up"),
+            ("Top-right to bottom-left", "diagonal_up_reverse"),
+        ):
+            self.band_fill_combo.addItem(label, value)
+        self.band_gradient_button = ColorButton("#111827", allow_alpha=True)
+        gradient_opacity_row = QWidget()
+        gradient_opacity_layout = QHBoxLayout(gradient_opacity_row)
+        gradient_opacity_layout.setContentsMargins(0, 0, 0, 0)
+        gradient_opacity_layout.setSpacing(8)
+        self.band_gradient_opacity_slider = QSlider(Qt.Orientation.Horizontal)
+        self.band_gradient_opacity_slider.setRange(0, 100)
+        self.band_gradient_opacity_slider.setValue(100)
+        self.band_gradient_opacity_slider.setToolTip(
+            "0% makes the gradient end fully transparent; 100% is fully opaque."
+        )
+        self.band_gradient_opacity_value = QLabel("100%")
+        self.band_gradient_opacity_value.setMinimumWidth(42)
+        self.band_gradient_opacity_value.setAlignment(Qt.AlignmentFlag.AlignRight)
+        gradient_opacity_layout.addWidget(self.band_gradient_opacity_slider, 1)
+        gradient_opacity_layout.addWidget(self.band_gradient_opacity_value)
         self.band_text_button = ColorButton("#ffffff")
         self.band_outline_button = ColorButton("#000000")
-        self.band_border_button = ColorButton("#000000")
         self.band_outline_width_spin = QSpinBox()
         self.band_outline_width_spin.setRange(0, 8)
         self.band_outline_width_spin.setSuffix(" px")
         self.band_outline_width_spin.setSpecialValueText("None")
-        self.band_border_width_spin = QSpinBox()
-        self.band_border_width_spin.setRange(0, 12)
-        self.band_border_width_spin.setSuffix(" px")
-        self.band_border_width_spin.setSpecialValueText("None")
         self.band_alignment_combo = QComboBox()
         self.band_alignment_combo.addItem("Left", "left")
         self.band_alignment_combo.addItem("Center", "center")
@@ -1757,38 +2147,20 @@ class BoxCustomizationDialog(QDialog):
         self.band_font_size_spin.setRange(0, 120)
         self.band_font_size_spin.setSpecialValueText("Use global")
         self.band_font_size_spin.setSuffix(" pt")
-        self.band_height_spin = QSpinBox()
-        self.band_height_spin.setRange(25, 400)
-        self.band_height_spin.setSuffix(" %")
-        self.band_height_spin.setToolTip(
-            "Relative height compared with other text bands; 100% is the default."
-        )
         self.band_padding_spin = QSpinBox()
         self.band_padding_spin.setRange(0, 64)
         self.band_padding_spin.setSuffix(" px")
-        self.band_inset_spin = QSpinBox()
-        self.band_inset_spin.setRange(0, 96)
-        self.band_inset_spin.setSuffix(" px")
-        self.band_inset_spin.setToolTip(
-            "Horizontal space around the colored text band."
-        )
-        self.band_corner_radius_spin = QSpinBox()
-        self.band_corner_radius_spin.setRange(0, 64)
-        self.band_corner_radius_spin.setSuffix(" px")
         style_form.addRow("Background", self.band_background_button)
-        style_form.addRow("Section background", self.band_container_button)
+        style_form.addRow("Gradient direction", self.band_fill_combo)
+        style_form.addRow("Gradient end", self.band_gradient_button)
+        style_form.addRow("End opacity", gradient_opacity_row)
         style_form.addRow("Text", self.band_text_button)
         style_form.addRow("Text outline", self.band_outline_button)
         style_form.addRow("Outline width", self.band_outline_width_spin)
-        style_form.addRow("Row border", self.band_border_button)
-        style_form.addRow("Border width", self.band_border_width_spin)
         style_form.addRow("Alignment", self.band_alignment_combo)
         style_form.addRow("Font weight", self.band_font_weight_combo)
         style_form.addRow("Font size", self.band_font_size_spin)
-        style_form.addRow("Relative height", self.band_height_spin)
         style_form.addRow("Horizontal padding", self.band_padding_spin)
-        style_form.addRow("Band inset", self.band_inset_spin)
-        style_form.addRow("Corner radius", self.band_corner_radius_spin)
         controls_layout.addWidget(self.style_group)
         controls_layout.addStretch(1)
         controls_scroll.setWidget(controls_widget)
@@ -1800,23 +2172,24 @@ class BoxCustomizationDialog(QDialog):
         preview_layout.setContentsMargins(22, 20, 22, 18)
         preview_title = QLabel("Live preview")
         preview_title.setObjectName("DesignerPreviewTitle")
-        self.box_preview = BoxStylePreview(self._image_item)
+        self.box_preview = BoxStylePreview(self._image_item, self.project.height)
         self.box_preview.image_clicked.connect(self._edit_image)
         self.box_preview.field_selected.connect(self._preview_field_selected)
+        self.box_preview.item_dropped.connect(self._preview_item_dropped)
+        self.box_preview.delete_requested.connect(self._remove_selected_content)
         self.box_preview.field_reorder_requested.connect(
             self._preview_field_reorder_requested
         )
         preview_layout.addWidget(preview_title)
-        preview_layout.addWidget(self.box_preview, 0, Qt.AlignmentFlag.AlignHCenter)
+        preview_layout.addWidget(self.box_preview, 1)
         preview_help = QLabel(
-            "Drop content onto an image in the list to place it over that image. "
-            "Click an image here to crop or reposition it."
+            "Drag an icon onto the preview to add it. Select, move, and resize "
+            "objects with the handles; press Delete to remove the selected item."
         )
         preview_help.setObjectName("DesignerHint")
         preview_help.setWordWrap(True)
         preview_help.setAlignment(Qt.AlignmentFlag.AlignCenter)
         preview_layout.addWidget(preview_help)
-        preview_layout.addStretch(1)
         content_splitter.addWidget(preview_panel)
         content_splitter.setStretchFactor(0, 3)
         content_splitter.setStretchFactor(1, 2)
@@ -1850,9 +2223,10 @@ class BoxCustomizationDialog(QDialog):
         self.save_preset_button.clicked.connect(self._save_custom_preset)
         self.delete_preset_button.clicked.connect(self._delete_custom_preset)
         self.border_color_button.color_changed.connect(self._update_preview)
+        self.snap_objects_check.toggled.connect(self._update_preview)
         self.field_order_list.itemSelectionChanged.connect(self._load_selected_field_style)
         self.field_order_list.model().rowsMoved.connect(self._field_order_changed)
-        self.field_order_list.add_requested.connect(self._add_content_below)
+        self.field_order_list.add_requested.connect(self._show_add_item_menu)
         self.field_order_list.delete_requested.connect(self._remove_selected_content)
         self.field_order_list.hierarchy_drop_requested.connect(
             self._hierarchy_drop_requested
@@ -1873,19 +2247,20 @@ class BoxCustomizationDialog(QDialog):
         )
         self._loading_field_style = False
         self.band_background_button.color_changed.connect(self._selected_field_style_changed)
-        self.band_container_button.color_changed.connect(self._selected_field_style_changed)
+        self.band_fill_combo.currentIndexChanged.connect(self._selected_field_style_changed)
+        self.band_gradient_button.color_changed.connect(
+            self._band_gradient_color_changed
+        )
+        self.band_gradient_opacity_slider.valueChanged.connect(
+            self._band_gradient_opacity_changed
+        )
         self.band_text_button.color_changed.connect(self._selected_field_style_changed)
         self.band_outline_button.color_changed.connect(self._selected_field_style_changed)
-        self.band_border_button.color_changed.connect(self._selected_field_style_changed)
         self.band_outline_width_spin.valueChanged.connect(self._selected_field_style_changed)
-        self.band_border_width_spin.valueChanged.connect(self._selected_field_style_changed)
         self.band_alignment_combo.currentIndexChanged.connect(self._selected_field_style_changed)
         self.band_font_weight_combo.currentIndexChanged.connect(self._selected_field_style_changed)
         self.band_font_size_spin.valueChanged.connect(self._selected_field_style_changed)
-        self.band_height_spin.valueChanged.connect(self._selected_field_style_changed)
         self.band_padding_spin.valueChanged.connect(self._selected_field_style_changed)
-        self.band_inset_spin.valueChanged.connect(self._selected_field_style_changed)
-        self.band_corner_radius_spin.valueChanged.connect(self._selected_field_style_changed)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         if self.field_order_list.count():
@@ -1909,10 +2284,13 @@ class BoxCustomizationDialog(QDialog):
 
     def _load_custom_presets(self) -> dict[str, dict[str, object]]:
         raw_value = self.preferences.value("box_style_presets", "{}")
-        try:
-            parsed = json.loads(str(raw_value or "{}"))
-        except json.JSONDecodeError:
-            return {}
+        if isinstance(raw_value, dict):
+            parsed = raw_value
+        else:
+            try:
+                parsed = json.loads(str(raw_value or "{}"))
+            except (json.JSONDecodeError, TypeError, ValueError):
+                return {}
         if not isinstance(parsed, dict):
             return {}
         presets: dict[str, dict[str, object]] = {}
@@ -1921,11 +2299,15 @@ class BoxCustomizationDialog(QDialog):
                 presets[str(name)] = self._normalize_preset(preset)
         return presets
 
-    def _save_custom_presets_to_preferences(self) -> None:
+    def _save_custom_presets_to_preferences(self) -> bool:
         self.preferences.setValue(
             "box_style_presets",
             json.dumps(self.custom_presets, sort_keys=True),
         )
+        # QSettings may otherwise defer the native-file/registry write until the
+        # dialog is destroyed, which can lose a just-saved preset on app exit.
+        self.preferences.sync()
+        return self.preferences.status() == QSettings.Status.NoError
 
     def _normalize_preset(self, preset: dict[str, object]) -> dict[str, object]:
         fit = str(preset.get("image_fit") or "cover")
@@ -1939,6 +2321,12 @@ class BoxCustomizationDialog(QDialog):
             font_size = max(0, min(120, int(preset.get("text_font_size") or 0)))
         except (TypeError, ValueError):
             font_size = 0
+        try:
+            preview_columns = int(preset.get("preview_columns") or 0)
+        except (TypeError, ValueError):
+            preview_columns = 0
+        if not MIN_PREVIEW_COLUMNS_1080P <= preview_columns <= MAX_PREVIEW_COLUMNS_1080P:
+            preview_columns = 0
         roles = preset.get("roles")
         normalized_roles: dict[str, dict[str, str]] = {}
         if isinstance(roles, dict):
@@ -1979,20 +2367,78 @@ class BoxCustomizationDialog(QDialog):
                     "font_weight": str(
                         self._bounded_int(style.get("font_weight"), 700, 100, 900)
                     ),
+                    "shape": normalized_shape(style.get("shape")),
+                    "fill_mode": (
+                        str(style.get("fill_mode"))
+                        if str(style.get("fill_mode")) in FILL_OPTIONS
+                        else "solid"
+                    ),
+                    "gradient_color_2": self._valid_color(
+                        style.get("gradient_color_2"),
+                        self._valid_color(style.get("background_color"), "#111827"),
+                    ),
                 }
+        normalized_objects: list[dict[str, object]] = []
+        objects = preset.get("objects")
+        if isinstance(objects, list):
+            valid_types = {"image", "name", "text", "number", "shape"}
+            for index, raw_object in enumerate(objects):
+                if not isinstance(raw_object, dict):
+                    continue
+                field_type = str(raw_object.get("type") or "text")
+                if field_type not in valid_types:
+                    field_type = "text"
+                role = str(raw_object.get("role") or "")
+                raw_style = raw_object.get("style")
+                raw_style = raw_style if isinstance(raw_style, dict) else {}
+                if field_type == "image":
+                    object_style = self._complete_image_style(raw_style)
+                else:
+                    fallback_role = role if role in {"name", "category", "rank", "value"} else "category"
+                    object_style = self._complete_field_style(
+                        raw_style,
+                        str(getattr(self.project, f"{fallback_role}_background_color")),
+                        str(getattr(self.project, f"{fallback_role}_text_color")),
+                    )
+                try:
+                    parent_index = int(raw_object.get("parent_index", -1))
+                except (TypeError, ValueError):
+                    parent_index = -1
+                if parent_index < 0 or parent_index >= len(objects) or parent_index == index:
+                    parent_index = -1
+                object_style["parent_id"] = ""
+                normalized_objects.append(
+                    {
+                        "type": field_type,
+                        "role": role,
+                        "label": str(raw_object.get("label") or field_type.title()),
+                        "parent_index": parent_index,
+                        "style": object_style,
+                    }
+                )
         return {
+            "version": 2 if normalized_objects else 1,
             "border_color": self._valid_color(preset.get("border_color"), "#05070a"),
             "text_font_family": str(preset.get("text_font_family") or "Segoe UI"),
             "text_font_size": font_size,
+            "preview_columns": preview_columns,
             "image_fit": fit,
             "image_height_percent": max(35, min(75, image_height)),
             "layout_template": str(preset.get("layout_template") or ""),
             "roles": normalized_roles,
+            "objects": normalized_objects,
         }
 
     def _valid_color(self, value: object, fallback: str) -> str:
         color = QColor(str(value or ""))
-        return color.name() if color.isValid() else fallback
+        if not color.isValid():
+            return fallback
+        color_format = (
+            QColor.NameFormat.HexArgb
+            if color.alpha() < 255
+            else QColor.NameFormat.HexRgb
+        )
+        return color.name(color_format)
 
     @staticmethod
     def _bounded_int(value: object, default: int, minimum: int, maximum: int) -> int:
@@ -2035,10 +2481,18 @@ class BoxCustomizationDialog(QDialog):
             "padding": str(self._bounded_int(raw.get("padding"), 14, 0, 64)),
             "font_weight": str(weight),
             "parent_id": str(raw.get("parent_id") or ""),
+            "shape": normalized_shape(raw.get("shape")),
+            "fill_mode": str(raw.get("fill_mode") or "solid")
+            if str(raw.get("fill_mode") or "solid") in FILL_OPTIONS
+            else "solid",
+            "gradient_color_2": self._valid_color(
+                raw.get("gradient_color_2"),
+                self._valid_color(raw.get("background_color"), background),
+            ),
             "overlay_x": self._overlay_value(raw.get("overlay_x"), 0),
             "overlay_y": self._overlay_value(raw.get("overlay_y"), 0),
-            "overlay_width": self._overlay_value(raw.get("overlay_width"), 50),
-            "overlay_height": self._overlay_value(raw.get("overlay_height"), 50),
+            "overlay_width": self._overlay_value(raw.get("overlay_width"), 20),
+            "overlay_height": self._overlay_value(raw.get("overlay_height"), 20),
         }
 
     @staticmethod
@@ -2053,9 +2507,9 @@ class BoxCustomizationDialog(QDialog):
 
     def _complete_image_style(self, style: dict[str, str] | object) -> dict[str, str]:
         raw = style if isinstance(style, dict) else {}
-        gradient_mode = str(raw.get("gradient_mode") or "bottom")
+        gradient_mode = str(raw.get("gradient_mode") or "none")
         if gradient_mode not in {"none", "bottom", "top", "left", "right", "tint"}:
-            gradient_mode = "bottom"
+            gradient_mode = "none"
         return {
             "height_weight": str(
                 self._bounded_int(raw.get("height_weight"), 100, 25, 400)
@@ -2068,6 +2522,11 @@ class BoxCustomizationDialog(QDialog):
             "gradient_opacity": str(
                 self._bounded_int(raw.get("gradient_opacity"), 65, 0, 100)
             ),
+            "shape": normalized_shape(raw.get("shape")),
+            "overlay_x": self._overlay_value(raw.get("overlay_x"), 0),
+            "overlay_y": self._overlay_value(raw.get("overlay_y"), 0),
+            "overlay_width": self._overlay_value(raw.get("overlay_width"), 20),
+            "overlay_height": self._overlay_value(raw.get("overlay_height"), 20),
         }
 
     def _selected_preset(self) -> dict[str, object] | None:
@@ -2087,6 +2546,12 @@ class BoxCustomizationDialog(QDialog):
         preset = self._selected_preset()
         if preset is None:
             return
+        preset_data = str(self.preset_combo.currentData() or "")
+        preview_columns = int(preset.get("preview_columns") or 0)
+        if preview_columns:
+            columns_index = self.columns_combo.findData(preview_columns)
+            if columns_index >= 0:
+                self.columns_combo.setCurrentIndex(columns_index)
         self.image_height_slider.setValue(int(preset["image_height_percent"]))
         fit_index = self.image_fit_combo.findData(str(preset["image_fit"]))
         if fit_index >= 0:
@@ -2095,6 +2560,12 @@ class BoxCustomizationDialog(QDialog):
         self.text_font_size_spin.setValue(int(preset["text_font_size"]))
         self.border_color_button.set_color(str(preset["border_color"]))
         self._apply_layout_template(str(preset.get("layout_template") or ""))
+        objects = preset.get("objects", [])
+        if preset_data.startswith("custom:") and isinstance(objects, list) and objects:
+            self._apply_custom_preset_objects(objects)
+            self._load_selected_field_style()
+            self._update_preview()
+            return
         role_styles = preset.get("roles", {})
         if isinstance(role_styles, dict):
             for field_id in self.field_roles:
@@ -2119,6 +2590,110 @@ class BoxCustomizationDialog(QDialog):
                 self.field_styles[field_id] = updated
         self._load_selected_field_style()
         self._update_preview()
+
+    def _apply_custom_preset_objects(self, objects: list[dict[str, object]]) -> None:
+        """Map a saved visual object layout onto the current project's inputs."""
+        fields = self._image_item.display_fields()
+        by_id = {str(field.get("id", "")): field for field in fields}
+        unused_ids = [str(field.get("id", "")) for field in fields]
+        object_to_field: dict[int, str] = {}
+        pending_transforms: dict[str, dict[str, float | str]] = {}
+
+        for object_index, preset_object in enumerate(objects):
+            field_type = str(preset_object.get("type") or "text")
+            role = str(preset_object.get("role") or "")
+            candidates = [by_id[field_id] for field_id in unused_ids]
+            match = next(
+                (
+                    field
+                    for field in candidates
+                    if str(field.get("type") or "text") == field_type
+                    and role
+                    and str(field.get("role") or "") == role
+                ),
+                None,
+            )
+            if match is None:
+                match = next(
+                    (
+                        field
+                        for field in candidates
+                        if str(field.get("type") or "text") == field_type
+                    ),
+                    None,
+                )
+            if match is None:
+                source = next(
+                    (
+                        field
+                        for field in fields
+                        if str(field.get("type") or "text") == field_type
+                    ),
+                    None,
+                )
+                source_id = str(source.get("id", "")) if source else ""
+                field_id = f"field_{uuid4().hex[:8]}"
+                match = dict(source) if source is not None else {}
+                match.update(
+                    {
+                        "id": field_id,
+                        "type": field_type,
+                        "role": role,
+                        "label": str(preset_object.get("label") or field_type.title()),
+                        "value": str(match.get("value") or ""),
+                    }
+                )
+                fields.append(match)
+                by_id[field_id] = match
+                self.field_types[field_id] = field_type
+                if field_type != "image":
+                    fallback_role = role if role in {"name", "category", "rank", "value"} else "category"
+                    self.field_roles[field_id] = fallback_role
+                self._new_field_sources[field_id] = source_id
+                source_transform = self._image_item.image_transforms.get(source_id)
+                if source_transform is not None:
+                    pending_transforms[field_id] = dict(source_transform)
+            field_id = str(match.get("id", ""))
+            if field_id in unused_ids:
+                unused_ids.remove(field_id)
+            object_to_field[object_index] = field_id
+            raw_style = preset_object.get("style")
+            raw_style = raw_style if isinstance(raw_style, dict) else {}
+            current = self.field_styles.get(field_id, {})
+            if field_type == "image":
+                self.field_styles[field_id] = self._complete_image_style(raw_style)
+            else:
+                self.field_styles[field_id] = self._complete_field_style(
+                    raw_style,
+                    str(current.get("background_color") or "#111827"),
+                    str(current.get("text_color") or "#ffffff"),
+                )
+                if field_type != "shape":
+                    self.field_styles[field_id]["shape"] = "rectangle"
+
+        for object_index, field_id in object_to_field.items():
+            if self.field_types.get(field_id) == "image":
+                self.field_styles[field_id]["parent_id"] = ""
+                continue
+            try:
+                parent_index = int(objects[object_index].get("parent_index", -1))
+            except (TypeError, ValueError):
+                parent_index = -1
+            parent_id = object_to_field.get(parent_index, "")
+            if self.field_types.get(parent_id) != "image":
+                parent_id = ""
+            self.field_styles[field_id]["parent_id"] = parent_id
+
+        selected_id = self._selected_field_id()
+        self._image_item.set_fields(fields)
+        self._image_item.image_transforms.update(pending_transforms)
+        ordered_ids = [
+            object_to_field[index]
+            for index in range(len(objects))
+            if index in object_to_field
+        ]
+        ordered_ids.extend(field_id for field_id in unused_ids if field_id not in ordered_ids)
+        self._rebuild_order_list(ordered_ids, selected_id)
 
     def _apply_layout_template(self, template_name: str) -> None:
         if template_name != "hall_of_fame":
@@ -2229,7 +2804,7 @@ class BoxCustomizationDialog(QDialog):
                     ),
                 )
                 content_index += 1
-            type_label = "IMAGE" if field_type == "image" else "TEXT"
+            type_label = self._field_type_label(field_type)
             list_item = QListWidgetItem(f"{type_label}  ·  {field.get('label', 'Input')}")
             list_item.setData(Qt.ItemDataRole.UserRole, field_id)
             list_item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
@@ -2261,7 +2836,13 @@ class BoxCustomizationDialog(QDialog):
         if not accepted or not name:
             return
         self.custom_presets[name] = self._preset_from_current_controls()
-        self._save_custom_presets_to_preferences()
+        if not self._save_custom_presets_to_preferences():
+            QMessageBox.warning(
+                self,
+                "Save Custom Preset",
+                "The preset could not be written to your application settings.",
+            )
+            return
         self._populate_preset_combo(f"custom:{name}")
 
     def _delete_custom_preset(self) -> None:
@@ -2283,13 +2864,34 @@ class BoxCustomizationDialog(QDialog):
         for field_id, role in self.field_roles.items():
             style = self.field_styles[field_id]
             roles[role] = dict(style)
+        fields = self._image_item.display_fields()
+        index_by_id = {
+            str(field.get("id", "")): index for index, field in enumerate(fields)
+        }
+        objects: list[dict[str, object]] = []
+        for field in fields:
+            field_id = str(field.get("id", ""))
+            style = dict(self.field_styles.get(field_id, {}))
+            parent_id = str(style.pop("parent_id", "") or "")
+            objects.append(
+                {
+                    "type": str(field.get("type") or "text"),
+                    "role": str(field.get("role") or ""),
+                    "label": str(field.get("label") or "Input"),
+                    "parent_index": index_by_id.get(parent_id, -1),
+                    "style": style,
+                }
+            )
         return {
+            "version": 2,
             "border_color": self.border_color_button.color(),
             "text_font_family": self.text_font_combo.currentFont().family(),
             "text_font_size": self.text_font_size_spin.value(),
+            "preview_columns": int(self.columns_combo.currentData()),
             "image_fit": str(self.image_fit_combo.currentData() or "cover"),
             "image_height_percent": int(self.image_height_slider.value()),
             "roles": roles,
+            "objects": objects,
         }
 
     def apply_changes(self) -> None:
@@ -2355,10 +2957,13 @@ class BoxCustomizationDialog(QDialog):
         if field is None:
             return
         columns = int(self.columns_combo.currentData())
-        image_height = int(self.project.height * self.image_height_slider.value() / 100)
-        if len(image_fields) == len(fields):
-            image_height = self.project.height
-        frame = QSize(CANVAS_WIDTH // columns, max(1, image_height // len(image_fields)))
+        frame = image_field_frame_size(
+            fields,
+            field_id,
+            self.field_styles,
+            QSize(CANVAS_WIDTH // columns, self.project.height),
+            self.image_height_slider.value(),
+        )
         dialog = ImageEditorDialog(
             str(field.get("value", "")), frame,
             str(self.image_fit_combo.currentData() or "cover"),
@@ -2398,11 +3003,20 @@ class BoxCustomizationDialog(QDialog):
             self.field_styles,
             self.text_font_size_spin.value(),
             int(self.columns_combo.currentData()),
+            self.snap_objects_check.isChecked(),
         )
 
     def _selected_field_id(self) -> str:
         item = self.field_order_list.currentItem()
         return str(item.data(Qt.ItemDataRole.UserRole) or "") if item else ""
+
+    @staticmethod
+    def _field_type_label(field_type: str) -> str:
+        if field_type == "image":
+            return "IMAGE"
+        if field_type == "shape":
+            return "SHAPE"
+        return "TEXT"
 
     def _load_selected_field_style(self) -> None:
         field_id = self._selected_field_id()
@@ -2433,7 +3047,7 @@ class BoxCustomizationDialog(QDialog):
             self._bounded_int(image_style.get("height_weight"), 100, 25, 400)
         )
         gradient_index = self.image_gradient_combo.findData(
-            image_style.get("gradient_mode", "bottom")
+            image_style.get("gradient_mode", "none")
         )
         self.image_gradient_combo.setCurrentIndex(max(0, gradient_index))
         self.image_gradient_color_button.set_color(
@@ -2457,16 +3071,25 @@ class BoxCustomizationDialog(QDialog):
             self.style_group.setTitle("Selected image")
             self.style_group.setEnabled(False)
             return
-        self.style_group.setTitle("Selected text band")
+        self.style_group.setTitle(
+            "Selected shape" if self.field_types.get(field_id) == "shape"
+            else "Selected text band"
+        )
         self.style_group.setEnabled(True)
         self._loading_field_style = True
         self.band_background_button.set_color(style["background_color"])
-        self.band_container_button.set_color(style["container_color"])
+        self.band_fill_combo.setCurrentIndex(
+            max(0, self.band_fill_combo.findData(style.get("fill_mode", "solid")))
+        )
+        gradient_end = style.get("gradient_color_2", style["background_color"])
+        self.band_gradient_button.set_color(gradient_end)
+        gradient_alpha = QColor(gradient_end).alpha()
+        gradient_opacity = round(gradient_alpha * 100 / 255)
+        self.band_gradient_opacity_slider.setValue(gradient_opacity)
+        self.band_gradient_opacity_value.setText(f"{gradient_opacity}%")
         self.band_text_button.set_color(style["text_color"])
         self.band_outline_button.set_color(style["outline_color"])
-        self.band_border_button.set_color(style["border_color"])
         self.band_outline_width_spin.setValue(int(style["outline_width"]))
-        self.band_border_width_spin.setValue(int(style["border_width"]))
         self.band_alignment_combo.setCurrentIndex(
             max(0, self.band_alignment_combo.findData(style["alignment"]))
         )
@@ -2474,11 +3097,37 @@ class BoxCustomizationDialog(QDialog):
             max(0, self.band_font_weight_combo.findData(int(style["font_weight"])))
         )
         self.band_font_size_spin.setValue(int(style["font_size"]))
-        self.band_height_spin.setValue(int(style["height_weight"]))
         self.band_padding_spin.setValue(int(style["padding"]))
-        self.band_inset_spin.setValue(int(style["inset"]))
-        self.band_corner_radius_spin.setValue(int(style["corner_radius"]))
         self._loading_field_style = False
+
+    def _band_gradient_color_changed(self, color_value: str) -> None:
+        color = QColor(color_value)
+        opacity = round(color.alpha() * 100 / 255) if color.isValid() else 100
+        self.band_gradient_opacity_value.setText(f"{opacity}%")
+        if self.band_gradient_opacity_slider.value() != opacity:
+            was_loading = self._loading_field_style
+            self._loading_field_style = True
+            self.band_gradient_opacity_slider.setValue(opacity)
+            self._loading_field_style = was_loading
+        self._selected_field_style_changed()
+
+    def _band_gradient_opacity_changed(self, opacity: int) -> None:
+        self.band_gradient_opacity_value.setText(f"{opacity}%")
+        if self._loading_field_style:
+            return
+        color = QColor(self.band_gradient_button.color())
+        if not color.isValid():
+            color = QColor("#111827")
+        color.setAlpha(round(255 * opacity / 100))
+        color_format = (
+            QColor.NameFormat.HexRgb
+            if opacity == 100
+            else QColor.NameFormat.HexArgb
+        )
+        self._loading_field_style = True
+        self.band_gradient_button.set_color(color.name(color_format))
+        self._loading_field_style = False
+        self._selected_field_style_changed()
 
     def _selected_field_style_changed(self, *_args) -> None:
         if self._loading_field_style:
@@ -2490,20 +3139,23 @@ class BoxCustomizationDialog(QDialog):
         parent_id = previous_style.get("parent_id", "")
         self.field_styles[field_id] = {
             "background_color": self.band_background_button.color(),
-            "container_color": self.band_container_button.color(),
+            "fill_mode": str(self.band_fill_combo.currentData() or "solid"),
+            "gradient_color_2": self.band_gradient_button.color(),
+            "container_color": "",
             "text_color": self.band_text_button.color(),
             "outline_color": self.band_outline_button.color(),
             "outline_width": str(self.band_outline_width_spin.value()),
-            "border_color": self.band_border_button.color(),
-            "border_width": str(self.band_border_width_spin.value()),
+            "border_color": "#000000",
+            "border_width": "0",
             "alignment": str(self.band_alignment_combo.currentData() or "center"),
             "font_weight": str(self.band_font_weight_combo.currentData() or 700),
             "font_size": str(self.band_font_size_spin.value()),
-            "height_weight": str(self.band_height_spin.value()),
+            "height_weight": "100",
             "padding": str(self.band_padding_spin.value()),
-            "inset": str(self.band_inset_spin.value()),
-            "corner_radius": str(self.band_corner_radius_spin.value()),
+            "inset": "0",
+            "corner_radius": "0",
             "parent_id": parent_id,
+            "shape": previous_style.get("shape", "rectangle"),
             "overlay_x": previous_style.get("overlay_x", ""),
             "overlay_y": previous_style.get("overlay_y", ""),
             "overlay_width": previous_style.get("overlay_width", ""),
@@ -2530,7 +3182,7 @@ class BoxCustomizationDialog(QDialog):
         self._image_item.set_fields(fields)
         current_item = self.field_order_list.currentItem()
         if current_item is not None:
-            type_label = "IMAGE" if field.get("type") == "image" else "TEXT"
+            type_label = self._field_type_label(str(field.get("type", "text")))
             current_item.setText(f"{type_label}  ·  {field['label']}")
         self._update_preview()
 
@@ -2615,6 +3267,114 @@ class BoxCustomizationDialog(QDialog):
         self._sync_order_item_hierarchy()
         self._update_preview()
 
+    def _palette_item_activated(self, item_kind: str) -> None:
+        self._add_content_item(self._selected_field_id(), item_kind)
+
+    def _preview_item_dropped(self, item_kind: str, position: QPoint) -> None:
+        self._add_content_item(self._selected_field_id(), item_kind, position)
+
+    def _show_add_item_menu(self, source_id: str = "") -> None:
+        if source_id:
+            self._preview_field_selected(source_id)
+        menu = QMenu(self)
+        options = (
+            ("Text", "text"),
+            ("Rectangle", "rectangle"),
+            ("Rounded rectangle", "rounded"),
+            ("Circle", "circle"),
+            ("Ellipse", "ellipse"),
+            ("Pill", "pill"),
+            ("Triangle", "triangle"),
+            ("Diamond", "diamond"),
+            ("Hexagon", "hexagon"),
+            ("Star", "star"),
+        )
+        for label, item_kind in options:
+            action = menu.addAction(label)
+            action.setData(item_kind)
+        current_item = self.field_order_list.currentItem()
+        menu_position = self.field_order_list.mapToGlobal(
+            self.field_order_list.visualItemRect(current_item).bottomLeft()
+            if current_item is not None
+            else self.field_order_list.rect().center()
+        )
+        chosen = menu.exec(menu_position)
+        if chosen is not None:
+            self._add_content_item(source_id, str(chosen.data() or "text"))
+
+    def _add_content_item(
+        self,
+        source_id: str,
+        item_kind: str,
+        drop_position: QPoint | None = None,
+    ) -> str:
+        fields = self._image_item.display_fields()
+        source_index = next(
+            (
+                index
+                for index, field in enumerate(fields)
+                if str(field.get("id", "")) == source_id
+            ),
+            len(fields) - 1,
+        )
+        new_id = f"field_{uuid4().hex[:8]}"
+        is_shape = item_kind != "text"
+        label = item_kind.replace("_", " ").title() if is_shape else "Text"
+        field_type = "shape" if is_shape else "text"
+        new_field = {
+            "id": new_id,
+            "type": field_type,
+            "label": label,
+            "value": "Text",
+            "role": "",
+        }
+        fields.insert(source_index + 1, new_field)
+        self._image_item.set_fields(fields)
+        self.field_types[new_id] = field_type
+        self.field_roles[new_id] = "category"
+        self._new_field_sources[new_id] = ""
+        style = self._complete_field_style({}, "#2563eb", "#ffffff")
+        style["shape"] = normalized_shape(item_kind if is_shape else "rectangle")
+        width, height = (700, 160) if not is_shape else (700, 220)
+        if item_kind == "circle":
+            width, height = 350, 207
+        elif item_kind in {"triangle", "diamond", "hexagon", "star"}:
+            width, height = 520, 310
+        center_x = 500
+        center_y = 500
+        if drop_position is not None:
+            card = self.box_preview._canvas_rect().adjusted(8, 8, -8, -8)
+            if not card.isEmpty():
+                center_x = round(
+                    (drop_position.x() - card.x()) * 1000 / card.width()
+                )
+                center_y = round(
+                    (drop_position.y() - card.y()) * 1000 / card.height()
+                )
+        style.update(
+            {
+                "overlay_x": str(max(0, min(1000 - width, center_x - width // 2))),
+                "overlay_y": str(max(0, min(1000 - height, center_y - height // 2))),
+                "overlay_width": str(width),
+                "overlay_height": str(height),
+            }
+        )
+        self.field_styles[new_id] = style
+
+        type_label = self._field_type_label(field_type)
+        list_item = QListWidgetItem(f"{type_label}  ·  {label}")
+        list_item.setData(Qt.ItemDataRole.UserRole, new_id)
+        list_item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
+        list_item.setData(Qt.ItemDataRole.UserRole + 2, "")
+        list_item.setToolTip(
+            "Drag to reorder, or drop onto an image to make an overlay"
+        )
+        insert_row = max(0, self.field_order_list.currentRow() + 1)
+        self.field_order_list.insertItem(insert_row, list_item)
+        self.field_order_list.setCurrentItem(list_item)
+        self._field_order_changed()
+        return new_id
+
     def _add_content_below(self, source_id: str = "") -> None:
         if source_id:
             self._preview_field_selected(source_id)
@@ -2653,7 +3413,7 @@ class BoxCustomizationDialog(QDialog):
                 )
             )
 
-        type_label = "IMAGE" if field_type == "image" else "TEXT"
+        type_label = self._field_type_label(field_type)
         list_item = QListWidgetItem(
             f"{type_label}  ·  {duplicate['label']}"
         )
@@ -2715,7 +3475,7 @@ class BoxCustomizationDialog(QDialog):
         for field in ordered_fields:
             field_id = str(field.get("id", ""))
             field_type = str(field.get("type", "text"))
-            type_label = "IMAGE" if field_type == "image" else "TEXT"
+            type_label = self._field_type_label(field_type)
             item = QListWidgetItem(
                 f"{type_label}  ·  {str(field.get('label') or 'Input')}"
             )
@@ -3182,10 +3942,13 @@ class MainWindow(QMainWindow):
         columns = self.project.preview_max_columns
         percent = (getattr(item, f"image_height_percent_{columns}", 0)
                    or getattr(self.project, f"image_height_percent_{columns}"))
-        height = int(self.project.height * percent / 100)
-        if len(images) == len(fields):
-            height = self.project.height
-        frame = QSize(CANVAS_WIDTH // columns, max(1, height // len(images)))
+        frame = image_field_frame_size(
+            fields,
+            field_id,
+            self.project.field_styles,
+            QSize(CANVAS_WIDTH // columns, self.project.height),
+            percent,
+        )
         dialog = ImageEditorDialog(
             str(field.get("value", "")), frame, item.image_fit or self.project.image_fit,
             item.image_transforms.get(field_id), self,

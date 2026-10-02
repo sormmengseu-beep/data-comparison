@@ -99,6 +99,9 @@ QGroupBox#DesignerSection::title {
     color: @text;
     background: @panel;
 }
+QGroupBox#DesignerSection[accentSection="true"] {
+    border: 1px solid @accentBorder;
+}
 QWidget#DesignerPreviewPanel {
     background: @panel;
     border: 1px solid @border;
@@ -115,7 +118,7 @@ QWidget#DesignerFooter {
 }
 QListWidget#DesignerOrderList {
     background: @input;
-    border: 1px solid @border;
+    border: 1px solid @accentBorder;
     border-radius: 10px;
     padding: 4px;
     outline: none;
