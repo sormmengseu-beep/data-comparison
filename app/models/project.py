@@ -231,6 +231,8 @@ def _field_styles(value: object) -> dict[str, dict[str, str]]:
             ("font_size", 0, 0, 120),
             ("height_weight", 100, 25, 400),
             ("padding", 14, 0, 64),
+            ("inset", 0, 0, 96),
+            ("corner_radius", 0, 0, 64),
             ("font_weight", 700, 100, 900),
         ):
             try:
@@ -240,6 +242,34 @@ def _field_styles(value: object) -> dict[str, dict[str, str]]:
             style[key] = str(max(minimum, min(maximum, number)))
         style["outline_color"] = str(raw_style.get("outline_color") or "#000000")
         style["border_color"] = str(raw_style.get("border_color") or "#000000")
+        style["container_color"] = str(raw_style.get("container_color") or "")
+        style["parent_id"] = str(raw_style.get("parent_id") or "")
+        gradient_mode = str(raw_style.get("gradient_mode") or "bottom")
+        style["gradient_mode"] = (
+            gradient_mode
+            if gradient_mode in {"none", "bottom", "top", "left", "right", "tint"}
+            else "bottom"
+        )
+        style["gradient_color"] = str(
+            raw_style.get("gradient_color") or "#000000"
+        )
+        try:
+            gradient_opacity = int(raw_style.get("gradient_opacity", 65))
+        except (TypeError, ValueError):
+            gradient_opacity = 65
+        style["gradient_opacity"] = str(max(0, min(100, gradient_opacity)))
+        for key in ("overlay_x", "overlay_y", "overlay_width", "overlay_height"):
+            raw_number = raw_style.get(key)
+            if raw_number in (None, ""):
+                style[key] = ""
+                continue
+            try:
+                number = int(raw_number)
+            except (TypeError, ValueError):
+                style[key] = ""
+                continue
+            minimum = 50 if key in {"overlay_width", "overlay_height"} else 0
+            style[key] = str(max(minimum, min(1000, number)))
         alignment = str(raw_style.get("alignment") or "center")
         style["alignment"] = alignment if alignment in {"left", "center", "right"} else "center"
         result[str(field_id)] = style

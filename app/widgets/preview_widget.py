@@ -1,7 +1,16 @@
 from __future__ import annotations
 
 from PySide6.QtCore import QPoint, QRect, QSize, Qt, Signal
-from PySide6.QtGui import QColor, QFont, QFontMetrics, QImage, QPainter, QPen, QPixmap
+from PySide6.QtGui import (
+    QColor,
+    QFont,
+    QFontMetrics,
+    QImage,
+    QLinearGradient,
+    QPainter,
+    QPen,
+    QPixmap,
+)
 from PySide6.QtWidgets import QSizePolicy, QWidget
 
 from app.models.comparison_item import ComparisonItem
@@ -256,8 +265,25 @@ class PreviewWidget(QWidget):
         project_height = getattr(self._project, f"image_height_percent_{columns}", 56)
         image_percent = max(35, min(75, item_height or project_height))
         fields = item.display_fields()
-        image_fields = [field for field in fields if field.get("type") == "image"]
-        content_fields = [field for field in fields if field.get("type") != "image"]
+        fields_by_id = {str(field.get("id", "")): field for field in fields}
+        children_by_parent: dict[str, list[dict[str, str]]] = {}
+        root_fields: list[dict[str, str]] = []
+        for field in fields:
+            field_id = str(field.get("id", ""))
+            parent_id = str(
+                self._project.field_styles.get(field_id, {}).get("parent_id", "")
+            )
+            parent = fields_by_id.get(parent_id)
+            if (
+                field.get("type") != "image"
+                and parent is not None
+                and parent.get("type") == "image"
+            ):
+                children_by_parent.setdefault(parent_id, []).append(field)
+            else:
+                root_fields.append(field)
+        image_fields = [field for field in root_fields if field.get("type") == "image"]
+        content_fields = [field for field in root_fields if field.get("type") != "image"]
         image_height = int(rect.height() * image_percent / 100) if image_fields else 0
         if not content_fields:
             image_height = rect.height()
@@ -291,7 +317,7 @@ class PreviewWidget(QWidget):
         row_y = rect.y()
         image_index = 0
         content_index = 0
-        for field_data in fields:
+        for field_data in root_fields:
             field_type = str(field_data.get("type", "text"))
             field_id = str(field_data.get("id", ""))
             if field_type == "image":
@@ -342,6 +368,65 @@ class PreviewWidget(QWidget):
                 )
                 if not image_region.isEmpty():
                     self._image_regions.append((image_region, item.id, field_id))
+                child_fields = children_by_parent.get(field_id, [])
+                if child_fields:
+                    image_style = self._project.field_styles.get(field_id, {})
+                    self._draw_image_gradient(painter, row_rect, image_style)
+                    child_styles = [
+                        self._resolved_field_style(
+                            item,
+                            child,
+                            self._field_role(child, child_index),
+                        )
+                        for child_index, child in enumerate(child_fields)
+                    ]
+                    child_weights = [
+                        self._style_int(style, "height_weight", 100, 25, 400)
+                        for style in child_styles
+                    ]
+                    child_y = row_rect.y()
+                    child_pixels = row_rect.height()
+                    child_weight_total = sum(child_weights)
+                    for child_index, child in enumerate(child_fields):
+                        child_weight = child_weights[child_index]
+                        child_height = (
+                            child_pixels
+                            if child_index == len(child_fields) - 1
+                            else max(
+                                1,
+                                round(
+                                    child_pixels
+                                    * child_weight
+                                    / max(1, child_weight_total)
+                                ),
+                            )
+                        )
+                        child_rect = QRect(
+                            row_rect.x(), child_y, row_rect.width(), child_height
+                        )
+                        child_role = self._field_role(child, child_index)
+                        default_size = (
+                            base_font_size
+                            if child_role in {"name", "rank"}
+                            else max(
+                                1 if self._project.text_font_size else 17,
+                                int(base_font_size * 0.88),
+                            )
+                        )
+                        child_size = self._style_int(
+                            child_styles[child_index], "font_size", 0, 0, 120
+                        ) or default_size
+                        self._draw_text_band(
+                            painter,
+                            child_rect,
+                            str(child.get("value", "")),
+                            child_styles[child_index],
+                            child_size,
+                            overlay=True,
+                        )
+                        child_y += child_height
+                        child_pixels -= child_height
+                        child_weight_total -= child_weight
                 row_y += row_height
                 remaining_image_pixels -= row_height
                 remaining_image_weight -= image_weight
@@ -407,12 +492,42 @@ class PreviewWidget(QWidget):
             "outline_width": saved.get("outline_width", "0"),
             "border_color": saved.get("border_color", "#000000"),
             "border_width": saved.get("border_width", "0"),
+            "container_color": saved.get("container_color", ""),
+            "inset": saved.get("inset", "0"),
+            "corner_radius": saved.get("corner_radius", "0"),
             "alignment": saved.get("alignment", "center"),
             "font_size": saved.get("font_size", "0"),
             "height_weight": saved.get("height_weight", "100"),
             "padding": saved.get("padding", "14"),
             "font_weight": saved.get("font_weight", "700"),
+            "parent_id": saved.get("parent_id", ""),
         }
+
+    def _draw_image_gradient(
+        self, painter: QPainter, rect: QRect, style: dict[str, str]
+    ) -> None:
+        mode = str(style.get("gradient_mode") or "bottom")
+        if mode == "none":
+            return
+        opacity = self._style_int(style, "gradient_opacity", 65, 0, 100)
+        color = QColor(style.get("gradient_color") or "#000000")
+        color.setAlpha(round(255 * opacity / 100))
+        if mode == "tint":
+            painter.fillRect(rect, color)
+            return
+        transparent = QColor(color)
+        transparent.setAlpha(0)
+        if mode == "top":
+            gradient = QLinearGradient(rect.topLeft(), rect.bottomLeft())
+        elif mode == "left":
+            gradient = QLinearGradient(rect.topLeft(), rect.topRight())
+        elif mode == "right":
+            gradient = QLinearGradient(rect.topRight(), rect.topLeft())
+        else:
+            gradient = QLinearGradient(rect.bottomLeft(), rect.topLeft())
+        gradient.setColorAt(0.0, color)
+        gradient.setColorAt(0.72, transparent)
+        painter.fillRect(rect, gradient)
 
     def _field_role(self, field_data: dict[str, str], index: int) -> str:
         role = str(field_data.get("role", ""))
@@ -432,10 +547,24 @@ class PreviewWidget(QWidget):
         text: str,
         style: dict[str, str],
         font_size: int,
+        overlay: bool = False,
     ) -> None:
-        painter.fillRect(rect, QColor(style["background_color"]))
+        background_color = QColor(style["background_color"])
+        container_color = QColor(style.get("container_color") or style["background_color"])
+        inset = self._style_int(style, "inset", 0, 0, 96)
+        band_rect = rect.adjusted(inset, 0, -inset, 0)
+        corner_radius = self._style_int(style, "corner_radius", 0, 0, 64)
+        if not overlay:
+            painter.fillRect(rect, container_color)
+        painter.setPen(Qt.PenStyle.NoPen)
+        if not overlay or inset or corner_radius:
+            painter.setBrush(background_color)
+            if corner_radius:
+                painter.drawRoundedRect(band_rect, corner_radius, corner_radius)
+            else:
+                painter.drawRect(band_rect)
         padding = self._style_int(style, "padding", 14, 0, 64)
-        target = rect.adjusted(padding, 4, -padding, -4)
+        target = band_rect.adjusted(padding, 4, -padding, -4)
         horizontal = {
             "left": Qt.AlignmentFlag.AlignLeft,
             "right": Qt.AlignmentFlag.AlignRight,
@@ -476,7 +605,11 @@ class PreviewWidget(QWidget):
             painter.setBrush(Qt.BrushStyle.NoBrush)
             painter.setPen(QPen(QColor(style.get("border_color", "#000000")), border_width))
             inset = max(1, border_width // 2)
-            painter.drawRect(rect.adjusted(inset, inset, -inset, -inset))
+            border_rect = band_rect.adjusted(inset, inset, -inset, -inset)
+            if corner_radius:
+                painter.drawRoundedRect(border_rect, corner_radius, corner_radius)
+            else:
+                painter.drawRect(border_rect)
 
     @staticmethod
     def _style_int(

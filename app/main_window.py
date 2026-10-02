@@ -5,7 +5,17 @@ from pathlib import Path
 from uuid import uuid4
 
 from PySide6.QtCore import QElapsedTimer, QPoint, QRect, QSettings, QSize, QTimer, Qt, Signal
-from PySide6.QtGui import QAction, QColor, QFont, QFontMetrics, QKeySequence, QPainter, QPen, QShortcut
+from PySide6.QtGui import (
+    QAction,
+    QColor,
+    QFont,
+    QFontMetrics,
+    QKeySequence,
+    QLinearGradient,
+    QPainter,
+    QPen,
+    QShortcut,
+)
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QComboBox,
@@ -152,7 +162,16 @@ class ContentOrderDelegate(QStyledItemDelegate):
                 painter.drawEllipse(QPoint(x, y), 1, 1)
 
         add_rect, delete_rect = self.action_rects(option.rect)
-        text_rect = row_rect.adjusted(31, 0, -(72), 0)
+        is_parent = bool(index.data(Qt.ItemDataRole.UserRole + 3))
+        parent_id = str(index.data(Qt.ItemDataRole.UserRole + 2) or "")
+        child_indent = 26 if parent_id else 0
+        if parent_id:
+            painter.setPen(QPen(QColor("#60a5fa"), 2))
+            branch_x = row_rect.left() + 17
+            painter.drawLine(branch_x, row_rect.top() + 7, branch_x, row_rect.center().y())
+            painter.drawLine(branch_x, row_rect.center().y(), branch_x + 11, row_rect.center().y())
+        trailing_space = 158 if is_parent else 72
+        text_rect = row_rect.adjusted(31 + child_indent, 0, -trailing_space, 0)
         painter.setFont(option.font)
         display_text = str(index.data(Qt.ItemDataRole.DisplayRole) or "")
         type_text, separator, label_text = display_text.partition("  ·  ")
@@ -173,6 +192,24 @@ class ContentOrderDelegate(QStyledItemDelegate):
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
             label_text,
         )
+
+        if is_parent:
+            badge_rect = QRect(
+                add_rect.left() - 84,
+                row_rect.center().y() - 10,
+                76,
+                20,
+            )
+            badge_fill = QColor("#dbeafe" if not is_dark else "#17365f")
+            painter.setPen(QPen(QColor("#3b82f6"), 1))
+            painter.setBrush(badge_fill)
+            painter.drawRoundedRect(badge_rect, 10, 10)
+            badge_font = QFont(option.font)
+            badge_font.setPixelSize(9)
+            badge_font.setBold(True)
+            painter.setFont(badge_font)
+            painter.setPen(QColor("#2563eb" if not is_dark else "#93c5fd"))
+            painter.drawText(badge_rect, Qt.AlignmentFlag.AlignCenter, "BACKGROUND")
 
         self._draw_action_button(painter, add_rect, QColor("#2563eb"), False)
         can_delete = bool(option.widget and option.widget.count() > 1)
@@ -207,6 +244,7 @@ class ContentOrderDelegate(QStyledItemDelegate):
 class ContentOrderList(QListWidget):
     add_requested = Signal(str)
     delete_requested = Signal(str)
+    hierarchy_drop_requested = Signal(str, str, bool, str)
 
     def mousePressEvent(self, event) -> None:
         index = self.indexAt(event.position().toPoint())
@@ -228,6 +266,42 @@ class ContentOrderList(QListWidget):
                 return
         super().mousePressEvent(event)
 
+    def dropEvent(self, event) -> None:
+        source_item = self.currentItem()
+        if source_item is None:
+            super().dropEvent(event)
+            return
+        source_id = str(source_item.data(Qt.ItemDataRole.UserRole) or "")
+        source_type = str(source_item.data(Qt.ItemDataRole.UserRole + 1) or "")
+        position = event.position().toPoint()
+        target_index = self.indexAt(position)
+        if not target_index.isValid():
+            self.hierarchy_drop_requested.emit(source_id, "", True, "")
+            event.acceptProposedAction()
+            return
+        target_item = self.item(target_index.row())
+        target_id = str(target_item.data(Qt.ItemDataRole.UserRole) or "")
+        if not source_id or source_id == target_id:
+            event.ignore()
+            return
+        target_type = str(target_item.data(Qt.ItemDataRole.UserRole + 1) or "")
+        target_parent = str(target_item.data(Qt.ItemDataRole.UserRole + 2) or "")
+        target_rect = self.visualItemRect(target_item)
+        relative_y = position.y() - target_rect.top()
+        middle_drop = target_rect.height() * 0.2 <= relative_y <= target_rect.height() * 0.8
+        drop_after = relative_y >= target_rect.height() / 2
+        parent_id = ""
+        if source_type != "image":
+            if target_type == "image" and middle_drop:
+                parent_id = target_id
+                drop_after = True
+            elif target_parent:
+                parent_id = target_parent
+        self.hierarchy_drop_requested.emit(
+            source_id, target_id, drop_after, parent_id
+        )
+        event.acceptProposedAction()
+
 
 BOX_STYLE_PRESETS: list[dict[str, object]] = [
     {
@@ -241,6 +315,55 @@ BOX_STYLE_PRESETS: list[dict[str, object]] = [
             "category": {"background_color": "#050505", "text_color": "#ffffff"},
             "rank": {"background_color": "#fbb10b", "text_color": "#080808"},
             "value": {"background_color": "#087be8", "text_color": "#ffffff"},
+        },
+    },
+    {
+        "name": "Hall of Fame Profile",
+        "layout_template": "hall_of_fame",
+        "border_color": "#061b4f",
+        "text_font_family": "Arial",
+        "text_font_size": 0,
+        "image_fit": "cover",
+        "image_height_percent": 75,
+        "roles": {
+            "name": {
+                "background_color": "#082b70",
+                "container_color": "#082b70",
+                "text_color": "#ffffff",
+                "font_size": "46",
+                "font_weight": "800",
+                "height_weight": "120",
+                "padding": "18",
+            },
+            "category": {
+                "background_color": "#ffffff",
+                "container_color": "#050505",
+                "text_color": "#17417e",
+                "font_size": "38",
+                "font_weight": "800",
+                "height_weight": "110",
+                "padding": "12",
+                "inset": "26",
+                "corner_radius": "28",
+            },
+            "rank": {
+                "background_color": "#050505",
+                "container_color": "#050505",
+                "text_color": "#ffffff",
+                "font_size": "36",
+                "font_weight": "500",
+                "height_weight": "85",
+                "padding": "12",
+            },
+            "value": {
+                "background_color": "#050505",
+                "container_color": "#050505",
+                "text_color": "#ffffff",
+                "font_size": "34",
+                "font_weight": "500",
+                "height_weight": "85",
+                "padding": "12",
+            },
         },
     },
     {
@@ -565,12 +688,17 @@ class BoxStylePreview(QWidget):
         self.field_styles: dict[str, dict[str, str]] = {}
         self._image_cache = ImageCache()
         self._field_regions: list[tuple[QRect, str, str]] = []
+        self._overlay_parent_regions: dict[str, QRect] = {}
         self._press_position: QPoint | None = None
         self._pressed_field_id = ""
         self._pressed_field_type = ""
         self._dragging_field_id = ""
         self._drop_target: tuple[str, bool] | None = None
         self._selected_field_id = ""
+        self._overlay_interaction = ""
+        self._resize_handle = ""
+        self._interaction_rect = QRect()
+        self._interaction_parent_rect = QRect()
         self.setMouseTracking(True)
         self.setToolTip(
             "Drag any block to reorder it. Click an image to crop or reposition it."
@@ -580,11 +708,26 @@ class BoxStylePreview(QWidget):
 
     def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
-            for region, field_id, field_type in self._field_regions:
-                if region.contains(event.position().toPoint()):
-                    self._press_position = event.position().toPoint()
+            position = event.position().toPoint()
+            hit_regions = list(reversed(self._field_regions))
+            if self._selected_field_id:
+                hit_regions.sort(
+                    key=lambda entry: entry[1] != self._selected_field_id
+                )
+            for region, field_id, field_type in hit_regions:
+                parent_rect = self._overlay_parent_regions.get(field_id)
+                handle = self._handle_at(position, region) if parent_rect else ""
+                if handle or region.contains(position):
+                    self._press_position = position
                     self._pressed_field_id = field_id
                     self._pressed_field_type = field_type
+                    if parent_rect is not None:
+                        self._selected_field_id = field_id
+                        self.field_selected.emit(field_id)
+                        self._overlay_interaction = "resize" if handle else "move"
+                        self._resize_handle = handle
+                        self._interaction_rect = QRect(region)
+                        self._interaction_parent_rect = QRect(parent_rect)
                     self.setCursor(Qt.CursorShape.ClosedHandCursor)
                     event.accept()
                     return
@@ -592,6 +735,14 @@ class BoxStylePreview(QWidget):
 
     def mouseMoveEvent(self, event) -> None:
         position = event.position().toPoint()
+        if (
+            self._overlay_interaction
+            and self._press_position is not None
+            and event.buttons() & Qt.MouseButton.LeftButton
+        ):
+            self._update_overlay_geometry(position)
+            event.accept()
+            return
         if (
             self._press_position is not None
             and event.buttons() & Qt.MouseButton.LeftButton
@@ -601,7 +752,7 @@ class BoxStylePreview(QWidget):
             self._dragging_field_id = self._pressed_field_id
         if self._dragging_field_id:
             self._drop_target = None
-            for region, field_id, _field_type in self._field_regions:
+            for region, field_id, _field_type in reversed(self._field_regions):
                 if region.contains(position) and field_id != self._dragging_field_id:
                     self._drop_target = (field_id, position.y() >= region.center().y())
                     break
@@ -609,7 +760,31 @@ class BoxStylePreview(QWidget):
             self.update()
             event.accept()
             return
-        if any(region.contains(position) for region, _field_id, _type in self._field_regions):
+        selected_region = next(
+            (
+                region
+                for region, field_id, _type in self._field_regions
+                if field_id == self._selected_field_id
+                and field_id in self._overlay_parent_regions
+            ),
+            None,
+        )
+        handle = self._handle_at(position, selected_region) if selected_region else ""
+        if handle:
+            cursor = {
+                "n": Qt.CursorShape.SizeVerCursor,
+                "s": Qt.CursorShape.SizeVerCursor,
+                "e": Qt.CursorShape.SizeHorCursor,
+                "w": Qt.CursorShape.SizeHorCursor,
+                "nw": Qt.CursorShape.SizeFDiagCursor,
+                "se": Qt.CursorShape.SizeFDiagCursor,
+                "ne": Qt.CursorShape.SizeBDiagCursor,
+                "sw": Qt.CursorShape.SizeBDiagCursor,
+            }[handle]
+            self.setCursor(cursor)
+        elif selected_region and selected_region.contains(position):
+            self.setCursor(Qt.CursorShape.SizeAllCursor)
+        elif any(region.contains(position) for region, _field_id, _type in self._field_regions):
             self.setCursor(Qt.CursorShape.OpenHandCursor)
         else:
             self.unsetCursor()
@@ -617,6 +792,10 @@ class BoxStylePreview(QWidget):
 
     def mouseReleaseEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton and self._pressed_field_id:
+            if self._overlay_interaction:
+                self._reset_drag_state()
+                event.accept()
+                return
             if self._dragging_field_id and self._drop_target is not None:
                 target_id, drop_after = self._drop_target
                 self.field_reorder_requested.emit(
@@ -637,8 +816,88 @@ class BoxStylePreview(QWidget):
         self._pressed_field_type = ""
         self._dragging_field_id = ""
         self._drop_target = None
+        self._overlay_interaction = ""
+        self._resize_handle = ""
+        self._interaction_rect = QRect()
+        self._interaction_parent_rect = QRect()
         self.unsetCursor()
         self.update()
+
+    @staticmethod
+    def _resize_handles(rect: QRect) -> dict[str, QRect]:
+        size = 9
+        half = size // 2
+        points = {
+            "nw": rect.topLeft(),
+            "n": QPoint(rect.center().x(), rect.top()),
+            "ne": rect.topRight(),
+            "e": QPoint(rect.right(), rect.center().y()),
+            "se": rect.bottomRight(),
+            "s": QPoint(rect.center().x(), rect.bottom()),
+            "sw": rect.bottomLeft(),
+            "w": QPoint(rect.left(), rect.center().y()),
+        }
+        return {
+            name: QRect(point.x() - half, point.y() - half, size, size)
+            for name, point in points.items()
+        }
+
+    def _handle_at(self, position: QPoint, rect: QRect | None) -> str:
+        if rect is None or rect.isEmpty():
+            return ""
+        for name, handle_rect in self._resize_handles(rect).items():
+            if handle_rect.adjusted(-2, -2, 2, 2).contains(position):
+                return name
+        return ""
+
+    def _update_overlay_geometry(self, position: QPoint) -> None:
+        delta = position - self._press_position
+        original = self._interaction_rect
+        parent = self._interaction_parent_rect
+        min_width = min(42, parent.width())
+        min_height = min(28, parent.height())
+        if self._overlay_interaction == "move":
+            x = max(parent.left(), min(original.x() + delta.x(), parent.right() - original.width() + 1))
+            y = max(parent.top(), min(original.y() + delta.y(), parent.bottom() - original.height() + 1))
+            updated = QRect(x, y, original.width(), original.height())
+        else:
+            left = original.left()
+            top = original.top()
+            right = original.right() + 1
+            bottom = original.bottom() + 1
+            handle = self._resize_handle
+            if "w" in handle:
+                left = max(parent.left(), min(left + delta.x(), right - min_width))
+            if "e" in handle:
+                right = min(parent.right() + 1, max(right + delta.x(), left + min_width))
+            if "n" in handle:
+                top = max(parent.top(), min(top + delta.y(), bottom - min_height))
+            if "s" in handle:
+                bottom = min(parent.bottom() + 1, max(bottom + delta.y(), top + min_height))
+            updated = QRect(left, top, right - left, bottom - top)
+        self._store_overlay_rect(
+            self._pressed_field_id, updated, self._interaction_parent_rect
+        )
+        self.update()
+
+    def _store_overlay_rect(
+        self, field_id: str, rect: QRect, parent_rect: QRect
+    ) -> None:
+        if parent_rect.width() <= 0 or parent_rect.height() <= 0:
+            return
+        width = max(50, min(1000, round(rect.width() * 1000 / parent_rect.width())))
+        height = max(50, min(1000, round(rect.height() * 1000 / parent_rect.height())))
+        x = max(0, min(1000 - width, round((rect.x() - parent_rect.x()) * 1000 / parent_rect.width())))
+        y = max(0, min(1000 - height, round((rect.y() - parent_rect.y()) * 1000 / parent_rect.height())))
+        style = self.field_styles.setdefault(field_id, {})
+        style.update(
+            {
+                "overlay_x": str(x),
+                "overlay_y": str(y),
+                "overlay_width": str(width),
+                "overlay_height": str(height),
+            }
+        )
 
     def set_style(
         self,
@@ -665,14 +924,30 @@ class BoxStylePreview(QWidget):
 
     def paintEvent(self, event) -> None:
         self._field_regions = []
+        self._overlay_parent_regions = {}
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.fillRect(self.rect(), QColor("#0b0d10"))
         card = self.rect().adjusted(8, 8, -8, -8)
         fields = self.item.display_fields()
-        image_fields = [field for field in fields if field.get("type") == "image"]
+        fields_by_id = {str(field.get("id", "")): field for field in fields}
+        children_by_parent: dict[str, list[dict[str, str]]] = {}
+        root_fields: list[dict[str, str]] = []
+        for field in fields:
+            field_id = str(field.get("id", ""))
+            parent_id = str(self.field_styles.get(field_id, {}).get("parent_id", ""))
+            parent = fields_by_id.get(parent_id)
+            if (
+                field.get("type") != "image"
+                and parent is not None
+                and parent.get("type") == "image"
+            ):
+                children_by_parent.setdefault(parent_id, []).append(field)
+            else:
+                root_fields.append(field)
+        image_fields = [field for field in root_fields if field.get("type") == "image"]
         content_fields = [
-            field for field in fields if field.get("type") != "image"
+            field for field in root_fields if field.get("type") != "image"
         ]
         total_image_height = (
             int(card.height() * self.image_height_percent / 100) if image_fields else 0
@@ -701,7 +976,7 @@ class BoxStylePreview(QWidget):
         row_y = card.y()
         image_index = 0
         content_index = 0
-        for field_data in fields:
+        for field_data in root_fields:
             field_type = str(field_data.get("type", "text"))
             field_id = str(field_data.get("id", ""))
             if field_type == "image":
@@ -745,6 +1020,59 @@ class BoxStylePreview(QWidget):
                     self.item.image_crop_x,
                     self.item.image_crop_y,
                 )
+                child_fields = children_by_parent.get(field_id, [])
+                if child_fields:
+                    self._draw_image_gradient(
+                        painter,
+                        row,
+                        self.field_styles.get(field_id, {}),
+                    )
+                    child_weights = [
+                        self._style_int(
+                            self.field_styles.get(str(child.get("id", "")), {}),
+                            "height_weight",
+                            100,
+                            25,
+                            400,
+                        )
+                        for child in child_fields
+                    ]
+                    child_y = row.y()
+                    child_pixels = row.height()
+                    child_weight_total = sum(child_weights)
+                    for child_index, child in enumerate(child_fields):
+                        child_weight = child_weights[child_index]
+                        child_height = (
+                            child_pixels
+                            if child_index == len(child_fields) - 1
+                            else max(
+                                1,
+                                round(
+                                    child_pixels
+                                    * child_weight
+                                    / max(1, child_weight_total)
+                                ),
+                            )
+                        )
+                        child_rect = QRect(
+                            row.x(), child_y, row.width(), child_height
+                        )
+                        child_id = str(child.get("id", ""))
+                        child_rect = self._overlay_rect(
+                            row,
+                            child_rect,
+                            self.field_styles.get(child_id, {}),
+                        )
+                        self._field_regions.append(
+                            (child_rect, child_id, str(child.get("type", "text")))
+                        )
+                        self._overlay_parent_regions[child_id] = QRect(row)
+                        self._draw_overlay_text_band(
+                            painter, card, child_rect, child, child_index
+                        )
+                        child_y += child_height
+                        child_pixels -= child_height
+                        child_weight_total -= child_weight
                 row_y += row_height
                 remaining_image_pixels -= row_height
                 remaining_image_weight -= image_weight
@@ -753,14 +1081,28 @@ class BoxStylePreview(QWidget):
 
             role = self._preview_field_role(field_data, content_index)
             style = self.field_styles.get(str(field_data.get("id", "")), {})
-            painter.fillRect(
-                row, QColor(style.get("background_color", "#111827"))
+            scale = card.width() / (CANVAS_WIDTH / self.columns)
+            background_color = QColor(style.get("background_color", "#111827"))
+            container_color = QColor(
+                style.get("container_color") or background_color.name()
             )
+            painter.fillRect(row, container_color)
+            inset = max(0, round(self._style_int(style, "inset", 0, 0, 96) * scale))
+            band_rect = row.adjusted(inset, 0, -inset, 0)
+            corner_radius = max(
+                0,
+                round(self._style_int(style, "corner_radius", 0, 0, 64) * scale),
+            )
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.setBrush(background_color)
+            if corner_radius:
+                painter.drawRoundedRect(band_rect, corner_radius, corner_radius)
+            else:
+                painter.drawRect(band_rect)
             font_size = 15 if role in {"name", "rank"} else 13
             padding = self._style_int(style, "padding", 14, 0, 64)
-            scale = card.width() / (CANVAS_WIDTH / self.columns)
             preview_padding = max(2, round(padding * scale))
-            target = row.adjusted(preview_padding, 2, -preview_padding, -2)
+            target = band_rect.adjusted(preview_padding, 2, -preview_padding, -2)
             horizontal = {
                 "left": Qt.AlignmentFlag.AlignLeft,
                 "right": Qt.AlignmentFlag.AlignRight,
@@ -819,7 +1161,11 @@ class BoxStylePreview(QWidget):
                 painter.setBrush(Qt.BrushStyle.NoBrush)
                 painter.setPen(QPen(QColor(style.get("border_color", "#000000")), border_width))
                 inset = max(1, border_width // 2)
-                painter.drawRect(row.adjusted(inset, inset, -inset, -inset))
+                border_rect = band_rect.adjusted(inset, inset, -inset, -inset)
+                if corner_radius:
+                    painter.drawRoundedRect(border_rect, corner_radius, corner_radius)
+                else:
+                    painter.drawRect(border_rect)
             row_y += row_height
             remaining_text_pixels -= row_height
             remaining_text_weight -= weight
@@ -834,12 +1180,18 @@ class BoxStylePreview(QWidget):
                     painter.setBrush(Qt.BrushStyle.NoBrush)
                     painter.setPen(QPen(QColor("#60a5fa"), 2))
                     painter.drawRect(region.adjusted(2, 2, -3, -3))
-                    painter.setPen(Qt.PenStyle.NoPen)
-                    painter.setBrush(QColor("#dbeafe"))
-                    center_y = region.center().y()
-                    for x in (region.left() + 8, region.left() + 13):
-                        for y in (center_y - 5, center_y, center_y + 5):
-                            painter.drawEllipse(QPoint(x, y), 1, 1)
+                    if field_id in self._overlay_parent_regions:
+                        painter.setBrush(QColor("#ffffff"))
+                        painter.setPen(QPen(QColor("#2563eb"), 1))
+                        for handle_rect in self._resize_handles(region).values():
+                            painter.drawRoundedRect(handle_rect, 2, 2)
+                    else:
+                        painter.setPen(Qt.PenStyle.NoPen)
+                        painter.setBrush(QColor("#dbeafe"))
+                        center_y = region.center().y()
+                        for x in (region.left() + 8, region.left() + 13):
+                            for y in (center_y - 5, center_y, center_y + 5):
+                                painter.drawEllipse(QPoint(x, y), 1, 1)
                     break
         if self._dragging_field_id:
             for region, field_id, _field_type in self._field_regions:
@@ -857,6 +1209,129 @@ class BoxStylePreview(QWidget):
                         painter.drawLine(card.left(), y, card.right(), y)
                         break
         painter.end()
+
+    @staticmethod
+    def _overlay_rect(parent: QRect, fallback: QRect, style: dict[str, str]) -> QRect:
+        keys = ("overlay_x", "overlay_y", "overlay_width", "overlay_height")
+        if any(style.get(key, "") in (None, "") for key in keys):
+            return fallback
+        try:
+            x_value = max(0, min(1000, int(style["overlay_x"])))
+            y_value = max(0, min(1000, int(style["overlay_y"])))
+            width_value = max(50, min(1000, int(style["overlay_width"])))
+            height_value = max(50, min(1000, int(style["overlay_height"])))
+        except (TypeError, ValueError):
+            return fallback
+        width_value = min(width_value, 1000 - x_value)
+        height_value = min(height_value, 1000 - y_value)
+        width = max(1, round(parent.width() * width_value / 1000))
+        height = max(1, round(parent.height() * height_value / 1000))
+        x = parent.x() + round(parent.width() * x_value / 1000)
+        y = parent.y() + round(parent.height() * y_value / 1000)
+        return QRect(x, y, width, height)
+
+    def _draw_image_gradient(
+        self, painter: QPainter, rect: QRect, style: dict[str, str]
+    ) -> None:
+        mode = str(style.get("gradient_mode") or "bottom")
+        if mode == "none":
+            return
+        opacity = self._style_int(style, "gradient_opacity", 65, 0, 100)
+        color = QColor(style.get("gradient_color") or "#000000")
+        color.setAlpha(round(255 * opacity / 100))
+        if mode == "tint":
+            painter.fillRect(rect, color)
+            return
+        transparent = QColor(color)
+        transparent.setAlpha(0)
+        if mode == "top":
+            gradient = QLinearGradient(rect.topLeft(), rect.bottomLeft())
+        elif mode == "left":
+            gradient = QLinearGradient(rect.topLeft(), rect.topRight())
+        elif mode == "right":
+            gradient = QLinearGradient(rect.topRight(), rect.topLeft())
+        else:
+            gradient = QLinearGradient(rect.bottomLeft(), rect.topLeft())
+        gradient.setColorAt(0.0, color)
+        gradient.setColorAt(0.72, transparent)
+        painter.fillRect(rect, gradient)
+
+    def _draw_overlay_text_band(
+        self,
+        painter: QPainter,
+        card: QRect,
+        row: QRect,
+        field_data: dict[str, str],
+        content_index: int,
+    ) -> None:
+        style = self.field_styles.get(str(field_data.get("id", "")), {})
+        scale = card.width() / (CANVAS_WIDTH / self.columns)
+        inset = max(0, round(self._style_int(style, "inset", 0, 0, 96) * scale))
+        band_rect = row.adjusted(inset, 0, -inset, 0)
+        corner_radius = max(
+            0, round(self._style_int(style, "corner_radius", 0, 0, 64) * scale)
+        )
+        background = QColor(style.get("background_color", "#111827"))
+        if inset or corner_radius:
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.setBrush(background)
+            if corner_radius:
+                painter.drawRoundedRect(band_rect, corner_radius, corner_radius)
+            else:
+                painter.drawRect(band_rect)
+        role = self._preview_field_role(field_data, content_index)
+        font_size = 15 if role in {"name", "rank"} else 13
+        custom_size = self._style_int(style, "font_size", 0, 0, 120)
+        if custom_size:
+            font_size = max(1, round(custom_size * scale))
+        elif self.text_font_size:
+            source_size = self.text_font_size if role in {"name", "rank"} else max(
+                1, int(self.text_font_size * 0.88)
+            )
+            font_size = max(1, round(source_size * scale))
+        weight_value = self._style_int(style, "font_weight", 700, 100, 900)
+        weight_value = min(
+            (100, 200, 300, 400, 500, 600, 700, 800, 900),
+            key=lambda value: abs(value - weight_value),
+        )
+        painter.setFont(QFont(self.text_font_family, font_size, QFont.Weight(weight_value)))
+        padding = max(
+            2, round(self._style_int(style, "padding", 14, 0, 64) * scale)
+        )
+        target = band_rect.adjusted(padding, 2, -padding, -2)
+        horizontal = {
+            "left": Qt.AlignmentFlag.AlignLeft,
+            "right": Qt.AlignmentFlag.AlignRight,
+        }.get(style.get("alignment", "center"), Qt.AlignmentFlag.AlignHCenter)
+        flags = horizontal | Qt.AlignmentFlag.AlignVCenter | Qt.TextFlag.TextWordWrap
+        text = str(field_data.get("value", ""))
+        outline_width = max(
+            0, round(self._style_int(style, "outline_width", 0, 0, 8) * scale)
+        )
+        if outline_width:
+            painter.setPen(QColor(style.get("outline_color", "#000000")))
+            for distance in range(1, outline_width + 1):
+                for dx, dy in (
+                    (-distance, -distance), (0, -distance), (distance, -distance),
+                    (-distance, 0), (distance, 0),
+                    (-distance, distance), (0, distance), (distance, distance),
+                ):
+                    painter.drawText(target.translated(dx, dy), flags, text)
+        painter.setPen(QColor(style.get("text_color", "#ffffff")))
+        painter.drawText(target, flags, text)
+        border_width = max(
+            0, round(self._style_int(style, "border_width", 0, 0, 12) * scale)
+        )
+        if border_width:
+            painter.setBrush(Qt.BrushStyle.NoBrush)
+            painter.setPen(
+                QPen(QColor(style.get("border_color", "#000000")), border_width)
+            )
+            border_rect = band_rect.adjusted(1, 1, -2, -2)
+            if corner_radius:
+                painter.drawRoundedRect(border_rect, corner_radius, corner_radius)
+            else:
+                painter.drawRect(border_rect)
 
     def _preview_field_role(self, field_data: dict[str, str], index: int) -> str:
         role = str(field_data.get("role", ""))
@@ -1149,7 +1624,8 @@ class BoxCustomizationDialog(QDialog):
         order_group.setObjectName("DesignerSection")
         order_layout = QVBoxLayout(order_group)
         order_hint = QLabel(
-            "Drag images and text here—or directly on the preview—to build the box."
+            "Drop a block onto the middle of an image to make it a child overlay. "
+            "Drop it between rows to return it to the main layout."
         )
         order_hint.setObjectName("DesignerHint")
         order_hint.setWordWrap(True)
@@ -1176,13 +1652,7 @@ class BoxCustomizationDialog(QDialog):
             self.field_types[field_id] = field_type
             saved_style = project.field_styles.get(field_id, {})
             if field_type == "image":
-                self.field_styles[field_id] = {
-                    "height_weight": str(
-                        self._bounded_int(
-                            saved_style.get("height_weight"), 100, 25, 400
-                        )
-                    )
-                }
+                self.field_styles[field_id] = self._complete_image_style(saved_style)
             else:
                 role = self._field_role(field_data, content_index)
                 self.field_roles[field_id] = role
@@ -1197,8 +1667,16 @@ class BoxCustomizationDialog(QDialog):
                 f"{type_label}  ·  {str(field_data.get('label') or 'Input')}"
             )
             list_item.setData(Qt.ItemDataRole.UserRole, field_id)
-            list_item.setToolTip("Drag to reorder; select to edit this band's style")
+            list_item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
+            list_item.setData(
+                Qt.ItemDataRole.UserRole + 2,
+                self.field_styles[field_id].get("parent_id", ""),
+            )
+            list_item.setToolTip(
+                "Drop onto an image to overlay it; drop between rows to detach"
+            )
             self.field_order_list.addItem(list_item)
+        self._sync_order_item_hierarchy()
         order_layout.addWidget(self.field_order_list)
         controls_layout.addWidget(order_group)
 
@@ -1218,10 +1696,34 @@ class BoxCustomizationDialog(QDialog):
         self.image_height_spin.setToolTip(
             "Relative height for this image only. 200% makes it twice the height of a 100% image."
         )
+        self.image_gradient_label = QLabel("Image gradient")
+        self.image_gradient_combo = QComboBox()
+        for label, value in (
+            ("None", "none"),
+            ("Bottom fade", "bottom"),
+            ("Top fade", "top"),
+            ("Left fade", "left"),
+            ("Right fade", "right"),
+            ("Full tint", "tint"),
+        ):
+            self.image_gradient_combo.addItem(label, value)
+        self.image_gradient_color_label = QLabel("Gradient color")
+        self.image_gradient_color_button = ColorButton("#000000")
+        self.image_gradient_opacity_label = QLabel("Gradient opacity")
+        self.image_gradient_opacity_spin = QSpinBox()
+        self.image_gradient_opacity_spin.setRange(0, 100)
+        self.image_gradient_opacity_spin.setSuffix(" %")
         content_form.addRow("Label", self.field_label_edit)
         content_form.addRow("Value", self.field_value_edit)
         content_form.addRow("", self.field_browse_button)
         content_form.addRow(self.image_height_label, self.image_height_spin)
+        content_form.addRow(self.image_gradient_label, self.image_gradient_combo)
+        content_form.addRow(
+            self.image_gradient_color_label, self.image_gradient_color_button
+        )
+        content_form.addRow(
+            self.image_gradient_opacity_label, self.image_gradient_opacity_spin
+        )
         controls_layout.addWidget(self.content_group)
 
         self.style_group = QGroupBox("Selected text band")
@@ -1229,6 +1731,7 @@ class BoxCustomizationDialog(QDialog):
         style_form = QFormLayout(self.style_group)
         style_form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         self.band_background_button = ColorButton("#111827")
+        self.band_container_button = ColorButton("#111827")
         self.band_text_button = ColorButton("#ffffff")
         self.band_outline_button = ColorButton("#000000")
         self.band_border_button = ColorButton("#000000")
@@ -1263,7 +1766,17 @@ class BoxCustomizationDialog(QDialog):
         self.band_padding_spin = QSpinBox()
         self.band_padding_spin.setRange(0, 64)
         self.band_padding_spin.setSuffix(" px")
+        self.band_inset_spin = QSpinBox()
+        self.band_inset_spin.setRange(0, 96)
+        self.band_inset_spin.setSuffix(" px")
+        self.band_inset_spin.setToolTip(
+            "Horizontal space around the colored text band."
+        )
+        self.band_corner_radius_spin = QSpinBox()
+        self.band_corner_radius_spin.setRange(0, 64)
+        self.band_corner_radius_spin.setSuffix(" px")
         style_form.addRow("Background", self.band_background_button)
+        style_form.addRow("Section background", self.band_container_button)
         style_form.addRow("Text", self.band_text_button)
         style_form.addRow("Text outline", self.band_outline_button)
         style_form.addRow("Outline width", self.band_outline_width_spin)
@@ -1274,6 +1787,8 @@ class BoxCustomizationDialog(QDialog):
         style_form.addRow("Font size", self.band_font_size_spin)
         style_form.addRow("Relative height", self.band_height_spin)
         style_form.addRow("Horizontal padding", self.band_padding_spin)
+        style_form.addRow("Band inset", self.band_inset_spin)
+        style_form.addRow("Corner radius", self.band_corner_radius_spin)
         controls_layout.addWidget(self.style_group)
         controls_layout.addStretch(1)
         controls_scroll.setWidget(controls_widget)
@@ -1294,7 +1809,8 @@ class BoxCustomizationDialog(QDialog):
         preview_layout.addWidget(preview_title)
         preview_layout.addWidget(self.box_preview, 0, Qt.AlignmentFlag.AlignHCenter)
         preview_help = QLabel(
-            "Drag any image or text block to a new position. Click an image to crop or reposition it."
+            "Drop content onto an image in the list to place it over that image. "
+            "Click an image here to crop or reposition it."
         )
         preview_help.setObjectName("DesignerHint")
         preview_help.setWordWrap(True)
@@ -1338,13 +1854,26 @@ class BoxCustomizationDialog(QDialog):
         self.field_order_list.model().rowsMoved.connect(self._field_order_changed)
         self.field_order_list.add_requested.connect(self._add_content_below)
         self.field_order_list.delete_requested.connect(self._remove_selected_content)
+        self.field_order_list.hierarchy_drop_requested.connect(
+            self._hierarchy_drop_requested
+        )
         self._loading_field_content = False
         self.field_label_edit.textEdited.connect(self._selected_field_content_changed)
         self.field_value_edit.textEdited.connect(self._selected_field_content_changed)
         self.field_browse_button.clicked.connect(self._browse_selected_image)
         self.image_height_spin.valueChanged.connect(self._selected_image_height_changed)
+        self.image_gradient_combo.currentIndexChanged.connect(
+            self._selected_image_gradient_changed
+        )
+        self.image_gradient_color_button.color_changed.connect(
+            self._selected_image_gradient_changed
+        )
+        self.image_gradient_opacity_spin.valueChanged.connect(
+            self._selected_image_gradient_changed
+        )
         self._loading_field_style = False
         self.band_background_button.color_changed.connect(self._selected_field_style_changed)
+        self.band_container_button.color_changed.connect(self._selected_field_style_changed)
         self.band_text_button.color_changed.connect(self._selected_field_style_changed)
         self.band_outline_button.color_changed.connect(self._selected_field_style_changed)
         self.band_border_button.color_changed.connect(self._selected_field_style_changed)
@@ -1355,6 +1884,8 @@ class BoxCustomizationDialog(QDialog):
         self.band_font_size_spin.valueChanged.connect(self._selected_field_style_changed)
         self.band_height_spin.valueChanged.connect(self._selected_field_style_changed)
         self.band_padding_spin.valueChanged.connect(self._selected_field_style_changed)
+        self.band_inset_spin.valueChanged.connect(self._selected_field_style_changed)
+        self.band_corner_radius_spin.valueChanged.connect(self._selected_field_style_changed)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         if self.field_order_list.count():
@@ -1427,6 +1958,14 @@ class BoxCustomizationDialog(QDialog):
                         style.get("border_color"), "#000000"
                     ),
                     "border_width": str(self._bounded_int(style.get("border_width"), 0, 0, 12)),
+                    "container_color": self._valid_color(
+                        style.get("container_color"),
+                        self._valid_color(style.get("background_color"), "#111827"),
+                    ),
+                    "inset": str(self._bounded_int(style.get("inset"), 0, 0, 96)),
+                    "corner_radius": str(
+                        self._bounded_int(style.get("corner_radius"), 0, 0, 64)
+                    ),
                     "alignment": (
                         str(style.get("alignment"))
                         if str(style.get("alignment")) in {"left", "center", "right"}
@@ -1447,6 +1986,7 @@ class BoxCustomizationDialog(QDialog):
             "text_font_size": font_size,
             "image_fit": fit,
             "image_height_percent": max(35, min(75, image_height)),
+            "layout_template": str(preset.get("layout_template") or ""),
             "roles": normalized_roles,
         }
 
@@ -1481,11 +2021,53 @@ class BoxCustomizationDialog(QDialog):
             "outline_width": str(self._bounded_int(raw.get("outline_width"), 0, 0, 8)),
             "border_color": self._valid_color(raw.get("border_color"), "#000000"),
             "border_width": str(self._bounded_int(raw.get("border_width"), 0, 0, 12)),
+            "container_color": self._valid_color(
+                raw.get("container_color"),
+                self._valid_color(raw.get("background_color"), background),
+            ),
+            "inset": str(self._bounded_int(raw.get("inset"), 0, 0, 96)),
+            "corner_radius": str(
+                self._bounded_int(raw.get("corner_radius"), 0, 0, 64)
+            ),
             "alignment": alignment,
             "font_size": str(self._bounded_int(raw.get("font_size"), 0, 0, 120)),
             "height_weight": str(self._bounded_int(raw.get("height_weight"), 100, 25, 400)),
             "padding": str(self._bounded_int(raw.get("padding"), 14, 0, 64)),
             "font_weight": str(weight),
+            "parent_id": str(raw.get("parent_id") or ""),
+            "overlay_x": self._overlay_value(raw.get("overlay_x"), 0),
+            "overlay_y": self._overlay_value(raw.get("overlay_y"), 0),
+            "overlay_width": self._overlay_value(raw.get("overlay_width"), 50),
+            "overlay_height": self._overlay_value(raw.get("overlay_height"), 50),
+        }
+
+    @staticmethod
+    def _overlay_value(value: object, minimum: int) -> str:
+        if value in (None, ""):
+            return ""
+        try:
+            number = int(value)
+        except (TypeError, ValueError):
+            return ""
+        return str(max(minimum, min(1000, number)))
+
+    def _complete_image_style(self, style: dict[str, str] | object) -> dict[str, str]:
+        raw = style if isinstance(style, dict) else {}
+        gradient_mode = str(raw.get("gradient_mode") or "bottom")
+        if gradient_mode not in {"none", "bottom", "top", "left", "right", "tint"}:
+            gradient_mode = "bottom"
+        return {
+            "height_weight": str(
+                self._bounded_int(raw.get("height_weight"), 100, 25, 400)
+            ),
+            "parent_id": "",
+            "gradient_mode": gradient_mode,
+            "gradient_color": self._valid_color(
+                raw.get("gradient_color"), "#000000"
+            ),
+            "gradient_opacity": str(
+                self._bounded_int(raw.get("gradient_opacity"), 65, 0, 100)
+            ),
         }
 
     def _selected_preset(self) -> dict[str, object] | None:
@@ -1512,6 +2094,7 @@ class BoxCustomizationDialog(QDialog):
         self.text_font_combo.setCurrentFont(QFont(str(preset["text_font_family"])))
         self.text_font_size_spin.setValue(int(preset["text_font_size"]))
         self.border_color_button.set_color(str(preset["border_color"]))
+        self._apply_layout_template(str(preset.get("layout_template") or ""))
         role_styles = preset.get("roles", {})
         if isinstance(role_styles, dict):
             for field_id in self.field_roles:
@@ -1520,13 +2103,153 @@ class BoxCustomizationDialog(QDialog):
                 if not isinstance(style, dict):
                     continue
                 current = self.field_styles[field_id]
-                self.field_styles[field_id] = self._complete_field_style(
+                updated = self._complete_field_style(
                     style,
                     current["background_color"],
                     current["text_color"],
                 )
+                updated["parent_id"] = current.get("parent_id", "")
+                for key in (
+                    "overlay_x",
+                    "overlay_y",
+                    "overlay_width",
+                    "overlay_height",
+                ):
+                    updated[key] = current.get(key, "")
+                self.field_styles[field_id] = updated
         self._load_selected_field_style()
         self._update_preview()
+
+    def _apply_layout_template(self, template_name: str) -> None:
+        if template_name != "hall_of_fame":
+            return
+        fields = self._image_item.display_fields()
+
+        def first_field(*, field_type: str = "", role: str = ""):
+            return next(
+                (
+                    field
+                    for field in fields
+                    if (not field_type or field.get("type") == field_type)
+                    and (not role or field.get("role") == role)
+                ),
+                None,
+            )
+
+        name_field = first_field(field_type="name") or {
+            "id": "field_name",
+            "type": "name",
+            "label": "Name",
+            "value": self._image_item.name,
+            "role": "name",
+        }
+        portrait_field = first_field(field_type="image") or {
+            "id": "field_image",
+            "type": "image",
+            "label": "Portrait",
+            "value": "",
+            "role": "image",
+        }
+        team_field = first_field(role="category") or {
+            "id": "field_team",
+            "type": "text",
+            "label": "Team",
+            "value": self._image_item.category,
+            "role": "category",
+        }
+        year_field = first_field(role="rank") or first_field(role="value") or {
+            "id": "field_year",
+            "type": "number",
+            "label": "Year",
+            "value": self._image_item.rank,
+            "role": "rank",
+        }
+        other_images = [
+            field
+            for field in fields
+            if field.get("type") == "image"
+            and str(field.get("id", "")) != str(portrait_field.get("id", ""))
+        ]
+        logo_is_new = not other_images
+        logo_field = other_images[0] if other_images else {
+            "id": f"field_{uuid4().hex[:8]}",
+            "type": "image",
+            "label": "Team logo",
+            "value": "",
+            "role": "image",
+        }
+
+        name_field = dict(name_field)
+        portrait_field = dict(portrait_field)
+        team_field = dict(team_field)
+        logo_field = dict(logo_field)
+        year_field = dict(year_field)
+        name_field.update({"label": "Name", "type": "name", "role": "name"})
+        portrait_field.update({"label": "Portrait", "type": "image", "role": "image"})
+        team_field.update({"label": "Team", "type": "text", "role": "category"})
+        logo_field.update({"label": "Team logo", "type": "image", "role": "image"})
+        year_field.update({"label": "Year", "type": "number", "role": "rank"})
+        template_fields = [
+            name_field,
+            portrait_field,
+            team_field,
+            logo_field,
+            year_field,
+        ]
+        self._image_item.set_fields(template_fields)
+
+        active_ids = {str(field.get("id", "")) for field in template_fields}
+        self.field_styles = {
+            field_id: style
+            for field_id, style in self.field_styles.items()
+            if field_id in active_ids
+        }
+        self.field_roles.clear()
+        self.field_types.clear()
+        self._new_field_sources.clear()
+        self.field_order_list.clear()
+        content_index = 0
+        for field in template_fields:
+            field_id = str(field.get("id", ""))
+            field_type = str(field.get("type", "text"))
+            self.field_types[field_id] = field_type
+            if field_type == "image":
+                self.field_styles[field_id] = self._complete_image_style(
+                    self.field_styles.get(field_id, {})
+                )
+            else:
+                role = self._field_role(field, content_index)
+                self.field_roles[field_id] = role
+                self.field_styles.setdefault(
+                    field_id,
+                    self._complete_field_style(
+                        {},
+                        getattr(self.project, f"{role}_background_color"),
+                        getattr(self.project, f"{role}_text_color"),
+                    ),
+                )
+                content_index += 1
+            type_label = "IMAGE" if field_type == "image" else "TEXT"
+            list_item = QListWidgetItem(f"{type_label}  ·  {field.get('label', 'Input')}")
+            list_item.setData(Qt.ItemDataRole.UserRole, field_id)
+            list_item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
+            list_item.setData(
+                Qt.ItemDataRole.UserRole + 2,
+                self.field_styles[field_id].get("parent_id", ""),
+            )
+            list_item.setToolTip(
+                "Drop onto an image to overlay it; drop between rows to detach"
+            )
+            self.field_order_list.addItem(list_item)
+
+        portrait_id = str(portrait_field.get("id", ""))
+        logo_id = str(logo_field.get("id", ""))
+        self.field_styles[portrait_id]["height_weight"] = "78"
+        self.field_styles[logo_id]["height_weight"] = "22"
+        if logo_is_new:
+            self._new_field_sources[logo_id] = ""
+        self._sync_order_item_hierarchy()
+        self.field_order_list.setCurrentRow(0)
 
     def _save_custom_preset(self) -> None:
         name, accepted = QInputDialog.getText(
@@ -1709,8 +2432,24 @@ class BoxCustomizationDialog(QDialog):
         self.image_height_spin.setValue(
             self._bounded_int(image_style.get("height_weight"), 100, 25, 400)
         )
+        gradient_index = self.image_gradient_combo.findData(
+            image_style.get("gradient_mode", "bottom")
+        )
+        self.image_gradient_combo.setCurrentIndex(max(0, gradient_index))
+        self.image_gradient_color_button.set_color(
+            str(image_style.get("gradient_color") or "#000000")
+        )
+        self.image_gradient_opacity_spin.setValue(
+            self._bounded_int(image_style.get("gradient_opacity"), 65, 0, 100)
+        )
         self.image_height_label.setVisible(is_image)
         self.image_height_spin.setVisible(is_image)
+        self.image_gradient_label.setVisible(is_image)
+        self.image_gradient_combo.setVisible(is_image)
+        self.image_gradient_color_label.setVisible(is_image)
+        self.image_gradient_color_button.setVisible(is_image)
+        self.image_gradient_opacity_label.setVisible(is_image)
+        self.image_gradient_opacity_spin.setVisible(is_image)
         self.content_group.setEnabled(field_data is not None)
         self._loading_field_content = False
         style = self.field_styles.get(field_id)
@@ -1722,6 +2461,7 @@ class BoxCustomizationDialog(QDialog):
         self.style_group.setEnabled(True)
         self._loading_field_style = True
         self.band_background_button.set_color(style["background_color"])
+        self.band_container_button.set_color(style["container_color"])
         self.band_text_button.set_color(style["text_color"])
         self.band_outline_button.set_color(style["outline_color"])
         self.band_border_button.set_color(style["border_color"])
@@ -1736,6 +2476,8 @@ class BoxCustomizationDialog(QDialog):
         self.band_font_size_spin.setValue(int(style["font_size"]))
         self.band_height_spin.setValue(int(style["height_weight"]))
         self.band_padding_spin.setValue(int(style["padding"]))
+        self.band_inset_spin.setValue(int(style["inset"]))
+        self.band_corner_radius_spin.setValue(int(style["corner_radius"]))
         self._loading_field_style = False
 
     def _selected_field_style_changed(self, *_args) -> None:
@@ -1744,8 +2486,11 @@ class BoxCustomizationDialog(QDialog):
         field_id = self._selected_field_id()
         if not field_id:
             return
+        previous_style = self.field_styles.get(field_id, {})
+        parent_id = previous_style.get("parent_id", "")
         self.field_styles[field_id] = {
             "background_color": self.band_background_button.color(),
+            "container_color": self.band_container_button.color(),
             "text_color": self.band_text_button.color(),
             "outline_color": self.band_outline_button.color(),
             "outline_width": str(self.band_outline_width_spin.value()),
@@ -1756,6 +2501,13 @@ class BoxCustomizationDialog(QDialog):
             "font_size": str(self.band_font_size_spin.value()),
             "height_weight": str(self.band_height_spin.value()),
             "padding": str(self.band_padding_spin.value()),
+            "inset": str(self.band_inset_spin.value()),
+            "corner_radius": str(self.band_corner_radius_spin.value()),
+            "parent_id": parent_id,
+            "overlay_x": previous_style.get("overlay_x", ""),
+            "overlay_y": previous_style.get("overlay_y", ""),
+            "overlay_width": previous_style.get("overlay_width", ""),
+            "overlay_height": previous_style.get("overlay_height", ""),
         }
         self._update_preview()
 
@@ -1789,6 +2541,24 @@ class BoxCustomizationDialog(QDialog):
         if self.field_types.get(field_id) != "image":
             return
         self.field_styles.setdefault(field_id, {})["height_weight"] = str(value)
+        self._update_preview()
+
+    def _selected_image_gradient_changed(self, *_args) -> None:
+        if self._loading_field_content:
+            return
+        field_id = self._selected_field_id()
+        if self.field_types.get(field_id) != "image":
+            return
+        style = self.field_styles.setdefault(
+            field_id, self._complete_image_style({})
+        )
+        style["gradient_mode"] = str(
+            self.image_gradient_combo.currentData() or "none"
+        )
+        style["gradient_color"] = self.image_gradient_color_button.color()
+        style["gradient_opacity"] = str(
+            self.image_gradient_opacity_spin.value()
+        )
         self._update_preview()
 
     def _browse_selected_image(self) -> None:
@@ -1831,6 +2601,9 @@ class BoxCustomizationDialog(QDialog):
         self._image_item.set_fields(fields)
         self._image_item.image_transforms.pop(field_id, None)
         self.field_styles.pop(field_id, None)
+        for style in self.field_styles.values():
+            if style.get("parent_id") == field_id:
+                style["parent_id"] = ""
         self.field_roles.pop(field_id, None)
         self.field_types.pop(field_id, None)
         self._new_field_sources.pop(field_id, None)
@@ -1839,6 +2612,7 @@ class BoxCustomizationDialog(QDialog):
         self.field_order_list.setCurrentRow(
             min(row, self.field_order_list.count() - 1)
         )
+        self._sync_order_item_hierarchy()
         self._update_preview()
 
     def _add_content_below(self, source_id: str = "") -> None:
@@ -1884,7 +2658,14 @@ class BoxCustomizationDialog(QDialog):
             f"{type_label}  ·  {duplicate['label']}"
         )
         list_item.setData(Qt.ItemDataRole.UserRole, new_id)
-        list_item.setToolTip("Drag to reorder; select to edit this band's style")
+        list_item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
+        list_item.setData(
+            Qt.ItemDataRole.UserRole + 2,
+            self.field_styles[new_id].get("parent_id", ""),
+        )
+        list_item.setToolTip(
+            "Drop onto an image to overlay it; drop between rows to detach"
+        )
         insert_row = self.field_order_list.currentRow() + 1
         self.field_order_list.insertItem(insert_row, list_item)
         self.field_order_list.setCurrentItem(list_item)
@@ -1903,6 +2684,105 @@ class BoxCustomizationDialog(QDialog):
         ordered.extend(field for field in copied_fields if str(field.get("id", "")) in by_id)
         return ordered
 
+    def _sync_order_item_hierarchy(self) -> None:
+        parent_ids = {
+            str(style.get("parent_id", ""))
+            for style in self.field_styles.values()
+            if style.get("parent_id")
+        }
+        for index in range(self.field_order_list.count()):
+            item = self.field_order_list.item(index)
+            field_id = str(item.data(Qt.ItemDataRole.UserRole) or "")
+            item.setData(
+                Qt.ItemDataRole.UserRole + 1,
+                self.field_types.get(field_id, "text"),
+            )
+            item.setData(
+                Qt.ItemDataRole.UserRole + 2,
+                self.field_styles.get(field_id, {}).get("parent_id", ""),
+            )
+            item.setData(Qt.ItemDataRole.UserRole + 3, field_id in parent_ids)
+
+    def _rebuild_order_list(self, ordered_ids: list[str], selected_id: str) -> None:
+        fields = self._image_item.display_fields()
+        by_id = {str(field.get("id", "")): field for field in fields}
+        ordered_fields = [by_id[field_id] for field_id in ordered_ids if field_id in by_id]
+        ordered_fields.extend(
+            field for field in fields if str(field.get("id", "")) not in ordered_ids
+        )
+        self._image_item.set_fields(ordered_fields)
+        self.field_order_list.clear()
+        for field in ordered_fields:
+            field_id = str(field.get("id", ""))
+            field_type = str(field.get("type", "text"))
+            type_label = "IMAGE" if field_type == "image" else "TEXT"
+            item = QListWidgetItem(
+                f"{type_label}  ·  {str(field.get('label') or 'Input')}"
+            )
+            item.setData(Qt.ItemDataRole.UserRole, field_id)
+            item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
+            item.setData(
+                Qt.ItemDataRole.UserRole + 2,
+                self.field_styles.get(field_id, {}).get("parent_id", ""),
+            )
+            item.setToolTip(
+                "Drop onto an image to overlay it; drop between rows to detach"
+            )
+            self.field_order_list.addItem(item)
+            if field_id == selected_id:
+                self.field_order_list.setCurrentItem(item)
+        self._sync_order_item_hierarchy()
+
+    def _hierarchy_drop_requested(
+        self,
+        source_id: str,
+        target_id: str,
+        drop_after: bool,
+        parent_id: str,
+    ) -> None:
+        if source_id not in self.field_types:
+            return
+        order = self._ordered_field_ids()
+        if source_id not in order:
+            return
+        source_type = self.field_types.get(source_id, "text")
+        if source_type == "image":
+            parent_id = ""
+            moving = [source_id] + [
+                field_id
+                for field_id in order
+                if self.field_styles.get(field_id, {}).get("parent_id") == source_id
+            ]
+        else:
+            moving = [source_id]
+        remaining = [field_id for field_id in order if field_id not in moving]
+        if parent_id and self.field_types.get(parent_id) != "image":
+            parent_id = ""
+        self.field_styles.setdefault(source_id, {})["parent_id"] = parent_id
+
+        if not target_id or target_id not in remaining:
+            insert_at = len(remaining)
+        elif parent_id and target_id == parent_id:
+            insert_at = remaining.index(parent_id) + 1
+            while (
+                insert_at < len(remaining)
+                and self.field_styles.get(remaining[insert_at], {}).get("parent_id")
+                == parent_id
+            ):
+                insert_at += 1
+        else:
+            insert_at = remaining.index(target_id) + int(drop_after)
+            if not parent_id and drop_after and self.field_types.get(target_id) == "image":
+                while (
+                    insert_at < len(remaining)
+                    and self.field_styles.get(remaining[insert_at], {}).get("parent_id")
+                    == target_id
+                ):
+                    insert_at += 1
+        new_order = remaining[:insert_at] + moving + remaining[insert_at:]
+        self._rebuild_order_list(new_order, source_id)
+        self._update_preview()
+
     def _fields_with_new_content(
         self, fields: list[dict[str, str]]
     ) -> list[dict[str, str]]:
@@ -1919,13 +2799,25 @@ class BoxCustomizationDialog(QDialog):
                 None,
             )
             template = preview_by_id.get(new_id)
-            if source is None or template is None:
+            if template is None:
                 continue
-            duplicate = dict(source)
+            duplicate = dict(source) if source is not None else dict(template)
             duplicate["id"] = new_id
-            duplicate["label"] = str(template.get("label") or source.get("label") or "Input")
-            duplicate["type"] = str(template.get("type") or source.get("type") or "text")
-            duplicate["role"] = str(template.get("role") or source.get("role") or "")
+            duplicate["label"] = str(
+                template.get("label")
+                or (source.get("label") if source is not None else "")
+                or "Input"
+            )
+            duplicate["type"] = str(
+                template.get("type")
+                or (source.get("type") if source is not None else "")
+                or "text"
+            )
+            duplicate["role"] = str(
+                template.get("role")
+                or (source.get("role") if source is not None else "")
+                or ""
+            )
             result.append(duplicate)
         return result
 
@@ -1936,37 +2828,18 @@ class BoxCustomizationDialog(QDialog):
     def _preview_field_reorder_requested(
         self, source_id: str, target_id: str, drop_after: bool
     ) -> None:
-        source_row = next(
-            (
-                index
-                for index in range(self.field_order_list.count())
-                if str(
-                    self.field_order_list.item(index).data(Qt.ItemDataRole.UserRole) or ""
-                )
-                == source_id
-            ),
-            -1,
-        )
-        target_row = next(
-            (
-                index
-                for index in range(self.field_order_list.count())
-                if str(
-                    self.field_order_list.item(index).data(Qt.ItemDataRole.UserRole) or ""
-                )
-                == target_id
-            ),
-            -1,
-        )
-        if source_row < 0 or target_row < 0 or source_row == target_row:
+        if source_id == target_id:
             return
-        moved_item = self.field_order_list.takeItem(source_row)
-        if source_row < target_row:
-            target_row -= 1
-        insert_row = target_row + int(drop_after)
-        self.field_order_list.insertItem(insert_row, moved_item)
-        self.field_order_list.setCurrentItem(moved_item)
-        self._field_order_changed()
+        target_parent = self.field_styles.get(target_id, {}).get("parent_id", "")
+        parent_id = ""
+        if self.field_types.get(source_id) != "image":
+            if self.field_types.get(target_id) == "image":
+                parent_id = target_id
+            elif target_parent:
+                parent_id = target_parent
+        self._hierarchy_drop_requested(
+            source_id, target_id, drop_after, parent_id
+        )
 
     def _preview_field_selected(self, field_id: str) -> None:
         for index in range(self.field_order_list.count()):
