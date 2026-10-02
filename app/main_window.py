@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from uuid import uuid4
 
-from PySide6.QtCore import QElapsedTimer, QRect, QSettings, QSize, QTimer, Qt, Signal
+from PySide6.QtCore import QElapsedTimer, QPoint, QRect, QSettings, QSize, QTimer, Qt, Signal
 from PySide6.QtGui import QAction, QColor, QFont, QFontMetrics, QKeySequence, QPainter, QPen, QShortcut
 from PySide6.QtWidgets import (
+    QAbstractItemView,
     QComboBox,
     QApplication,
     QColorDialog,
@@ -14,17 +16,24 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QFormLayout,
     QFontComboBox,
+    QGroupBox,
     QHBoxLayout,
     QInputDialog,
     QLabel,
     QLineEdit,
+    QListWidget,
+    QListWidgetItem,
     QMainWindow,
     QMessageBox,
     QProgressDialog,
     QPushButton,
+    QScrollArea,
     QSlider,
+    QSizePolicy,
     QSplitter,
     QSpinBox,
+    QStyle,
+    QStyledItemDelegate,
     QTabWidget,
     QVBoxLayout,
     QWidget,
@@ -54,7 +63,6 @@ from app.utils.time_utils import clamp, format_timestamp
 from app.utils.image_utils import ImageCache, draw_image
 from app.widgets.asset_panel import AssetPanel
 from app.widgets.preview_widget import PreviewWidget
-from app.widgets.dynamic_properties_panel import PropertiesPanel
 from app.widgets.timeline_widget import TimelineWidget
 from app.widgets.transport_controls import TransportControls
 
@@ -92,6 +100,133 @@ class ColorButton(QPushButton):
             f"QPushButton {{ background: {self._color}; color: {foreground}; "
             "border: 1px solid #64748b; font-weight: 700; }}"
         )
+
+
+class ContentOrderDelegate(QStyledItemDelegate):
+    BUTTON_SIZE = 30
+    BUTTON_GAP = 6
+
+    @classmethod
+    def action_rects(cls, rect: QRect) -> tuple[QRect, QRect]:
+        top = rect.center().y() - cls.BUTTON_SIZE // 2
+        delete_rect = QRect(
+            rect.right() - cls.BUTTON_SIZE - 10,
+            top,
+            cls.BUTTON_SIZE,
+            cls.BUTTON_SIZE,
+        )
+        add_rect = delete_rect.translated(-(cls.BUTTON_SIZE + cls.BUTTON_GAP), 0)
+        return add_rect, delete_rect
+
+    def paint(self, painter: QPainter, option, index) -> None:
+        painter.save()
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        row_rect = option.rect.adjusted(3, 3, -3, -3)
+        selected = bool(option.state & QStyle.StateFlag.State_Selected)
+        hovered = bool(option.state & QStyle.StateFlag.State_MouseOver)
+        is_dark = option.palette.base().color().lightness() < 128
+        if is_dark:
+            background = QColor("#182d4b") if selected else QColor("#13171c")
+            border = QColor("#3b82f6") if selected else QColor(
+                "#3a424e" if hovered else "#303640"
+            )
+            text_color = QColor("#dbeafe") if selected else QColor("#f1f3f5")
+            muted_color = QColor("#93b5df") if selected else QColor("#aeb6c2")
+        else:
+            background = QColor("#eff6ff") if selected else QColor("#f8fafc")
+            border = QColor("#93c5fd") if selected else QColor(
+                "#b8c3d1" if hovered else "#d9e0e8"
+            )
+            text_color = QColor("#1d4ed8") if selected else QColor("#172033")
+            muted_color = QColor("#52739b") if selected else QColor("#667085")
+        painter.setBrush(background)
+        painter.setPen(QPen(border, 2 if selected else 1))
+        painter.drawRoundedRect(row_rect, 10, 10)
+
+        grip_color = QColor("#3b82f6") if selected else muted_color
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(grip_color)
+        center_y = row_rect.center().y()
+        for x in (row_rect.left() + 13, row_rect.left() + 18):
+            for y in (center_y - 5, center_y, center_y + 5):
+                painter.drawEllipse(QPoint(x, y), 1, 1)
+
+        add_rect, delete_rect = self.action_rects(option.rect)
+        text_rect = row_rect.adjusted(31, 0, -(72), 0)
+        painter.setFont(option.font)
+        display_text = str(index.data(Qt.ItemDataRole.DisplayRole) or "")
+        type_text, separator, label_text = display_text.partition("  ·  ")
+        type_width = QFontMetrics(option.font).horizontalAdvance(
+            f"{type_text}{'  ·  ' if separator else ''}"
+        )
+        type_rect = QRect(text_rect.x(), text_rect.y(), type_width, text_rect.height())
+        painter.setPen(muted_color)
+        painter.drawText(
+            type_rect,
+            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
+            f"{type_text}{'  ·  ' if separator else ''}",
+        )
+        label_rect = text_rect.adjusted(type_width, 0, 0, 0)
+        painter.setPen(text_color)
+        painter.drawText(
+            label_rect,
+            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
+            label_text,
+        )
+
+        self._draw_action_button(painter, add_rect, QColor("#2563eb"), False)
+        can_delete = bool(option.widget and option.widget.count() > 1)
+        delete_color = QColor("#dc2626") if can_delete else QColor("#94a3b8")
+        self._draw_action_button(painter, delete_rect, delete_color, True)
+        painter.restore()
+
+    def sizeHint(self, option, index) -> QSize:
+        return QSize(super().sizeHint(option, index).width(), 62)
+
+    @staticmethod
+    def _draw_action_button(
+        painter: QPainter, rect: QRect, color: QColor, is_delete: bool
+    ) -> None:
+        fill = QColor(color)
+        fill.setAlpha(24)
+        painter.setBrush(fill)
+        painter.setPen(QPen(color, 1))
+        painter.drawRoundedRect(rect, 6, 6)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.setPen(QPen(color, 2))
+        center = rect.center()
+        if not is_delete:
+            painter.drawLine(center.x() - 5, center.y(), center.x() + 5, center.y())
+            painter.drawLine(center.x(), center.y() - 5, center.x(), center.y() + 5)
+            return
+        painter.drawRect(QRect(center.x() - 4, center.y() - 3, 8, 9))
+        painter.drawLine(center.x() - 6, center.y() - 6, center.x() + 6, center.y() - 6)
+        painter.drawLine(center.x() - 2, center.y() - 8, center.x() + 2, center.y() - 8)
+
+
+class ContentOrderList(QListWidget):
+    add_requested = Signal(str)
+    delete_requested = Signal(str)
+
+    def mousePressEvent(self, event) -> None:
+        index = self.indexAt(event.position().toPoint())
+        if index.isValid() and event.button() == Qt.MouseButton.LeftButton:
+            add_rect, delete_rect = ContentOrderDelegate.action_rects(
+                self.visualRect(index)
+            )
+            field_id = str(index.data(Qt.ItemDataRole.UserRole) or "")
+            if add_rect.contains(event.position().toPoint()):
+                self.setCurrentIndex(index)
+                self.add_requested.emit(field_id)
+                event.accept()
+                return
+            if delete_rect.contains(event.position().toPoint()):
+                self.setCurrentIndex(index)
+                if self.count() > 1:
+                    self.delete_requested.emit(field_id)
+                event.accept()
+                return
+        super().mousePressEvent(event)
 
 
 BOX_STYLE_PRESETS: list[dict[str, object]] = [
@@ -415,6 +550,8 @@ BOX_STYLE_PRESETS_BY_NAME = {
 
 class BoxStylePreview(QWidget):
     image_clicked = Signal(str)
+    field_selected = Signal(str)
+    field_reorder_requested = Signal(str, str, bool)
 
     def __init__(self, item: ComparisonItem, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -427,26 +564,81 @@ class BoxStylePreview(QWidget):
         self.columns = MIN_PREVIEW_COLUMNS_1080P
         self.field_styles: dict[str, dict[str, str]] = {}
         self._image_cache = ImageCache()
-        self._image_regions: list[tuple[QRect, str]] = []
+        self._field_regions: list[tuple[QRect, str, str]] = []
+        self._press_position: QPoint | None = None
+        self._pressed_field_id = ""
+        self._pressed_field_type = ""
+        self._dragging_field_id = ""
+        self._drop_target: tuple[str, bool] | None = None
+        self._selected_field_id = ""
         self.setMouseTracking(True)
-        self.setToolTip("Click an image to resize or reposition it")
-        self.setFixedSize(270, 430)
+        self.setToolTip(
+            "Drag any block to reorder it. Click an image to crop or reposition it."
+        )
+        self.setFixedSize(330, 557)
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
     def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
-            for region, field_id in self._image_regions:
+            for region, field_id, field_type in self._field_regions:
                 if region.contains(event.position().toPoint()):
-                    self.image_clicked.emit(field_id)
+                    self._press_position = event.position().toPoint()
+                    self._pressed_field_id = field_id
+                    self._pressed_field_type = field_type
+                    self.setCursor(Qt.CursorShape.ClosedHandCursor)
                     event.accept()
                     return
         super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event) -> None:
-        if any(region.contains(event.position().toPoint()) for region, _ in self._image_regions):
-            self.setCursor(Qt.CursorShape.PointingHandCursor)
+        position = event.position().toPoint()
+        if (
+            self._press_position is not None
+            and event.buttons() & Qt.MouseButton.LeftButton
+            and (position - self._press_position).manhattanLength()
+            >= QApplication.startDragDistance()
+        ):
+            self._dragging_field_id = self._pressed_field_id
+        if self._dragging_field_id:
+            self._drop_target = None
+            for region, field_id, _field_type in self._field_regions:
+                if region.contains(position) and field_id != self._dragging_field_id:
+                    self._drop_target = (field_id, position.y() >= region.center().y())
+                    break
+            self.setCursor(Qt.CursorShape.ClosedHandCursor)
+            self.update()
+            event.accept()
+            return
+        if any(region.contains(position) for region, _field_id, _type in self._field_regions):
+            self.setCursor(Qt.CursorShape.OpenHandCursor)
         else:
             self.unsetCursor()
         super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event) -> None:
+        if event.button() == Qt.MouseButton.LeftButton and self._pressed_field_id:
+            if self._dragging_field_id and self._drop_target is not None:
+                target_id, drop_after = self._drop_target
+                self.field_reorder_requested.emit(
+                    self._dragging_field_id, target_id, drop_after
+                )
+            elif not self._dragging_field_id:
+                self.field_selected.emit(self._pressed_field_id)
+                if self._pressed_field_type == "image":
+                    self.image_clicked.emit(self._pressed_field_id)
+            self._reset_drag_state()
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
+
+    def _reset_drag_state(self) -> None:
+        self._press_position = None
+        self._pressed_field_id = ""
+        self._pressed_field_type = ""
+        self._dragging_field_id = ""
+        self._drop_target = None
+        self.unsetCursor()
+        self.update()
 
     def set_style(
         self,
@@ -467,83 +659,203 @@ class BoxStylePreview(QWidget):
         self.columns = columns
         self.update()
 
+    def set_selected_field(self, field_id: str) -> None:
+        self._selected_field_id = field_id
+        self.update()
+
     def paintEvent(self, event) -> None:
-        self._image_regions = []
+        self._field_regions = []
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.fillRect(self.rect(), QColor("#0b0d10"))
         card = self.rect().adjusted(8, 8, -8, -8)
         fields = self.item.display_fields()
-        image_fields = [
-            field_data for field_data in fields if field_data.get("type") == "image"
-        ]
+        image_fields = [field for field in fields if field.get("type") == "image"]
         content_fields = [
-            field_data
-            for field_data in fields
-            if field_data.get("type") != "image"
+            field for field in fields if field.get("type") != "image"
         ]
-        image_height = (
+        total_image_height = (
             int(card.height() * self.image_height_percent / 100) if image_fields else 0
         )
         if not content_fields:
-            image_height = card.height()
-        remaining = card.height() - image_height
-
-        image_rect = QRect(card.x(), card.y(), card.width(), image_height)
-        image_y = image_rect.y()
-        for index, image_field in enumerate(image_fields):
-            images_left = len(image_fields) - index
-            slice_height = (image_rect.bottom() - image_y + 1) // images_left
-            image_slice = QRect(image_rect.x(), image_y, image_rect.width(), slice_height)
-            field_id = str(image_field.get("id", ""))
-            draw_image(
-                painter, self._image_cache, str(image_field.get("value", "")),
-                image_slice, self.image_fit, self.item.image_transforms.get(field_id),
-                self.item.image_crop_x, self.item.image_crop_y,
+            total_image_height = card.height()
+        total_text_height = card.height() - total_image_height
+        text_weights = [
+            self._style_int(
+                self.field_styles.get(str(field_data.get("id", "")), {}),
+                "height_weight", 100, 25, 400,
             )
-            self._image_regions.append((image_slice, field_id))
-            image_y += slice_height
-
-        row_y = image_rect.bottom() + 1
-        for index, field_data in enumerate(content_fields):
-            rows_left = len(content_fields) - index
-            row_height = (card.bottom() - row_y + 1) // rows_left
+            for field_data in content_fields
+        ]
+        image_weights = [
+            self._style_int(
+                self.field_styles.get(str(field_data.get("id", "")), {}),
+                "height_weight", 100, 25, 400,
+            )
+            for field_data in image_fields
+        ]
+        remaining_image_pixels = total_image_height
+        remaining_image_weight = sum(image_weights)
+        remaining_text_pixels = total_text_height
+        remaining_text_weight = sum(text_weights)
+        row_y = card.y()
+        image_index = 0
+        content_index = 0
+        for field_data in fields:
+            field_type = str(field_data.get("type", "text"))
+            field_id = str(field_data.get("id", ""))
+            if field_type == "image":
+                image_weight = image_weights[image_index]
+                row_height = (
+                    remaining_image_pixels
+                    if image_index == len(image_fields) - 1
+                    else max(
+                        1,
+                        round(
+                            remaining_image_pixels
+                            * image_weight
+                            / max(1, remaining_image_weight)
+                        ),
+                    )
+                )
+            else:
+                weight = text_weights[content_index]
+                row_height = (
+                    remaining_text_pixels
+                    if content_index == len(content_fields) - 1
+                    else max(
+                        1,
+                        round(
+                            remaining_text_pixels
+                            * weight
+                            / max(1, remaining_text_weight)
+                        ),
+                    )
+                )
             row = QRect(card.x(), row_y, card.width(), row_height)
-            role = self._preview_field_role(field_data, index)
+            self._field_regions.append((row, field_id, field_type))
+            if field_type == "image":
+                draw_image(
+                    painter,
+                    self._image_cache,
+                    str(field_data.get("value", "")),
+                    row,
+                    self.image_fit,
+                    self.item.image_transforms.get(field_id),
+                    self.item.image_crop_x,
+                    self.item.image_crop_y,
+                )
+                row_y += row_height
+                remaining_image_pixels -= row_height
+                remaining_image_weight -= image_weight
+                image_index += 1
+                continue
+
+            role = self._preview_field_role(field_data, content_index)
             style = self.field_styles.get(str(field_data.get("id", "")), {})
             painter.fillRect(
                 row, QColor(style.get("background_color", "#111827"))
             )
-            painter.setPen(QColor(style.get("text_color", "#ffffff")))
             font_size = 15 if role in {"name", "rank"} else 13
-            target = row.adjusted(8, 2, -8, -2)
-            flags = Qt.AlignmentFlag.AlignCenter | Qt.TextFlag.TextWordWrap
-            if self.text_font_size:
-                scale = card.width() / (CANVAS_WIDTH / self.columns)
+            padding = self._style_int(style, "padding", 14, 0, 64)
+            scale = card.width() / (CANVAS_WIDTH / self.columns)
+            preview_padding = max(2, round(padding * scale))
+            target = row.adjusted(preview_padding, 2, -preview_padding, -2)
+            horizontal = {
+                "left": Qt.AlignmentFlag.AlignLeft,
+                "right": Qt.AlignmentFlag.AlignRight,
+            }.get(style.get("alignment", "center"), Qt.AlignmentFlag.AlignHCenter)
+            flags = horizontal | Qt.AlignmentFlag.AlignVCenter | Qt.TextFlag.TextWordWrap
+            weight_value = self._style_int(style, "font_weight", 700, 100, 900)
+            weight_value = min((100, 200, 300, 400, 500, 600, 700, 800, 900), key=lambda value: abs(value - weight_value))
+            font_weight = QFont.Weight(weight_value)
+            custom_size = self._style_int(style, "font_size", 0, 0, 120)
+            if custom_size:
+                font_size = max(1, round(custom_size * scale))
+                minimum_size = max(1, round(min(12, custom_size) * scale))
+            elif self.text_font_size:
                 size = self.text_font_size if role in {"name", "rank"} else max(
                     1, int(self.text_font_size * 0.88)
                 )
                 font_size = max(1, round(size * scale))
                 minimum_size = max(1, round(min(12, size) * scale))
+            else:
+                minimum_size = 6
+            if self.text_font_size or custom_size:
                 while font_size > minimum_size:
-                    font = QFont(self.text_font_family, font_size, QFont.Weight.Bold)
+                    font = QFont(self.text_font_family, font_size, font_weight)
                     bounds = QFontMetrics(font).boundingRect(
                         target, int(flags), str(field_data.get("value", ""))
                     )
                     if bounds.width() <= target.width() and bounds.height() <= target.height():
                         break
                     font_size -= 1
-            painter.setFont(QFont(self.text_font_family, font_size, QFont.Weight.Bold))
+            painter.setFont(QFont(self.text_font_family, font_size, font_weight))
+            outline_width = max(
+                0,
+                round(self._style_int(style, "outline_width", 0, 0, 8) * scale),
+            )
+            text = str(field_data.get("value", ""))
+            if outline_width:
+                painter.setPen(QColor(style.get("outline_color", "#000000")))
+                for distance in range(1, outline_width + 1):
+                    for dx, dy in (
+                        (-distance, -distance), (0, -distance), (distance, -distance),
+                        (-distance, 0), (distance, 0),
+                        (-distance, distance), (0, distance), (distance, distance),
+                    ):
+                        painter.drawText(target.translated(dx, dy), flags, text)
+            painter.setPen(QColor(style.get("text_color", "#ffffff")))
             painter.drawText(
                 target,
                 flags,
-                str(field_data.get("value", "")),
+                text,
             )
+            border_width = max(
+                0,
+                round(self._style_int(style, "border_width", 0, 0, 12) * scale),
+            )
+            if border_width:
+                painter.setBrush(Qt.BrushStyle.NoBrush)
+                painter.setPen(QPen(QColor(style.get("border_color", "#000000")), border_width))
+                inset = max(1, border_width // 2)
+                painter.drawRect(row.adjusted(inset, inset, -inset, -inset))
             row_y += row_height
+            remaining_text_pixels -= row_height
+            remaining_text_weight -= weight
+            content_index += 1
 
         painter.setBrush(Qt.BrushStyle.NoBrush)
         painter.setPen(QPen(QColor(self.border_color), 3))
         painter.drawRect(card.adjusted(1, 1, -2, -2))
+        if self._selected_field_id and not self._dragging_field_id:
+            for region, field_id, _field_type in self._field_regions:
+                if field_id == self._selected_field_id:
+                    painter.setBrush(Qt.BrushStyle.NoBrush)
+                    painter.setPen(QPen(QColor("#60a5fa"), 2))
+                    painter.drawRect(region.adjusted(2, 2, -3, -3))
+                    painter.setPen(Qt.PenStyle.NoPen)
+                    painter.setBrush(QColor("#dbeafe"))
+                    center_y = region.center().y()
+                    for x in (region.left() + 8, region.left() + 13):
+                        for y in (center_y - 5, center_y, center_y + 5):
+                            painter.drawEllipse(QPoint(x, y), 1, 1)
+                    break
+        if self._dragging_field_id:
+            for region, field_id, _field_type in self._field_regions:
+                if field_id == self._dragging_field_id:
+                    painter.fillRect(region, QColor(59, 130, 246, 55))
+                    painter.setPen(QPen(QColor("#60a5fa"), 2))
+                    painter.drawRect(region.adjusted(1, 1, -2, -2))
+                    break
+            if self._drop_target is not None:
+                target_id, drop_after = self._drop_target
+                for region, field_id, _field_type in self._field_regions:
+                    if field_id == target_id:
+                        y = region.bottom() if drop_after else region.top()
+                        painter.setPen(QPen(QColor("#3b82f6"), 4))
+                        painter.drawLine(card.left(), y, card.right(), y)
+                        break
         painter.end()
 
     def _preview_field_role(self, field_data: dict[str, str], index: int) -> str:
@@ -555,6 +867,16 @@ class BoxStylePreview(QWidget):
         if field_data.get("type") == "number":
             return "rank"
         return "category" if index < 2 else "value"
+
+    @staticmethod
+    def _style_int(
+        style: dict[str, str], key: str, default: int, minimum: int, maximum: int
+    ) -> int:
+        try:
+            value = int(style.get(key, default))
+        except (TypeError, ValueError):
+            value = default
+        return max(minimum, min(maximum, value))
 
 
 class ProjectSettingsDialog(QDialog):
@@ -692,13 +1014,55 @@ class BoxCustomizationDialog(QDialog):
         self._images_changed = False
         self.preferences = QSettings("DataCompareTools", "DataComparisonVideoMaker")
         self.custom_presets = self._load_custom_presets()
+        self.setObjectName("BoxCustomizationDialog")
         self.setWindowTitle("Customize All Boxes")
-        self.setMinimumWidth(920)
+        self.setMinimumSize(1100, 700)
+        self.resize(1320, 840)
 
         layout = QVBoxLayout(self)
-        content_layout = QHBoxLayout()
-        form_widget = QWidget()
-        form = QFormLayout(form_widget)
+        layout.setContentsMargins(20, 18, 20, 16)
+        layout.setSpacing(14)
+
+        header = QWidget()
+        header.setObjectName("DesignerHeader")
+        header_layout = QHBoxLayout(header)
+        header_layout.setContentsMargins(2, 0, 2, 0)
+        header_layout.setSpacing(10)
+        header_text = QVBoxLayout()
+        header_text.setSpacing(2)
+        dialog_title = QLabel("Box designer")
+        dialog_title.setObjectName("DesignerTitle")
+        dialog_subtitle = QLabel(
+            "Arrange content, edit the selected block, and preview every change live."
+        )
+        dialog_subtitle.setObjectName("DesignerSubtitle")
+        header_text.addWidget(dialog_title)
+        header_text.addWidget(dialog_subtitle)
+        scope_badge = QLabel("ALL BOXES")
+        scope_badge.setObjectName("DesignerBadge")
+        header_layout.addLayout(header_text)
+        header_layout.addStretch(1)
+        header_layout.addWidget(scope_badge)
+        layout.addWidget(header)
+
+        content_splitter = QSplitter(Qt.Orientation.Horizontal)
+        content_splitter.setObjectName("DesignerSplitter")
+        content_splitter.setHandleWidth(8)
+        content_splitter.setChildrenCollapsible(False)
+
+        controls_scroll = QScrollArea()
+        controls_scroll.setObjectName("DesignerInspectorScroll")
+        controls_scroll.setWidgetResizable(True)
+        controls_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        controls_widget = QWidget()
+        controls_widget.setObjectName("DesignerInspector")
+        controls_layout = QVBoxLayout(controls_widget)
+        controls_layout.setContentsMargins(8, 4, 12, 8)
+        controls_layout.setSpacing(12)
+
+        layout_group = QGroupBox("Box layout")
+        layout_group.setObjectName("DesignerSection")
+        form = QFormLayout(layout_group)
         form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
 
         self.columns_combo = QComboBox()
@@ -715,11 +1079,20 @@ class BoxCustomizationDialog(QDialog):
         preset_row = QWidget()
         preset_layout = QHBoxLayout(preset_row)
         preset_layout.setContentsMargins(0, 0, 0, 0)
-        preset_layout.setSpacing(8)
+        preset_layout.setSpacing(5)
         self.preset_combo = QComboBox()
+        self.preset_combo.setSizeAdjustPolicy(
+            QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon
+        )
+        self.preset_combo.setMinimumContentsLength(12)
         self.apply_preset_button = QPushButton("Apply")
-        self.save_preset_button = QPushButton("Save Custom")
-        self.delete_preset_button = QPushButton("Delete Custom")
+        self.apply_preset_button.setObjectName("PresetAction")
+        self.save_preset_button = QPushButton("Save")
+        self.save_preset_button.setObjectName("PresetAction")
+        self.save_preset_button.setToolTip("Save these settings as a custom preset")
+        self.delete_preset_button = QPushButton("Delete")
+        self.delete_preset_button.setObjectName("PresetAction")
+        self.delete_preset_button.setToolTip("Delete the selected custom preset")
         preset_layout.addWidget(self.preset_combo, 1)
         preset_layout.addWidget(self.apply_preset_button)
         preset_layout.addWidget(self.save_preset_button)
@@ -737,7 +1110,7 @@ class BoxCustomizationDialog(QDialog):
         self.image_height_value.setMinimumWidth(46)
         slider_layout.addWidget(self.image_height_slider, 1)
         slider_layout.addWidget(self.image_height_value)
-        form.addRow("Image height", slider_row)
+        form.addRow("Images total height", slider_row)
 
         self.image_fit_combo = QComboBox()
         self.image_fit_combo.addItem("Cover - crop to fill", "cover")
@@ -760,58 +1133,195 @@ class BoxCustomizationDialog(QDialog):
         )
         form.addRow("Font size", self.text_font_size_spin)
 
+        self.duration_spin = QDoubleSpinBox()
+        self.duration_spin.setRange(MIN_CLIP_DURATION, 24 * 60 * 60)
+        self.duration_spin.setDecimals(3)
+        self.duration_spin.setSingleStep(0.1)
+        self.duration_spin.setSuffix(" sec")
+        self.duration_spin.setValue(project.item_fixed_duration)
+        form.addRow("Box duration", self.duration_spin)
+
         self.border_color_button = ColorButton(project.card_border_color)
-        form.addRow("Border", self.border_color_button)
+        form.addRow("Box border", self.border_color_button)
+        controls_layout.addWidget(layout_group)
 
-        self.field_color_buttons: dict[str, tuple[ColorButton, ColorButton]] = {}
+        order_group = QGroupBox("Content order")
+        order_group.setObjectName("DesignerSection")
+        order_layout = QVBoxLayout(order_group)
+        order_hint = QLabel(
+            "Drag images and text here—or directly on the preview—to build the box."
+        )
+        order_hint.setObjectName("DesignerHint")
+        order_hint.setWordWrap(True)
+        order_layout.addWidget(order_hint)
+        self.field_order_list = ContentOrderList()
+        self.field_order_list.setObjectName("DesignerOrderList")
+        self.field_order_list.setMouseTracking(True)
+        self.field_order_list.setItemDelegate(ContentOrderDelegate(self.field_order_list))
+        self.field_order_list.setDragDropMode(QAbstractItemView.DragDropMode.InternalMove)
+        self.field_order_list.setDefaultDropAction(Qt.DropAction.MoveAction)
+        self.field_order_list.setDragDropOverwriteMode(False)
+        self.field_order_list.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.field_order_list.setMinimumHeight(150)
+        self.field_order_list.setMaximumHeight(220)
+
+        self.field_styles: dict[str, dict[str, str]] = {}
         self.field_roles: dict[str, str] = {}
-        content_fields = [
-            field_data
-            for field_data in item.display_fields()
-            if field_data.get("type") != "image"
-        ]
-        for index, field_data in enumerate(content_fields):
+        self.field_types: dict[str, str] = {}
+        self._new_field_sources: dict[str, str] = {}
+        content_index = 0
+        for field_data in item.display_fields():
             field_id = str(field_data.get("id", ""))
-            role = self._field_role(field_data, index)
+            field_type = str(field_data.get("type", "text"))
+            self.field_types[field_id] = field_type
             saved_style = project.field_styles.get(field_id, {})
-            background = saved_style.get("background_color") or getattr(
-                project, f"{role}_background_color"
+            if field_type == "image":
+                self.field_styles[field_id] = {
+                    "height_weight": str(
+                        self._bounded_int(
+                            saved_style.get("height_weight"), 100, 25, 400
+                        )
+                    )
+                }
+            else:
+                role = self._field_role(field_data, content_index)
+                self.field_roles[field_id] = role
+                self.field_styles[field_id] = self._complete_field_style(
+                    saved_style,
+                    getattr(project, f"{role}_background_color"),
+                    getattr(project, f"{role}_text_color"),
+                )
+                content_index += 1
+            type_label = "IMAGE" if field_type == "image" else "TEXT"
+            list_item = QListWidgetItem(
+                f"{type_label}  ·  {str(field_data.get('label') or 'Input')}"
             )
-            text_color = saved_style.get("text_color") or getattr(
-                project, f"{role}_text_color"
-            )
-            row = QWidget()
-            row_layout = QHBoxLayout(row)
-            row_layout.setContentsMargins(0, 0, 0, 0)
-            background_button = ColorButton(background)
-            text_button = ColorButton(text_color)
-            self.field_color_buttons[field_id] = (background_button, text_button)
-            self.field_roles[field_id] = role
-            row_layout.addWidget(QLabel("Background"))
-            row_layout.addWidget(background_button)
-            row_layout.addSpacing(8)
-            row_layout.addWidget(QLabel("Text"))
-            row_layout.addWidget(text_button)
-            row_layout.addStretch(1)
-            form.addRow(str(field_data.get("label") or "Input"), row)
+            list_item.setData(Qt.ItemDataRole.UserRole, field_id)
+            list_item.setToolTip("Drag to reorder; select to edit this band's style")
+            self.field_order_list.addItem(list_item)
+        order_layout.addWidget(self.field_order_list)
+        controls_layout.addWidget(order_group)
 
-        content_layout.addWidget(form_widget, 1)
-        preview_layout = QVBoxLayout()
-        preview_title = QLabel("BOX PREVIEW")
-        preview_title.setObjectName("PanelTitle")
+        self.content_group = QGroupBox("Selected content")
+        self.content_group.setObjectName("DesignerSection")
+        content_form = QFormLayout(self.content_group)
+        content_form.setFieldGrowthPolicy(
+            QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow
+        )
+        self.field_label_edit = QLineEdit()
+        self.field_value_edit = QLineEdit()
+        self.field_browse_button = QPushButton("Choose image…")
+        self.image_height_label = QLabel("Selected image height")
+        self.image_height_spin = QSpinBox()
+        self.image_height_spin.setRange(25, 400)
+        self.image_height_spin.setSuffix(" %")
+        self.image_height_spin.setToolTip(
+            "Relative height for this image only. 200% makes it twice the height of a 100% image."
+        )
+        content_form.addRow("Label", self.field_label_edit)
+        content_form.addRow("Value", self.field_value_edit)
+        content_form.addRow("", self.field_browse_button)
+        content_form.addRow(self.image_height_label, self.image_height_spin)
+        controls_layout.addWidget(self.content_group)
+
+        self.style_group = QGroupBox("Selected text band")
+        self.style_group.setObjectName("DesignerSection")
+        style_form = QFormLayout(self.style_group)
+        style_form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
+        self.band_background_button = ColorButton("#111827")
+        self.band_text_button = ColorButton("#ffffff")
+        self.band_outline_button = ColorButton("#000000")
+        self.band_border_button = ColorButton("#000000")
+        self.band_outline_width_spin = QSpinBox()
+        self.band_outline_width_spin.setRange(0, 8)
+        self.band_outline_width_spin.setSuffix(" px")
+        self.band_outline_width_spin.setSpecialValueText("None")
+        self.band_border_width_spin = QSpinBox()
+        self.band_border_width_spin.setRange(0, 12)
+        self.band_border_width_spin.setSuffix(" px")
+        self.band_border_width_spin.setSpecialValueText("None")
+        self.band_alignment_combo = QComboBox()
+        self.band_alignment_combo.addItem("Left", "left")
+        self.band_alignment_combo.addItem("Center", "center")
+        self.band_alignment_combo.addItem("Right", "right")
+        self.band_font_weight_combo = QComboBox()
+        for label, value in (
+            ("Regular", 400), ("Medium", 500), ("Semi-bold", 600),
+            ("Bold", 700), ("Extra bold", 800), ("Black", 900),
+        ):
+            self.band_font_weight_combo.addItem(label, value)
+        self.band_font_size_spin = QSpinBox()
+        self.band_font_size_spin.setRange(0, 120)
+        self.band_font_size_spin.setSpecialValueText("Use global")
+        self.band_font_size_spin.setSuffix(" pt")
+        self.band_height_spin = QSpinBox()
+        self.band_height_spin.setRange(25, 400)
+        self.band_height_spin.setSuffix(" %")
+        self.band_height_spin.setToolTip(
+            "Relative height compared with other text bands; 100% is the default."
+        )
+        self.band_padding_spin = QSpinBox()
+        self.band_padding_spin.setRange(0, 64)
+        self.band_padding_spin.setSuffix(" px")
+        style_form.addRow("Background", self.band_background_button)
+        style_form.addRow("Text", self.band_text_button)
+        style_form.addRow("Text outline", self.band_outline_button)
+        style_form.addRow("Outline width", self.band_outline_width_spin)
+        style_form.addRow("Row border", self.band_border_button)
+        style_form.addRow("Border width", self.band_border_width_spin)
+        style_form.addRow("Alignment", self.band_alignment_combo)
+        style_form.addRow("Font weight", self.band_font_weight_combo)
+        style_form.addRow("Font size", self.band_font_size_spin)
+        style_form.addRow("Relative height", self.band_height_spin)
+        style_form.addRow("Horizontal padding", self.band_padding_spin)
+        controls_layout.addWidget(self.style_group)
+        controls_layout.addStretch(1)
+        controls_scroll.setWidget(controls_widget)
+        content_splitter.addWidget(controls_scroll)
+
+        preview_panel = QWidget()
+        preview_panel.setObjectName("DesignerPreviewPanel")
+        preview_layout = QVBoxLayout(preview_panel)
+        preview_layout.setContentsMargins(22, 20, 22, 18)
+        preview_title = QLabel("Live preview")
+        preview_title.setObjectName("DesignerPreviewTitle")
         self.box_preview = BoxStylePreview(self._image_item)
         self.box_preview.image_clicked.connect(self._edit_image)
+        self.box_preview.field_selected.connect(self._preview_field_selected)
+        self.box_preview.field_reorder_requested.connect(
+            self._preview_field_reorder_requested
+        )
         preview_layout.addWidget(preview_title)
-        preview_layout.addWidget(self.box_preview)
+        preview_layout.addWidget(self.box_preview, 0, Qt.AlignmentFlag.AlignHCenter)
+        preview_help = QLabel(
+            "Drag any image or text block to a new position. Click an image to crop or reposition it."
+        )
+        preview_help.setObjectName("DesignerHint")
+        preview_help.setWordWrap(True)
+        preview_help.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        preview_layout.addWidget(preview_help)
         preview_layout.addStretch(1)
-        content_layout.addLayout(preview_layout)
-        layout.addLayout(content_layout)
+        content_splitter.addWidget(preview_panel)
+        content_splitter.setStretchFactor(0, 3)
+        content_splitter.setStretchFactor(1, 2)
+        content_splitter.setSizes([780, 480])
+        layout.addWidget(content_splitter, 1)
+
+        footer = QWidget()
+        footer.setObjectName("DesignerFooter")
+        footer_layout = QHBoxLayout(footer)
+        footer_layout.setContentsMargins(2, 10, 2, 0)
+        footer_note = QLabel("Changes are applied to every box in this project.")
+        footer_note.setObjectName("DesignerHint")
         buttons = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
         )
         buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Apply")
         buttons.button(QDialogButtonBox.StandardButton.Ok).setObjectName("PrimaryButton")
-        layout.addWidget(buttons)
+        footer_layout.addWidget(footer_note)
+        footer_layout.addStretch(1)
+        footer_layout.addWidget(buttons)
+        layout.addWidget(footer)
 
         self.columns_combo.currentIndexChanged.connect(self._load_values)
         self.image_height_slider.valueChanged.connect(
@@ -824,11 +1334,31 @@ class BoxCustomizationDialog(QDialog):
         self.save_preset_button.clicked.connect(self._save_custom_preset)
         self.delete_preset_button.clicked.connect(self._delete_custom_preset)
         self.border_color_button.color_changed.connect(self._update_preview)
-        for background_button, text_button in self.field_color_buttons.values():
-            background_button.color_changed.connect(self._update_preview)
-            text_button.color_changed.connect(self._update_preview)
+        self.field_order_list.itemSelectionChanged.connect(self._load_selected_field_style)
+        self.field_order_list.model().rowsMoved.connect(self._field_order_changed)
+        self.field_order_list.add_requested.connect(self._add_content_below)
+        self.field_order_list.delete_requested.connect(self._remove_selected_content)
+        self._loading_field_content = False
+        self.field_label_edit.textEdited.connect(self._selected_field_content_changed)
+        self.field_value_edit.textEdited.connect(self._selected_field_content_changed)
+        self.field_browse_button.clicked.connect(self._browse_selected_image)
+        self.image_height_spin.valueChanged.connect(self._selected_image_height_changed)
+        self._loading_field_style = False
+        self.band_background_button.color_changed.connect(self._selected_field_style_changed)
+        self.band_text_button.color_changed.connect(self._selected_field_style_changed)
+        self.band_outline_button.color_changed.connect(self._selected_field_style_changed)
+        self.band_border_button.color_changed.connect(self._selected_field_style_changed)
+        self.band_outline_width_spin.valueChanged.connect(self._selected_field_style_changed)
+        self.band_border_width_spin.valueChanged.connect(self._selected_field_style_changed)
+        self.band_alignment_combo.currentIndexChanged.connect(self._selected_field_style_changed)
+        self.band_font_weight_combo.currentIndexChanged.connect(self._selected_field_style_changed)
+        self.band_font_size_spin.valueChanged.connect(self._selected_field_style_changed)
+        self.band_height_spin.valueChanged.connect(self._selected_field_style_changed)
+        self.band_padding_spin.valueChanged.connect(self._selected_field_style_changed)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
+        if self.field_order_list.count():
+            self.field_order_list.setCurrentRow(0)
         self._load_values()
 
     def _populate_preset_combo(self, selected_data: str = "") -> None:
@@ -889,6 +1419,27 @@ class BoxCustomizationDialog(QDialog):
                         style.get("background_color"), "#111827"
                     ),
                     "text_color": self._valid_color(style.get("text_color"), "#ffffff"),
+                    "outline_color": self._valid_color(
+                        style.get("outline_color"), "#000000"
+                    ),
+                    "outline_width": str(self._bounded_int(style.get("outline_width"), 0, 0, 8)),
+                    "border_color": self._valid_color(
+                        style.get("border_color"), "#000000"
+                    ),
+                    "border_width": str(self._bounded_int(style.get("border_width"), 0, 0, 12)),
+                    "alignment": (
+                        str(style.get("alignment"))
+                        if str(style.get("alignment")) in {"left", "center", "right"}
+                        else "center"
+                    ),
+                    "font_size": str(self._bounded_int(style.get("font_size"), 0, 0, 120)),
+                    "height_weight": str(
+                        self._bounded_int(style.get("height_weight"), 100, 25, 400)
+                    ),
+                    "padding": str(self._bounded_int(style.get("padding"), 14, 0, 64)),
+                    "font_weight": str(
+                        self._bounded_int(style.get("font_weight"), 700, 100, 900)
+                    ),
                 }
         return {
             "border_color": self._valid_color(preset.get("border_color"), "#05070a"),
@@ -902,6 +1453,40 @@ class BoxCustomizationDialog(QDialog):
     def _valid_color(self, value: object, fallback: str) -> str:
         color = QColor(str(value or ""))
         return color.name() if color.isValid() else fallback
+
+    @staticmethod
+    def _bounded_int(value: object, default: int, minimum: int, maximum: int) -> int:
+        try:
+            number = int(value)
+        except (TypeError, ValueError):
+            number = default
+        return max(minimum, min(maximum, number))
+
+    def _complete_field_style(
+        self,
+        style: dict[str, str] | object,
+        background: str,
+        text_color: str,
+    ) -> dict[str, str]:
+        raw = style if isinstance(style, dict) else {}
+        alignment = str(raw.get("alignment") or "center")
+        if alignment not in {"left", "center", "right"}:
+            alignment = "center"
+        weight = self._bounded_int(raw.get("font_weight"), 700, 100, 900)
+        weight = min((400, 500, 600, 700, 800, 900), key=lambda value: abs(value - weight))
+        return {
+            "background_color": self._valid_color(raw.get("background_color"), background),
+            "text_color": self._valid_color(raw.get("text_color"), text_color),
+            "outline_color": self._valid_color(raw.get("outline_color"), "#000000"),
+            "outline_width": str(self._bounded_int(raw.get("outline_width"), 0, 0, 8)),
+            "border_color": self._valid_color(raw.get("border_color"), "#000000"),
+            "border_width": str(self._bounded_int(raw.get("border_width"), 0, 0, 12)),
+            "alignment": alignment,
+            "font_size": str(self._bounded_int(raw.get("font_size"), 0, 0, 120)),
+            "height_weight": str(self._bounded_int(raw.get("height_weight"), 100, 25, 400)),
+            "padding": str(self._bounded_int(raw.get("padding"), 14, 0, 64)),
+            "font_weight": str(weight),
+        }
 
     def _selected_preset(self) -> dict[str, object] | None:
         data = str(self.preset_combo.currentData() or "")
@@ -929,17 +1514,18 @@ class BoxCustomizationDialog(QDialog):
         self.border_color_button.set_color(str(preset["border_color"]))
         role_styles = preset.get("roles", {})
         if isinstance(role_styles, dict):
-            for field_id, (background_button, text_button) in self.field_color_buttons.items():
+            for field_id in self.field_roles:
                 role = self.field_roles.get(field_id, "category")
                 style = role_styles.get(role)
                 if not isinstance(style, dict):
                     continue
-                background_button.set_color(
-                    self._valid_color(style.get("background_color"), background_button.color())
+                current = self.field_styles[field_id]
+                self.field_styles[field_id] = self._complete_field_style(
+                    style,
+                    current["background_color"],
+                    current["text_color"],
                 )
-                text_button.set_color(
-                    self._valid_color(style.get("text_color"), text_button.color())
-                )
+        self._load_selected_field_style()
         self._update_preview()
 
     def _save_custom_preset(self) -> None:
@@ -971,12 +1557,9 @@ class BoxCustomizationDialog(QDialog):
 
     def _preset_from_current_controls(self) -> dict[str, object]:
         roles: dict[str, dict[str, str]] = {}
-        for field_id, (background_button, text_button) in self.field_color_buttons.items():
-            role = self.field_roles.get(field_id, "category")
-            roles[role] = {
-                "background_color": background_button.color(),
-                "text_color": text_button.color(),
-            }
+        for field_id, role in self.field_roles.items():
+            style = self.field_styles[field_id]
+            roles[role] = dict(style)
         return {
             "border_color": self.border_color_button.color(),
             "text_font_family": self.text_font_combo.currentFont().family(),
@@ -987,12 +1570,6 @@ class BoxCustomizationDialog(QDialog):
         }
 
     def apply_changes(self) -> None:
-        if self._images_changed:
-            self.item.set_fields(self._image_item.display_fields())
-            self.item.image_transforms = {
-                field_id: dict(transform)
-                for field_id, transform in self._image_item.image_transforms.items()
-            }
         columns = int(self.columns_combo.currentData())
         self.project.preview_max_columns = columns
         setattr(
@@ -1003,15 +1580,42 @@ class BoxCustomizationDialog(QDialog):
         self.project.image_fit = str(self.image_fit_combo.currentData())
         self.project.text_font_family = self.text_font_combo.currentFont().family()
         self.project.text_font_size = self.text_font_size_spin.value()
+        self.project.item_fixed_duration = float(self.duration_spin.value())
         self.project.card_border_color = self.border_color_button.color()
         self.project.field_styles = {
-            field_id: {
-                "background_color": background_button.color(),
-                "text_color": text_button.color(),
-            }
-            for field_id, (background_button, text_button) in self.field_color_buttons.items()
+            field_id: dict(style) for field_id, style in self.field_styles.items()
         }
+        preview_fields = self._image_item.display_fields()
         for existing_item in self.project.comparison_items:
+            if existing_item is self.item:
+                fields = [dict(field) for field in preview_fields]
+            else:
+                existing_fields = self._fields_with_new_content(
+                    existing_item.display_fields()
+                )
+                values_by_id = {
+                    str(field.get("id", "")): str(field.get("value", ""))
+                    for field in existing_fields
+                }
+                fields = []
+                for template in preview_fields:
+                    field = dict(template)
+                    field_id = str(field.get("id", ""))
+                    if field_id in values_by_id:
+                        field["value"] = values_by_id[field_id]
+                    fields.append(field)
+            existing_item.set_fields(fields)
+            if existing_item is self.item:
+                existing_item.image_transforms = {
+                    field_id: dict(transform)
+                    for field_id, transform in self._image_item.image_transforms.items()
+                }
+            for new_id, source_id in self._new_field_sources.items():
+                if self.field_types.get(new_id) != "image":
+                    continue
+                source_transform = existing_item.image_transforms.get(source_id)
+                if source_transform is not None:
+                    existing_item.image_transforms[new_id] = dict(source_transform)
             for layout_columns in range(
                 MIN_PREVIEW_COLUMNS_1080P, MAX_PREVIEW_COLUMNS_1080P + 1
             ):
@@ -1019,6 +1623,7 @@ class BoxCustomizationDialog(QDialog):
             existing_item.image_fit = ""
             for key in self.STYLE_KEYS:
                 setattr(existing_item, key, "")
+        self.project.apply_fixed_item_timing()
 
     def _edit_image(self, field_id: str) -> None:
         fields = self._image_item.display_fields()
@@ -1062,22 +1667,313 @@ class BoxCustomizationDialog(QDialog):
         self._update_preview()
 
     def _update_preview(self, *_args) -> None:
-        field_styles = {
-            field_id: {
-                "background_color": background_button.color(),
-                "text_color": text_button.color(),
-            }
-            for field_id, (background_button, text_button) in self.field_color_buttons.items()
-        }
         self.box_preview.set_style(
             str(self.image_fit_combo.currentData() or "cover"),
             self.image_height_slider.value(),
             self.border_color_button.color(),
             self.text_font_combo.currentFont().family(),
-            field_styles,
+            self.field_styles,
             self.text_font_size_spin.value(),
             int(self.columns_combo.currentData()),
         )
+
+    def _selected_field_id(self) -> str:
+        item = self.field_order_list.currentItem()
+        return str(item.data(Qt.ItemDataRole.UserRole) or "") if item else ""
+
+    def _load_selected_field_style(self) -> None:
+        field_id = self._selected_field_id()
+        self.box_preview.set_selected_field(field_id)
+        field_data = next(
+            (
+                field
+                for field in self._image_item.display_fields()
+                if str(field.get("id", "")) == field_id
+            ),
+            None,
+        )
+        self._loading_field_content = True
+        self.field_label_edit.setText(
+            str(field_data.get("label", "")) if field_data else ""
+        )
+        self.field_value_edit.setText(
+            str(field_data.get("value", "")) if field_data else ""
+        )
+        is_image = bool(field_data and field_data.get("type") == "image")
+        self.field_value_edit.setReadOnly(is_image)
+        self.field_value_edit.setPlaceholderText(
+            "Choose an image" if is_image else "Enter value for this box"
+        )
+        self.field_browse_button.setVisible(is_image)
+        image_style = self.field_styles.get(field_id, {})
+        self.image_height_spin.setValue(
+            self._bounded_int(image_style.get("height_weight"), 100, 25, 400)
+        )
+        self.image_height_label.setVisible(is_image)
+        self.image_height_spin.setVisible(is_image)
+        self.content_group.setEnabled(field_data is not None)
+        self._loading_field_content = False
+        style = self.field_styles.get(field_id)
+        if style is None or is_image:
+            self.style_group.setTitle("Selected image")
+            self.style_group.setEnabled(False)
+            return
+        self.style_group.setTitle("Selected text band")
+        self.style_group.setEnabled(True)
+        self._loading_field_style = True
+        self.band_background_button.set_color(style["background_color"])
+        self.band_text_button.set_color(style["text_color"])
+        self.band_outline_button.set_color(style["outline_color"])
+        self.band_border_button.set_color(style["border_color"])
+        self.band_outline_width_spin.setValue(int(style["outline_width"]))
+        self.band_border_width_spin.setValue(int(style["border_width"]))
+        self.band_alignment_combo.setCurrentIndex(
+            max(0, self.band_alignment_combo.findData(style["alignment"]))
+        )
+        self.band_font_weight_combo.setCurrentIndex(
+            max(0, self.band_font_weight_combo.findData(int(style["font_weight"])))
+        )
+        self.band_font_size_spin.setValue(int(style["font_size"]))
+        self.band_height_spin.setValue(int(style["height_weight"]))
+        self.band_padding_spin.setValue(int(style["padding"]))
+        self._loading_field_style = False
+
+    def _selected_field_style_changed(self, *_args) -> None:
+        if self._loading_field_style:
+            return
+        field_id = self._selected_field_id()
+        if not field_id:
+            return
+        self.field_styles[field_id] = {
+            "background_color": self.band_background_button.color(),
+            "text_color": self.band_text_button.color(),
+            "outline_color": self.band_outline_button.color(),
+            "outline_width": str(self.band_outline_width_spin.value()),
+            "border_color": self.band_border_button.color(),
+            "border_width": str(self.band_border_width_spin.value()),
+            "alignment": str(self.band_alignment_combo.currentData() or "center"),
+            "font_weight": str(self.band_font_weight_combo.currentData() or 700),
+            "font_size": str(self.band_font_size_spin.value()),
+            "height_weight": str(self.band_height_spin.value()),
+            "padding": str(self.band_padding_spin.value()),
+        }
+        self._update_preview()
+
+    def _selected_field_content_changed(self, *_args) -> None:
+        if self._loading_field_content:
+            return
+        field_id = self._selected_field_id()
+        fields = self._image_item.display_fields()
+        field = next(
+            (field for field in fields if str(field.get("id", "")) == field_id),
+            None,
+        )
+        if field is None:
+            return
+        field["label"] = self.field_label_edit.text().strip() or str(
+            field.get("type", "text")
+        ).title()
+        if field.get("type") != "image":
+            field["value"] = self.field_value_edit.text()
+        self._image_item.set_fields(fields)
+        current_item = self.field_order_list.currentItem()
+        if current_item is not None:
+            type_label = "IMAGE" if field.get("type") == "image" else "TEXT"
+            current_item.setText(f"{type_label}  ·  {field['label']}")
+        self._update_preview()
+
+    def _selected_image_height_changed(self, value: int) -> None:
+        if self._loading_field_content:
+            return
+        field_id = self._selected_field_id()
+        if self.field_types.get(field_id) != "image":
+            return
+        self.field_styles.setdefault(field_id, {})["height_weight"] = str(value)
+        self._update_preview()
+
+    def _browse_selected_image(self) -> None:
+        field_id = self._selected_field_id()
+        if self.field_types.get(field_id) != "image":
+            return
+        path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Choose Image",
+            str(Path.home()),
+            SUPPORTED_IMAGE_FILTER,
+        )
+        if not path:
+            return
+        fields = self._image_item.display_fields()
+        field = next(
+            (field for field in fields if str(field.get("id", "")) == field_id),
+            None,
+        )
+        if field is None:
+            return
+        field["value"] = path
+        self._image_item.set_fields(fields)
+        self._images_changed = True
+        self._load_selected_field_style()
+        self._update_preview()
+
+    def _remove_selected_content(self, field_id: str = "") -> None:
+        if self.field_order_list.count() <= 1:
+            return
+        if field_id:
+            self._preview_field_selected(field_id)
+        row = self.field_order_list.currentRow()
+        field_id = self._selected_field_id()
+        fields = [
+            field
+            for field in self._image_item.display_fields()
+            if str(field.get("id", "")) != field_id
+        ]
+        self._image_item.set_fields(fields)
+        self._image_item.image_transforms.pop(field_id, None)
+        self.field_styles.pop(field_id, None)
+        self.field_roles.pop(field_id, None)
+        self.field_types.pop(field_id, None)
+        self._new_field_sources.pop(field_id, None)
+        removed_item = self.field_order_list.takeItem(row)
+        del removed_item
+        self.field_order_list.setCurrentRow(
+            min(row, self.field_order_list.count() - 1)
+        )
+        self._update_preview()
+
+    def _add_content_below(self, source_id: str = "") -> None:
+        if source_id:
+            self._preview_field_selected(source_id)
+        source_id = self._selected_field_id()
+        fields = self._image_item.display_fields()
+        source = next(
+            (field for field in fields if str(field.get("id", "")) == source_id),
+            None,
+        )
+        if source is None:
+            return
+        new_id = f"field_{uuid4().hex[:8]}"
+        duplicate = dict(source)
+        duplicate["id"] = new_id
+        duplicate["label"] = f"{str(source.get('label') or 'Input')} copy"
+        source_index = fields.index(source)
+        fields.insert(source_index + 1, duplicate)
+        source_transform = self._image_item.image_transforms.get(source_id)
+        self._image_item.set_fields(fields)
+        if source_transform is not None:
+            self._image_item.image_transforms[new_id] = dict(source_transform)
+
+        field_type = str(source.get("type", "text"))
+        self.field_types[new_id] = field_type
+        self._new_field_sources[new_id] = source_id
+        if field_type == "image":
+            self.field_styles[new_id] = dict(
+                self.field_styles.get(source_id, {"height_weight": "100"})
+            )
+        else:
+            self.field_roles[new_id] = self.field_roles.get(source_id, "category")
+            self.field_styles[new_id] = dict(
+                self.field_styles.get(
+                    source_id,
+                    self._complete_field_style({}, "#111827", "#ffffff"),
+                )
+            )
+
+        type_label = "IMAGE" if field_type == "image" else "TEXT"
+        list_item = QListWidgetItem(
+            f"{type_label}  ·  {duplicate['label']}"
+        )
+        list_item.setData(Qt.ItemDataRole.UserRole, new_id)
+        list_item.setToolTip("Drag to reorder; select to edit this band's style")
+        insert_row = self.field_order_list.currentRow() + 1
+        self.field_order_list.insertItem(insert_row, list_item)
+        self.field_order_list.setCurrentItem(list_item)
+        self._field_order_changed()
+
+    def _ordered_field_ids(self) -> list[str]:
+        return [
+            str(self.field_order_list.item(index).data(Qt.ItemDataRole.UserRole) or "")
+            for index in range(self.field_order_list.count())
+        ]
+
+    def _ordered_fields(self, fields: list[dict[str, str]]) -> list[dict[str, str]]:
+        copied_fields = [dict(field) for field in fields]
+        by_id = {str(field.get("id", "")): field for field in copied_fields}
+        ordered = [by_id.pop(field_id) for field_id in self._ordered_field_ids() if field_id in by_id]
+        ordered.extend(field for field in copied_fields if str(field.get("id", "")) in by_id)
+        return ordered
+
+    def _fields_with_new_content(
+        self, fields: list[dict[str, str]]
+    ) -> list[dict[str, str]]:
+        result = [dict(field) for field in fields]
+        preview_by_id = {
+            str(field.get("id", "")): field
+            for field in self._image_item.display_fields()
+        }
+        for new_id, source_id in self._new_field_sources.items():
+            if any(str(field.get("id", "")) == new_id for field in result):
+                continue
+            source = next(
+                (field for field in result if str(field.get("id", "")) == source_id),
+                None,
+            )
+            template = preview_by_id.get(new_id)
+            if source is None or template is None:
+                continue
+            duplicate = dict(source)
+            duplicate["id"] = new_id
+            duplicate["label"] = str(template.get("label") or source.get("label") or "Input")
+            duplicate["type"] = str(template.get("type") or source.get("type") or "text")
+            duplicate["role"] = str(template.get("role") or source.get("role") or "")
+            result.append(duplicate)
+        return result
+
+    def _field_order_changed(self, *_args) -> None:
+        self._image_item.set_fields(self._ordered_fields(self._image_item.display_fields()))
+        self._update_preview()
+
+    def _preview_field_reorder_requested(
+        self, source_id: str, target_id: str, drop_after: bool
+    ) -> None:
+        source_row = next(
+            (
+                index
+                for index in range(self.field_order_list.count())
+                if str(
+                    self.field_order_list.item(index).data(Qt.ItemDataRole.UserRole) or ""
+                )
+                == source_id
+            ),
+            -1,
+        )
+        target_row = next(
+            (
+                index
+                for index in range(self.field_order_list.count())
+                if str(
+                    self.field_order_list.item(index).data(Qt.ItemDataRole.UserRole) or ""
+                )
+                == target_id
+            ),
+            -1,
+        )
+        if source_row < 0 or target_row < 0 or source_row == target_row:
+            return
+        moved_item = self.field_order_list.takeItem(source_row)
+        if source_row < target_row:
+            target_row -= 1
+        insert_row = target_row + int(drop_after)
+        self.field_order_list.insertItem(insert_row, moved_item)
+        self.field_order_list.setCurrentItem(moved_item)
+        self._field_order_changed()
+
+    def _preview_field_selected(self, field_id: str) -> None:
+        for index in range(self.field_order_list.count()):
+            item = self.field_order_list.item(index)
+            if str(item.data(Qt.ItemDataRole.UserRole) or "") == field_id:
+                self.field_order_list.setCurrentItem(item)
+                break
 
     def _field_role(self, field_data: dict[str, str], index: int) -> str:
         role = str(field_data.get("role", ""))
@@ -1111,7 +2007,6 @@ class MainWindow(QMainWindow):
 
         self.preview = PreviewWidget()
         self.assets = AssetPanel()
-        self.properties = PropertiesPanel()
         self.transport = TransportControls()
         self.timeline = TimelineWidget()
 
@@ -1139,6 +2034,7 @@ class MainWindow(QMainWindow):
         self.project_title = QLabel()
         self.project_title.setObjectName("ProjectTitle")
         self.import_data_button = QPushButton("Import Text")
+        self.customize_boxes_button = QPushButton("Customize Boxes")
         self.settings_button = QPushButton("Project Settings")
         self.theme_combo = QComboBox()
         self.theme_combo.addItems(["Dark", "Light"])
@@ -1151,15 +2047,11 @@ class MainWindow(QMainWindow):
         command_layout.addWidget(self.project_title)
         command_layout.addStretch(1)
         command_layout.addWidget(self.import_data_button)
+        command_layout.addWidget(self.customize_boxes_button)
         command_layout.addWidget(self.settings_button)
         command_layout.addWidget(QLabel("Theme"))
         command_layout.addWidget(self.theme_combo)
         command_layout.addWidget(self.toolbar_export_button)
-
-        left_splitter = QSplitter(Qt.Orientation.Vertical)
-        left_splitter.addWidget(self.assets)
-        left_splitter.addWidget(self.properties)
-        left_splitter.setSizes([360, 390])
 
         preview_panel = QWidget()
         preview_panel.setObjectName("Panel")
@@ -1170,7 +2062,7 @@ class MainWindow(QMainWindow):
         preview_layout.addWidget(self.transport)
 
         self.top_splitter = QSplitter(Qt.Orientation.Horizontal)
-        self.top_splitter.addWidget(left_splitter)
+        self.top_splitter.addWidget(self.assets)
         self.top_splitter.addWidget(preview_panel)
         self.top_splitter.setSizes([340, 1260])
 
@@ -1215,10 +2107,6 @@ class MainWindow(QMainWindow):
         self.show_timeline_action = QAction("Show Timeline", self, checkable=True, checked=True)
         self.show_timeline_action.toggled.connect(self.timeline.setVisible)
         view_menu.addAction(self.show_timeline_action)
-        self.show_properties_action = QAction("Show Properties", self, checkable=True, checked=True)
-        self.show_properties_action.toggled.connect(self.properties.setVisible)
-        view_menu.addAction(self.show_properties_action)
-
         export_menu = self.menuBar().addMenu("Export")
         self._add_action(export_menu, "Export...", self.export_video, QKeySequence("Ctrl+E"))
 
@@ -1234,10 +2122,6 @@ class MainWindow(QMainWindow):
         self.assets.item_selected.connect(self.select_item)
         self.assets.customize_item_requested.connect(self.open_box_customization)
         self.preview.image_edit_requested.connect(self.open_image_editor)
-        self.properties.item_changed.connect(self.update_item_properties)
-        self.properties.fields_changed.connect(self.update_item_fields)
-        self.properties.browse_image_requested.connect(self.import_image)
-        self.properties.customize_requested.connect(self.open_box_customization)
         self.timeline.item_selected.connect(self.select_item)
         self.timeline.item_timing_changed.connect(self.update_item_timing)
         self.timeline.time_changed.connect(self.set_current_time)
@@ -1252,6 +2136,7 @@ class MainWindow(QMainWindow):
         self.transport.opening_animation_changed.connect(self.set_opening_animation)
         self.transport.customize_requested.connect(self.open_box_customization)
         self.import_data_button.clicked.connect(self.add_text)
+        self.customize_boxes_button.clicked.connect(self.open_box_customization)
         self.settings_button.clicked.connect(self.open_project_settings)
         self.toolbar_export_button.clicked.connect(self.export_video)
         self.theme_combo.currentTextChanged.connect(self.set_theme)
@@ -1306,8 +2191,6 @@ class MainWindow(QMainWindow):
 
     def select_item(self, item_id: str, update_asset_panel: bool = True) -> None:
         self.selected_item_id = item_id
-        item = self.project.item_by_id(item_id) if item_id else None
-        self.properties.set_item(item)
         self.preview.set_selected_item(item_id)
         self.timeline.set_selected_item(item_id)
         if update_asset_panel and item_id:
@@ -1410,7 +2293,7 @@ class MainWindow(QMainWindow):
             return
         dialog.apply_changes()
         self._refresh_all()
-        self.statusBar().showMessage("Updated design for all boxes", 3500)
+        self.statusBar().showMessage("Updated box content and design", 3500)
 
     def open_image_editor(self, item_id: str, field_id: str) -> None:
         item = self.project.item_by_id(item_id)
@@ -1459,7 +2342,6 @@ class MainWindow(QMainWindow):
             self._warning("The selected item could not be found.")
             return
         item.set_image_path(path)
-        self.properties.set_image_path(path)
         self._refresh_all()
 
     def import_audio(self) -> None:
@@ -1574,8 +2456,6 @@ class MainWindow(QMainWindow):
             return
         self.project.item_fixed_duration = max(MIN_CLIP_DURATION, float(duration))
         self.project.apply_fixed_item_timing()
-        if self.selected_item_id == item_id:
-            self.properties.set_item(item)
         self.preview.update()
         self.timeline.set_project(self.project)
         self._update_status()

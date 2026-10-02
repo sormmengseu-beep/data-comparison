@@ -51,6 +51,125 @@ COMMON_STYLE = """
 QMainWindow, QDialog {
     color: @text;
 }
+QDialog#BoxCustomizationDialog {
+    background: @window;
+}
+QWidget#DesignerHeader {
+    background: transparent;
+    border-bottom: 1px solid @border;
+    padding-bottom: 10px;
+}
+QLabel#DesignerTitle {
+    color: @text;
+    font-size: 20px;
+    font-weight: 700;
+}
+QLabel#DesignerSubtitle, QLabel#DesignerHint {
+    color: @textMuted;
+}
+QLabel#DesignerBadge {
+    background: @selectedSurface;
+    border: 1px solid @accentBorder;
+    border-radius: 10px;
+    color: @accentBorder;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 5px 10px;
+}
+QScrollArea#DesignerInspectorScroll {
+    background: transparent;
+    border: none;
+}
+QWidget#DesignerInspector {
+    background: transparent;
+}
+QGroupBox#DesignerSection {
+    background: @panel;
+    border: 1px solid @border;
+    border-radius: 12px;
+    font-weight: 700;
+    margin-top: 18px;
+    padding: 18px 14px 14px 14px;
+}
+QGroupBox#DesignerSection::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 12px;
+    padding: 2px 7px;
+    color: @text;
+    background: @panel;
+}
+QWidget#DesignerPreviewPanel {
+    background: @panel;
+    border: 1px solid @border;
+    border-radius: 14px;
+}
+QLabel#DesignerPreviewTitle {
+    color: @text;
+    font-size: 15px;
+    font-weight: 700;
+}
+QWidget#DesignerFooter {
+    background: transparent;
+    border-top: 1px solid @border;
+}
+QListWidget#DesignerOrderList {
+    background: @input;
+    border: 1px solid @border;
+    border-radius: 10px;
+    padding: 4px;
+    outline: none;
+}
+QListWidget#DesignerOrderList::item {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+QDialog#BoxCustomizationDialog QLineEdit,
+QDialog#BoxCustomizationDialog QDoubleSpinBox,
+QDialog#BoxCustomizationDialog QSpinBox,
+QDialog#BoxCustomizationDialog QComboBox {
+    border-radius: 8px;
+    min-height: 28px;
+}
+QDialog#BoxCustomizationDialog QPushButton {
+    border-radius: 8px;
+    min-height: 26px;
+}
+QDialog#BoxCustomizationDialog QPushButton#PresetAction {
+    min-width: 58px;
+    padding-left: 9px;
+    padding-right: 9px;
+}
+QDialog#BoxCustomizationDialog QDialogButtonBox QPushButton {
+    min-width: 82px;
+    padding: 8px 16px;
+}
+QSplitter#DesignerSplitter::handle {
+    background: transparent;
+    margin: 8px 2px;
+}
+QSplitter#DesignerSplitter::handle:hover {
+    background: @selectedSurface;
+    border-radius: 3px;
+}
+QScrollArea#DesignerInspectorScroll QScrollBar:vertical {
+    background: transparent;
+    width: 10px;
+    margin: 2px;
+}
+QScrollArea#DesignerInspectorScroll QScrollBar::handle:vertical {
+    background: @borderStrong;
+    border-radius: 4px;
+    min-height: 32px;
+}
+QScrollArea#DesignerInspectorScroll QScrollBar::handle:vertical:hover {
+    background: @textMuted;
+}
+QScrollArea#DesignerInspectorScroll QScrollBar::add-line:vertical,
+QScrollArea#DesignerInspectorScroll QScrollBar::sub-line:vertical {
+    height: 0;
+}
 QMenuBar {
     background: @chrome;
     color: @textMuted;

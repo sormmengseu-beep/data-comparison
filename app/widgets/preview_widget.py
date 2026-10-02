@@ -261,52 +261,111 @@ class PreviewWidget(QWidget):
         image_height = int(rect.height() * image_percent / 100) if image_fields else 0
         if not content_fields:
             image_height = rect.height()
-        remaining_height = rect.height() - image_height
-
-        image_rect = QRect(rect.x(), rect.y(), rect.width(), image_height)
+        text_height = rect.height() - image_height
         image_fit = item.image_fit or self._project.image_fit
-        if image_fields:
-            image_y = image_rect.y()
-            for index, image_field in enumerate(image_fields):
-                images_left = len(image_fields) - index
-                slice_height = (image_rect.bottom() - image_y + 1) // images_left
-                image_slice = QRect(image_rect.x(), image_y, image_rect.width(), slice_height)
-                field_id = str(image_field.get("id", ""))
-                draw_image(
-                    painter, self._image_cache, str(image_field.get("value", "")),
-                    image_slice, image_fit, item.image_transforms.get(field_id),
-                    item.image_crop_x, item.image_crop_y,
+        base_font_size = self._project.text_font_size or max(
+            18, min(40, int(rect.width() * 0.072))
+        )
+        row_styles = [
+            self._resolved_field_style(item, field_data, self._field_role(field_data, index))
+            for index, field_data in enumerate(content_fields)
+        ]
+        text_weights = [
+            self._style_int(style, "height_weight", 100, 25, 400)
+            for style in row_styles
+        ]
+        image_weights = [
+            self._style_int(
+                self._project.field_styles.get(str(field.get("id", "")), {}),
+                "height_weight",
+                100,
+                25,
+                400,
+            )
+            for field in image_fields
+        ]
+        remaining_image_pixels = image_height
+        remaining_image_weight = sum(image_weights)
+        remaining_text_pixels = text_height
+        remaining_text_weight = sum(text_weights)
+        row_y = rect.y()
+        image_index = 0
+        content_index = 0
+        for field_data in fields:
+            field_type = str(field_data.get("type", "text"))
+            field_id = str(field_data.get("id", ""))
+            if field_type == "image":
+                image_weight = image_weights[image_index]
+                row_height = (
+                    remaining_image_pixels
+                    if image_index == len(image_fields) - 1
+                    else max(
+                        1,
+                        round(
+                            remaining_image_pixels
+                            * image_weight
+                            / max(1, remaining_image_weight)
+                        ),
+                    )
                 )
-                visible_slice = image_slice.intersected(painter.clipBoundingRect().toAlignedRect())
+            else:
+                weight = text_weights[content_index]
+                row_height = (
+                    remaining_text_pixels
+                    if content_index == len(content_fields) - 1
+                    else max(
+                        1,
+                        round(
+                            remaining_text_pixels
+                            * weight
+                            / max(1, remaining_text_weight)
+                        ),
+                    )
+                )
+            row_rect = QRect(rect.x(), row_y, rect.width(), row_height)
+            if field_type == "image":
+                draw_image(
+                    painter,
+                    self._image_cache,
+                    str(field_data.get("value", "")),
+                    row_rect,
+                    image_fit,
+                    item.image_transforms.get(field_id),
+                    item.image_crop_x,
+                    item.image_crop_y,
+                )
+                visible_slice = row_rect.intersected(
+                    painter.clipBoundingRect().toAlignedRect()
+                )
                 image_region = painter.transform().mapRect(visible_slice).intersected(
                     QRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
                 )
                 if not image_region.isEmpty():
                     self._image_regions.append((image_region, item.id, field_id))
-                image_y += slice_height
+                row_y += row_height
+                remaining_image_pixels -= row_height
+                remaining_image_weight -= image_weight
+                image_index += 1
+                continue
 
-        base_font_size = self._project.text_font_size or max(
-            18, min(40, int(rect.width() * 0.072))
-        )
-        row_y = image_rect.bottom() + 1
-        for index, field_data in enumerate(content_fields):
-            rows_left = len(content_fields) - index
-            row_height = (rect.bottom() - row_y + 1) // rows_left
-            row_rect = QRect(rect.x(), row_y, rect.width(), row_height)
-            role = self._field_role(field_data, index)
-            font_size = base_font_size if role in {"name", "rank"} else max(
+            role = self._field_role(field_data, content_index)
+            style = row_styles[content_index]
+            default_font_size = base_font_size if role in {"name", "rank"} else max(
                 1 if self._project.text_font_size else 17,
                 int(base_font_size * 0.88),
             )
+            font_size = self._style_int(style, "font_size", 0, 0, 120) or default_font_size
             self._draw_text_band(
                 painter,
                 row_rect,
                 str(field_data.get("value", "")),
-                self._field_style(item, field_data, role, "background_color"),
-                self._field_style(item, field_data, role, "text_color"),
+                style,
                 font_size,
             )
             row_y += row_height
+            remaining_text_pixels -= row_height
+            remaining_text_weight -= weight
+            content_index += 1
 
         border = QColor("#60a5fa" if selected else self._style(item, "card_border_color"))
         painter.setBrush(Qt.BrushStyle.NoBrush)
@@ -331,6 +390,30 @@ class PreviewWidget(QWidget):
             return value
         return self._style(item, f"{role}_{style_name}")
 
+    def _resolved_field_style(
+        self,
+        item: ComparisonItem,
+        field_data: dict[str, str],
+        role: str,
+    ) -> dict[str, str]:
+        field_id = str(field_data.get("id", ""))
+        saved = self._project.field_styles.get(field_id, {})
+        return {
+            "background_color": saved.get("background_color")
+            or self._style(item, f"{role}_background_color"),
+            "text_color": saved.get("text_color")
+            or self._style(item, f"{role}_text_color"),
+            "outline_color": saved.get("outline_color", "#000000"),
+            "outline_width": saved.get("outline_width", "0"),
+            "border_color": saved.get("border_color", "#000000"),
+            "border_width": saved.get("border_width", "0"),
+            "alignment": saved.get("alignment", "center"),
+            "font_size": saved.get("font_size", "0"),
+            "height_weight": saved.get("height_weight", "100"),
+            "padding": saved.get("padding", "14"),
+            "font_weight": saved.get("font_weight", "700"),
+        }
+
     def _field_role(self, field_data: dict[str, str], index: int) -> str:
         role = str(field_data.get("role", ""))
         if role in {"name", "category", "rank", "value"}:
@@ -347,27 +430,63 @@ class PreviewWidget(QWidget):
         painter: QPainter,
         rect: QRect,
         text: str,
-        background_color: str,
-        text_color: str,
+        style: dict[str, str],
         font_size: int,
     ) -> None:
-        painter.fillRect(rect, QColor(background_color))
-        painter.setPen(QColor(text_color))
-        target = rect.adjusted(14, 4, -14, -4)
-        flags = Qt.AlignmentFlag.AlignCenter | Qt.TextFlag.TextWordWrap
+        painter.fillRect(rect, QColor(style["background_color"]))
+        padding = self._style_int(style, "padding", 14, 0, 64)
+        target = rect.adjusted(padding, 4, -padding, -4)
+        horizontal = {
+            "left": Qt.AlignmentFlag.AlignLeft,
+            "right": Qt.AlignmentFlag.AlignRight,
+        }.get(style.get("alignment", "center"), Qt.AlignmentFlag.AlignHCenter)
+        flags = horizontal | Qt.AlignmentFlag.AlignVCenter | Qt.TextFlag.TextWordWrap
+        weight_value = self._style_int(style, "font_weight", 700, 100, 900)
+        weight_value = min(
+            (100, 200, 300, 400, 500, 600, 700, 800, 900),
+            key=lambda value: abs(value - weight_value),
+        )
+        weight = QFont.Weight(weight_value)
         fitted_size = font_size
         while fitted_size > 12:
-            font = QFont(self._project.text_font_family, fitted_size, QFont.Weight.Bold)
+            font = QFont(self._project.text_font_family, fitted_size, weight)
             bounds = QFontMetrics(font).boundingRect(target, int(flags), text)
             if bounds.width() <= target.width() and bounds.height() <= target.height():
                 break
             fitted_size -= 1
-        painter.setFont(QFont(self._project.text_font_family, fitted_size, QFont.Weight.Bold))
+        painter.setFont(QFont(self._project.text_font_family, fitted_size, weight))
+        outline_width = self._style_int(style, "outline_width", 0, 0, 8)
+        if outline_width:
+            painter.setPen(QColor(style.get("outline_color", "#000000")))
+            for distance in range(1, outline_width + 1):
+                for dx, dy in (
+                    (-distance, -distance), (0, -distance), (distance, -distance),
+                    (-distance, 0), (distance, 0),
+                    (-distance, distance), (0, distance), (distance, distance),
+                ):
+                    painter.drawText(target.translated(dx, dy), flags, text)
+        painter.setPen(QColor(style["text_color"]))
         painter.drawText(
             target,
             flags,
             text,
         )
+        border_width = self._style_int(style, "border_width", 0, 0, 12)
+        if border_width:
+            painter.setBrush(Qt.BrushStyle.NoBrush)
+            painter.setPen(QPen(QColor(style.get("border_color", "#000000")), border_width))
+            inset = max(1, border_width // 2)
+            painter.drawRect(rect.adjusted(inset, inset, -inset, -inset))
+
+    @staticmethod
+    def _style_int(
+        style: dict[str, str], key: str, default: int, minimum: int, maximum: int
+    ) -> int:
+        try:
+            value = int(style.get(key, default))
+        except (TypeError, ValueError):
+            value = default
+        return max(minimum, min(maximum, value))
 
     def _draw_empty_state(self, painter: QPainter) -> None:
         painter.setPen(QColor("#9ca3af"))

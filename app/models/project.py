@@ -221,8 +221,26 @@ def _field_styles(value: object) -> dict[str, dict[str, str]]:
     for field_id, raw_style in value.items():
         if not isinstance(raw_style, dict):
             continue
-        result[str(field_id)] = {
+        style = {
             "background_color": str(raw_style.get("background_color") or ""),
             "text_color": str(raw_style.get("text_color") or ""),
         }
+        for key, default, minimum, maximum in (
+            ("outline_width", 0, 0, 8),
+            ("border_width", 0, 0, 12),
+            ("font_size", 0, 0, 120),
+            ("height_weight", 100, 25, 400),
+            ("padding", 14, 0, 64),
+            ("font_weight", 700, 100, 900),
+        ):
+            try:
+                number = int(raw_style.get(key, default))
+            except (TypeError, ValueError):
+                number = default
+            style[key] = str(max(minimum, min(maximum, number)))
+        style["outline_color"] = str(raw_style.get("outline_color") or "#000000")
+        style["border_color"] = str(raw_style.get("border_color") or "#000000")
+        alignment = str(raw_style.get("alignment") or "center")
+        style["alignment"] = alignment if alignment in {"left", "center", "right"} else "center"
+        result[str(field_id)] = style
     return result
