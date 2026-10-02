@@ -193,6 +193,17 @@ QDialog#BoxCustomizationDialog QPushButton {
     border-radius: 8px;
     min-height: 26px;
 }
+QDialog#BoxCustomizationDialog QWidget#DesignerCompactOption {
+    background: @input;
+    border: 1px solid @borderStrong;
+    border-radius: 8px;
+    min-height: 30px;
+}
+QDialog#BoxCustomizationDialog QWidget#DesignerCompactOption QCheckBox {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
 QDialog#BoxCustomizationDialog QPushButton#PresetAction {
     min-width: 58px;
     padding-left: 9px;

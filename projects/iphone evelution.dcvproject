@@ -1,0 +1,3229 @@
+{
+    "project_name": "Football Comparison",
+    "resolution": {
+        "width": 1920,
+        "height": 1080
+    },
+    "fps": 60,
+    "duration": 330.0,
+    "background": "Dark",
+    "preview_max_columns": 3,
+    "item_fixed_duration": 6.0,
+    "opening_animation": "alternating",
+    "style": {
+        "canvas_background_color": "#05070a",
+        "card_border_color": "#171717",
+        "name_background_color": "#f45b69",
+        "name_text_color": "#ffffff",
+        "category_background_color": "#050505",
+        "category_text_color": "#ffffff",
+        "rank_background_color": "#fbb10b",
+        "rank_text_color": "#080808",
+        "value_background_color": "#087be8",
+        "value_text_color": "#ffffff",
+        "text_font_family": "Arial",
+        "text_font_size": 0,
+        "image_fit": "contain",
+        "image_height_percent_3": 54,
+        "image_height_percent_4": 58,
+        "image_height_percent_5": 60,
+        "field_styles": {
+            "field_image": {
+                "height_weight": "100",
+                "parent_id": "",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "shape": "rectangle",
+                "overlay_x": "",
+                "overlay_y": "",
+                "overlay_width": "",
+                "overlay_height": ""
+            },
+            "field_category": {
+                "background_color": "#050505",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "0",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#050505",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "0",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#050505",
+                "overlay_x": "0",
+                "overlay_y": "539",
+                "overlay_width": "1000",
+                "overlay_height": "150"
+            },
+            "field_name": {
+                "background_color": "#7d7d7d",
+                "fill_mode": "solid",
+                "gradient_color_2": "#f45b69",
+                "container_color": "",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "0",
+                "border_color": "#000000",
+                "border_width": "0",
+                "alignment": "center",
+                "font_weight": "900",
+                "font_size": "70",
+                "height_weight": "100",
+                "padding": "14",
+                "inset": "0",
+                "corner_radius": "0",
+                "parent_id": "",
+                "shape": "rectangle",
+                "overlay_x": "0",
+                "overlay_y": "690",
+                "overlay_width": "1000",
+                "overlay_height": "310"
+            }
+        }
+    },
+    "comparison_items": [
+        {
+            "name": "iPhone (1st Gen)",
+            "rank": "#1",
+            "category": "iPhone (1st Gen)",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\1. Year_2007 _ iPhone (1st Gen) _ Chip_Samsung S5L8900 _ Battery_1,400 mAh.jpg",
+            "start_time": 0.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\1. Year_2007 _ iPhone (1st Gen) _ Chip_Samsung S5L8900 _ Battery_1,400 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone (1st Gen)",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2007",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3160919711391628,
+                    "scale_y": 1.3160919711391628,
+                    "offset_x": 0.15861962290017825,
+                    "offset_y": 0.00755642889469708
+                }
+            },
+            "id": "item_32253b03"
+        },
+        {
+            "name": "iPhone 3G",
+            "rank": "#2",
+            "category": "iPhone 3G",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\2. Year_2008 _ iPhone 3G _ Chip_Samsung S5L8900 _ Battery_1,150 mAh.jpg",
+            "start_time": 6.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\2. Year_2008 _ iPhone 3G _ Chip_Samsung S5L8900 _ Battery_1,150 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 3G",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2008",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3146414185126711,
+                    "scale_y": 1.3146414185126711,
+                    "offset_x": 0.02667520586267056,
+                    "offset_y": 0.021988621138090067
+                }
+            },
+            "id": "item_34db568e"
+        },
+        {
+            "name": "iPhone 3GS",
+            "rank": "#3",
+            "category": "iPhone 3GS",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/13792379.webp",
+            "start_time": 12.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/13792379.webp",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 3GS",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2009",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.035,
+                    "scale_y": 1.035,
+                    "offset_x": 0.005421274038461519,
+                    "offset_y": 0.014846153846153851
+                }
+            },
+            "id": "item_079d65b3"
+        },
+        {
+            "name": "iPhone 4",
+            "rank": "#4",
+            "category": "iPhone 4",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\4. Year_2010 _ iPhone 4 _ Chip_Apple A4 _ Battery_1,420 mAh.jpg",
+            "start_time": 18.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\4. Year_2010 _ iPhone 4 _ Chip_Apple A4 _ Battery_1,420 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 4",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2010",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.2893908688632691,
+                    "scale_y": 1.2893908688632691,
+                    "offset_x": -0.0035621145676091315,
+                    "offset_y": -0.0068555621399787395
+                }
+            },
+            "id": "item_c5fcac0e"
+        },
+        {
+            "name": "iPhone 4s",
+            "rank": "#5",
+            "category": "iPhone 4s",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\5. Year_2011 _ iPhone 4s _ Chip_Apple A5 _ Battery_1,432 mAh.jpg",
+            "start_time": 24.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\5. Year_2011 _ iPhone 4s _ Chip_Apple A5 _ Battery_1,432 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 4s",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2011",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1322879684418146,
+                    "scale_y": 1.1322879684418146,
+                    "offset_x": 0.006519877958579912,
+                    "offset_y": 0.03910595256157389
+                }
+            },
+            "id": "item_9c1a3d2e"
+        },
+        {
+            "name": "iPhone 5",
+            "rank": "#6",
+            "category": "iPhone 5",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/rspMKVvJ8Fgeo5q2ek64oa.jpg",
+            "start_time": 30.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/rspMKVvJ8Fgeo5q2ek64oa.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 5",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2012",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.6060587606837609,
+                    "scale_y": 1.6060587606837609,
+                    "offset_x": 0.010999083205493289,
+                    "offset_y": 0.0010191502495670926
+                }
+            },
+            "id": "item_a6e499fd"
+        },
+        {
+            "name": "iPhone 5c",
+            "rank": "#7",
+            "category": "iPhone 5c",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\7. Year_2013 _ iPhone 5c _ Chip_Apple A6 _ Battery_1,510 mAh.jpg",
+            "start_time": 36.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\7. Year_2013 _ iPhone 5c _ Chip_Apple A6 _ Battery_1,510 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 5c",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2013",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.145737077722393,
+                    "scale_y": 1.145737077722393,
+                    "offset_x": -0.000518499244094214,
+                    "offset_y": 0.01519207086073231
+                }
+            },
+            "id": "item_e66dfa62"
+        },
+        {
+            "name": "iPhone 5s",
+            "rank": "#8",
+            "category": "iPhone 5s",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\8. Year_2013 _ iPhone 5s _ Chip_Apple A7 _ Battery_1,560 mAh.jpg",
+            "start_time": 42.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\8. Year_2013 _ iPhone 5s _ Chip_Apple A7 _ Battery_1,560 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 5s",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2013",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1542472057856672,
+                    "scale_y": 1.1542472057856672,
+                    "offset_x": -0.0025140840729783063,
+                    "offset_y": -0.011664643706063902
+                }
+            },
+            "id": "item_bb65397a"
+        },
+        {
+            "name": "iPhone 6",
+            "rank": "#9",
+            "category": "iPhone 6",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\9. Year_2014 _ iPhone 6 _ Chip_Apple A8 _ Battery_1,810 mAh.jpg",
+            "start_time": 48.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\9. Year_2014 _ iPhone 6 _ Chip_Apple A8 _ Battery_1,810 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 6",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2014",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.0978501280872595,
+                    "scale_y": 1.0978501280872595,
+                    "offset_x": -0.007416087762236748,
+                    "offset_y": -0.012961257398650464
+                }
+            },
+            "id": "item_63fb0b45"
+        },
+        {
+            "name": "iPhone 6 Plus",
+            "rank": "#10",
+            "category": "iPhone 6 Plus",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\10. Year_2014 _ iPhone 6 Plus _ Chip_Apple A8 _ Battery_2,915 mAh.jpg",
+            "start_time": 54.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\10. Year_2014 _ iPhone 6 Plus _ Chip_Apple A8 _ Battery_2,915 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 6 Plus",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2014",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.106049739012456,
+                    "scale_y": 1.106049739012456,
+                    "offset_x": -0.0005043361110638848,
+                    "offset_y": -0.007302147748004858
+                }
+            },
+            "id": "item_19cbf299"
+        },
+        {
+            "name": "iPhone 6s",
+            "rank": "#11",
+            "category": "iPhone 6s",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\11. Year_2015 _ iPhone 6s _ Chip_Apple A9 _ Battery_1,715 mAh.jpg",
+            "start_time": 60.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\11. Year_2015 _ iPhone 6s _ Chip_Apple A9 _ Battery_1,715 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 6s",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2015",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1185141354372123,
+                    "scale_y": 1.1185141354372123,
+                    "offset_x": 0.003795217594699829,
+                    "offset_y": -0.007418297678652784
+                }
+            },
+            "id": "item_82553a77"
+        },
+        {
+            "name": "iPhone 6s Plus",
+            "rank": "#12",
+            "category": "iPhone 6s Plus",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/apple-iphone-6s-plus-silver.jpg",
+            "start_time": 66.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/apple-iphone-6s-plus-silver.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 6s Plus",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2015",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.4836522168803419,
+                    "scale_y": 1.4836522168803419,
+                    "offset_x": -0.012755395413288018,
+                    "offset_y": 0.0017464185631778303
+                }
+            },
+            "id": "item_4b2f3b07"
+        },
+        {
+            "name": "iPhone SE (1st Gen)",
+            "rank": "#13",
+            "category": "iPhone SE (1st Gen)",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\13. Year_2016 _ iPhone SE (1st Gen) _ Chip_Apple A9 _ Battery_1,624 mAh.jpg",
+            "start_time": 72.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\13. Year_2016 _ iPhone SE (1st Gen) _ Chip_Apple A9 _ Battery_1,624 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone SE (1st Gen)",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2016",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.2814069690992766,
+                    "scale_y": 1.2814069690992766,
+                    "offset_x": -0.00946881985535844,
+                    "offset_y": -0.001156964884775652
+                }
+            },
+            "id": "item_9817ad47"
+        },
+        {
+            "name": "iPhone 7",
+            "rank": "#14",
+            "category": "iPhone 7",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/6-3292accd70-apple-iphone-7-32gb-128gb-256gb-unlocked-good-refurbished-redial-3295662.webp",
+            "start_time": 78.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/6-3292accd70-apple-iphone-7-32gb-128gb-256gb-unlocked-good-refurbished-redial-3295662.webp",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 7",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2016",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.4803529931914732,
+                    "scale_y": 1.4803529931914732,
+                    "offset_x": -0.01722311958477115,
+                    "offset_y": -0.007540137423800966
+                }
+            },
+            "id": "item_ce54508a"
+        },
+        {
+            "name": "iPhone 7 Plus",
+            "rank": "#15",
+            "category": "iPhone 7 Plus",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\15. Year_2016 _ iPhone 7 Plus _ Chip_Apple A10 Fusion _ Battery_2,900 mAh.jpg",
+            "start_time": 84.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\15. Year_2016 _ iPhone 7 Plus _ Chip_Apple A10 Fusion _ Battery_2,900 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 7 Plus",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2016",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1307692307692307,
+                    "scale_y": 1.1307692307692307,
+                    "offset_x": 0.01199944526627221,
+                    "offset_y": 0.030591715976331375
+                }
+            },
+            "id": "item_6696e8a8"
+        },
+        {
+            "name": "iPhone 8",
+            "rank": "#16",
+            "category": "iPhone 8",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/1-c8ffc4b90b-apple_iphone_8_black.webp",
+            "start_time": 90.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/1-c8ffc4b90b-apple_iphone_8_black.webp",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 8",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2017",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3625841346153846,
+                    "scale_y": 1.3625841346153846,
+                    "offset_x": 0.002931798570019686,
+                    "offset_y": -0.0029914529914530203
+                }
+            },
+            "id": "item_06588721"
+        },
+        {
+            "name": "iPhone 8 Plus",
+            "rank": "#17",
+            "category": "iPhone 8 Plus",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\17. Year_2017 _ iPhone 8 Plus _ Chip_Apple A11 Bionic _ Battery_2,691 mAh.jpg",
+            "start_time": 96.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\17. Year_2017 _ iPhone 8 Plus _ Chip_Apple A11 Bionic _ Battery_2,691 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 8 Plus",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2017",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1130966469428007,
+                    "scale_y": 1.1130966469428007,
+                    "offset_x": 0.001624761037778727,
+                    "offset_y": -0.0008004855105447455
+                }
+            },
+            "id": "item_9c68bb83"
+        },
+        {
+            "name": "iPhone X",
+            "rank": "#18",
+            "category": "iPhone X",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\18. Year_2017 _ iPhone X _ Chip_Apple A11 Bionic _ Battery_2,716 mAh.jpg",
+            "start_time": 102.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\18. Year_2017 _ iPhone X _ Chip_Apple A11 Bionic _ Battery_2,716 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone X",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2017",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3418934911242604,
+                    "scale_y": 1.3418934911242604,
+                    "offset_x": -0.006762295175238853,
+                    "offset_y": -0.004593840084964253
+                }
+            },
+            "id": "item_1d54f918"
+        },
+        {
+            "name": "iPhone XR",
+            "rank": "#19",
+            "category": "iPhone XR",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/IPHONE_XR--Coral--1.jpg",
+            "start_time": 108.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/IPHONE_XR--Coral--1.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone XR",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2018",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1487179487179486,
+                    "scale_y": 1.1487179487179486,
+                    "offset_x": 0.003336168639053186,
+                    "offset_y": -0.002222222222222292
+                }
+            },
+            "id": "item_a949f6f3"
+        },
+        {
+            "name": "iPhone XS",
+            "rank": "#20",
+            "category": "iPhone XS",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\20. Year_2018 _ iPhone XS _ Chip_Apple A12 Bionic _ Battery_2,658 mAh.jpg",
+            "start_time": 114.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\20. Year_2018 _ iPhone XS _ Chip_Apple A12 Bionic _ Battery_2,658 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone XS",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2018",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1140959894806048,
+                    "scale_y": 1.1140959894806048,
+                    "offset_x": -0.0006158160749506258,
+                    "offset_y": -0.015108481262327384
+                }
+            },
+            "id": "item_4e91a88f"
+        },
+        {
+            "name": "iPhone XS Max",
+            "rank": "#21",
+            "category": "iPhone XS Max",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\21. Year_2018 _ iPhone XS Max _ Chip_Apple A12 Bionic _ Battery_3,174 mAh.jpg",
+            "start_time": 120.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\21. Year_2018 _ iPhone XS Max _ Chip_Apple A12 Bionic _ Battery_3,174 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone XS Max",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2018",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.0958037728215244,
+                    "scale_y": 1.0958037728215244,
+                    "offset_x": -0.001441380607394116,
+                    "offset_y": 0.0004775198503010021
+                }
+            },
+            "id": "item_67ac3900"
+        },
+        {
+            "name": "iPhone 11",
+            "rank": "#22",
+            "category": "iPhone 11",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\22. Year_2019 _ iPhone 11 _ Chip_Apple A13 Bionic _ Battery_3,110 mAh.jpg",
+            "start_time": 126.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\22. Year_2019 _ iPhone 11 _ Chip_Apple A13 Bionic _ Battery_3,110 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 11",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2019",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1025641025641026,
+                    "scale_y": 1.1025641025641026,
+                    "offset_x": -0.008071375739645004,
+                    "offset_y": -0.00039447731755427873
+                }
+            },
+            "id": "item_e1b9e96d"
+        },
+        {
+            "name": "iPhone 11 Pro",
+            "rank": "#23",
+            "category": "iPhone 11 Pro",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/iphone-11-pro-Gold.jpg",
+            "start_time": 132.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/iphone-11-pro-Gold.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 11 Pro",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2019",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.2368658987196994,
+                    "scale_y": 1.2368658987196994,
+                    "offset_x": -0.048259340718336596,
+                    "offset_y": -0.02270353611717846
+                }
+            },
+            "id": "item_665fd2d7"
+        },
+        {
+            "name": "iPhone 11 Pro Max",
+            "rank": "#24",
+            "category": "iPhone 11 Pro Max",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\24. Year_2019 _ iPhone 11 Pro Max _ Chip_Apple A13 Bionic _ Battery_3,969 mAh.jpg",
+            "start_time": 138.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\24. Year_2019 _ iPhone 11 Pro Max _ Chip_Apple A13 Bionic _ Battery_3,969 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 11 Pro Max",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2019",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.162110453648915,
+                    "scale_y": 1.162110453648915,
+                    "offset_x": -0.004784693142163617,
+                    "offset_y": 0.0032745157538056372
+                }
+            },
+            "id": "item_2e70a3ff"
+        },
+        {
+            "name": "iPhone SE (2nd Gen)",
+            "rank": "#25",
+            "category": "iPhone SE (2nd Gen)",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\25. Year_2020 _ iPhone SE (2nd Gen) _ Chip_Apple A13 Bionic _ Battery_1,821 mAh.jpg",
+            "start_time": 144.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\25. Year_2020 _ iPhone SE (2nd Gen) _ Chip_Apple A13 Bionic _ Battery_1,821 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone SE (2nd Gen)",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2020",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3770428788625904,
+                    "scale_y": 1.3770428788625904,
+                    "offset_x": -0.010974673428834021,
+                    "offset_y": 0.0023084303523108673
+                }
+            },
+            "id": "item_edcafe84"
+        },
+        {
+            "name": "iPhone 12 Mini",
+            "rank": "#26",
+            "category": "iPhone 12 Mini",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\26. Year_2020 _ iPhone 12 Mini _ Chip_Apple A14 Bionic _ Battery_2,227 mAh.jpg",
+            "start_time": 150.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\26. Year_2020 _ iPhone 12 Mini _ Chip_Apple A14 Bionic _ Battery_2,227 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 12 Mini",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2020",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.149536278812049,
+                    "scale_y": 1.149536278812049,
+                    "offset_x": 0.004773641688904941,
+                    "offset_y": 5.14030467624535e-05
+                }
+            },
+            "id": "item_c25731c1"
+        },
+        {
+            "name": "iPhone 12",
+            "rank": "#27",
+            "category": "iPhone 12",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\27. Year_2020 _ iPhone 12 _ Chip_Apple A14 Bionic _ Battery_2,815 mAh.jpg",
+            "start_time": 156.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\27. Year_2020 _ iPhone 12 _ Chip_Apple A14 Bionic _ Battery_2,815 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 12",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2020",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.443523997370151,
+                    "scale_y": 1.443523997370151,
+                    "offset_x": -0.025996728493400206,
+                    "offset_y": 0.008425968070938358
+                }
+            },
+            "id": "item_9141cd9f"
+        },
+        {
+            "name": "iPhone 12 Pro",
+            "rank": "#28",
+            "category": "iPhone 12 Pro",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\28. Year_2020 _ iPhone 12 Pro _ Chip_Apple A14 Bionic _ Battery_2,815 mAh.jpg",
+            "start_time": 162.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\28. Year_2020 _ iPhone 12 Pro _ Chip_Apple A14 Bionic _ Battery_2,815 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 12 Pro",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2020",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.242603550295858,
+                    "scale_y": 1.242603550295858,
+                    "offset_x": 0.03476900318616309,
+                    "offset_y": 0.005461993627674215
+                }
+            },
+            "id": "item_1e7c4e47"
+        },
+        {
+            "name": "iPhone 12 Pro Max",
+            "rank": "#29",
+            "category": "iPhone 12 Pro Max",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\29. Year_2020 _ iPhone 12 Pro Max _ Chip_Apple A14 Bionic _ Battery_3,687 mAh.jpg",
+            "start_time": 168.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\29. Year_2020 _ iPhone 12 Pro Max _ Chip_Apple A14 Bionic _ Battery_3,687 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 12 Pro Max",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2020",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.141025641025641,
+                    "scale_y": 1.141025641025641,
+                    "offset_x": -0.021553562623274167,
+                    "offset_y": -0.014924391847468792
+                }
+            },
+            "id": "item_c5c41f42"
+        },
+        {
+            "name": "iPhone 13 Mini",
+            "rank": "#30",
+            "category": "iPhone 13 Mini",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\30. Year_2021 _ iPhone 13 Mini _ Chip_Apple A15 Bionic _ Battery_2,406 mAh.jpg",
+            "start_time": 174.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\30. Year_2021 _ iPhone 13 Mini _ Chip_Apple A15 Bionic _ Battery_2,406 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 13 Mini",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2021",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.2959763313609467,
+                    "scale_y": 1.2959763313609467,
+                    "offset_x": -0.014344973258989535,
+                    "offset_y": 0.002089617154705896
+                }
+            },
+            "id": "item_9e05d081"
+        },
+        {
+            "name": "iPhone 13",
+            "rank": "#31",
+            "category": "iPhone 13",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\31. Year_2021 _ iPhone 13 _ Chip_Apple A15 Bionic _ Battery_3,227 mAh.jpg",
+            "start_time": 180.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\31. Year_2021 _ iPhone 13 _ Chip_Apple A15 Bionic _ Battery_3,227 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 13",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2021",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.193438527284681,
+                    "scale_y": 1.193438527284681,
+                    "offset_x": -0.02546808021038801,
+                    "offset_y": -0.014743202009474295
+                }
+            },
+            "id": "item_b7d55d09"
+        },
+        {
+            "name": "iPhone 13 Pro",
+            "rank": "#32",
+            "category": "iPhone 13 Pro",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\32. Year_2021 _ iPhone 13 Pro _ Chip_Apple A15 Bionic _ Battery_3,095 mAh.jpg",
+            "start_time": 186.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\32. Year_2021 _ iPhone 13 Pro _ Chip_Apple A15 Bionic _ Battery_3,095 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 13 Pro",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2021",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3369033530571992,
+                    "scale_y": 1.3369033530571992,
+                    "offset_x": -0.007287279528903116,
+                    "offset_y": 0.001513123956910889
+                }
+            },
+            "id": "item_575362a5"
+        },
+        {
+            "name": "iPhone 13 Pro Max",
+            "rank": "#33",
+            "category": "iPhone 13 Pro Max",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\33. Year_2021 _ iPhone 13 Pro Max _ Chip_Apple A15 Bionic _ Battery_4,352 mAh.jpg",
+            "start_time": 192.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\33. Year_2021 _ iPhone 13 Pro Max _ Chip_Apple A15 Bionic _ Battery_4,352 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 13 Pro Max",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2021",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.282051282051282,
+                    "scale_y": 1.282051282051282,
+                    "offset_x": -0.014648052268244519,
+                    "offset_y": -0.0029585798816567366
+                }
+            },
+            "id": "item_edc51bfa"
+        },
+        {
+            "name": "iPhone SE (3rd Gen)",
+            "rank": "#34",
+            "category": "iPhone SE (3rd Gen)",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\34. Year_2022 _ iPhone SE (3rd Gen) _ Chip_Apple A15 Bionic _ Battery_2,018 mAh.jpg",
+            "start_time": 198.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\34. Year_2022 _ iPhone SE (3rd Gen) _ Chip_Apple A15 Bionic _ Battery_2,018 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone SE (3rd Gen)",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2022",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1920788954635109,
+                    "scale_y": 1.1920788954635109,
+                    "offset_x": -0.021659838036716766,
+                    "offset_y": 0.0023354675567693675
+                }
+            },
+            "id": "item_a1df84da"
+        },
+        {
+            "name": "iPhone 14",
+            "rank": "#35",
+            "category": "iPhone 14",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\35. Year_2022 _ iPhone 14 _ Chip_Apple A15 Bionic _ Battery_3,279 mAh.jpg",
+            "start_time": 204.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\35. Year_2022 _ iPhone 14 _ Chip_Apple A15 Bionic _ Battery_3,279 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 14",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2022",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.233267587113741,
+                    "scale_y": 1.233267587113741,
+                    "offset_x": -0.017854220401557697,
+                    "offset_y": -0.03392066622835857
+                }
+            },
+            "id": "item_39abdf35"
+        },
+        {
+            "name": "iPhone 14 Plus",
+            "rank": "#36",
+            "category": "iPhone 14 Plus",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\36. Year_2022 _ iPhone 14 Plus _ Chip_Apple A15 Bionic _ Battery_4,325 mAh.jpg",
+            "start_time": 210.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\36. Year_2022 _ iPhone 14 Plus _ Chip_Apple A15 Bionic _ Battery_4,325 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 14 Plus",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2022",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.2351084812623274,
+                    "scale_y": 1.2351084812623274,
+                    "offset_x": -0.0382955735093309,
+                    "offset_y": -0.005206089111414545
+                }
+            },
+            "id": "item_217d1e78"
+        },
+        {
+            "name": "iPhone 14 Pro",
+            "rank": "#37",
+            "category": "iPhone 14 Pro",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/iPhone_14_Pro_Silver_PDP_Image_Position-1a__WWEN_e76c765b-31e4-4ad2-a8a9-86b1ec90c68a.webp",
+            "start_time": 216.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/iPhone_14_Pro_Silver_PDP_Image_Position-1a__WWEN_e76c765b-31e4-4ad2-a8a9-86b1ec90c68a.webp",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 14 Pro",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2022",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1923076923076923,
+                    "scale_y": 1.1923076923076923,
+                    "offset_x": -0.012376109467455598,
+                    "offset_y": -0.028895463510848124
+                }
+            },
+            "id": "item_8ba28d88"
+        },
+        {
+            "name": "iPhone 14 Pro Max",
+            "rank": "#38",
+            "category": "iPhone 14 Pro Max",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\38. Year_2022 _ iPhone 14 Pro Max _ Chip_Apple A16 Bionic _ Battery_4,323 mAh.jpg",
+            "start_time": 222.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\38. Year_2022 _ iPhone 14 Pro Max _ Chip_Apple A16 Bionic _ Battery_4,323 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 14 Pro Max",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2022",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1097961867192634,
+                    "scale_y": 1.1097961867192634,
+                    "offset_x": -0.0005380917159764742,
+                    "offset_y": -0.003793051130329385
+                }
+            },
+            "id": "item_52bd2d7f"
+        },
+        {
+            "name": "iPhone 15",
+            "rank": "#39",
+            "category": "iPhone 15",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\39. Year_2023 _ iPhone 15 _ Chip_Apple A16 Bionic _ Battery_3,349 mAh.jpg",
+            "start_time": 228.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\39. Year_2023 _ iPhone 15 _ Chip_Apple A16 Bionic _ Battery_3,349 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 15",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2023",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3106761745814999,
+                    "scale_y": 1.3106761745814999,
+                    "offset_x": -0.0022297846179131706,
+                    "offset_y": -0.05291729073704479
+                }
+            },
+            "id": "item_a411f455"
+        },
+        {
+            "name": "iPhone 15 Plus",
+            "rank": "#40",
+            "category": "iPhone 15 Plus",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\40. Year_2023 _ iPhone 15 Plus _ Chip_Apple A16 Bionic _ Battery_4,383 mAh.jpg",
+            "start_time": 234.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\40. Year_2023 _ iPhone 15 Plus _ Chip_Apple A16 Bionic _ Battery_4,383 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 15 Plus",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2023",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1794871794871795,
+                    "scale_y": 1.1794871794871795,
+                    "offset_x": -0.0046036735700197146,
+                    "offset_y": -0.005062458908612746
+                }
+            },
+            "id": "item_1be6587c"
+        },
+        {
+            "name": "iPhone 15 Pro",
+            "rank": "#41",
+            "category": "iPhone 15 Pro",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\41. Year_2023 _ iPhone 15 Pro _ Chip_Apple A17 Pro _ Battery_3,274 mAh.jpg",
+            "start_time": 240.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\41. Year_2023 _ iPhone 15 Pro _ Chip_Apple A17 Pro _ Battery_3,274 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 15 Pro",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2023",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1408133398890026,
+                    "scale_y": 1.1408133398890026,
+                    "offset_x": -0.00732937131093987,
+                    "offset_y": -0.01605982088020532
+                }
+            },
+            "id": "item_eb3f13e4"
+        },
+        {
+            "name": "iPhone 15 Pro Max",
+            "rank": "#42",
+            "category": "iPhone 15 Pro Max",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\42. Year_2023 _ iPhone 15 Pro Max _ Chip_Apple A17 Pro _ Battery_4,422 mAh.jpg",
+            "start_time": 246.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\42. Year_2023 _ iPhone 15 Pro Max _ Chip_Apple A17 Pro _ Battery_4,422 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 15 Pro Max",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2023",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.101389301910012,
+                    "scale_y": 1.101389301910012,
+                    "offset_x": 0.001965338777820483,
+                    "offset_y": -0.002595934627249892
+                }
+            },
+            "id": "item_900c443f"
+        },
+        {
+            "name": "iPhone 16",
+            "rank": "#43",
+            "category": "iPhone 16",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\43. Year_2024 _ iPhone 16 _ Chip_Apple A18 _ Battery_3,561 mAh.jpg",
+            "start_time": 252.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\43. Year_2024 _ iPhone 16 _ Chip_Apple A18 _ Battery_3,561 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 16",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2024",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.2664102564102564,
+                    "scale_y": 1.2664102564102564,
+                    "offset_x": -0.0075799186390531036,
+                    "offset_y": -0.03431295200525954
+                }
+            },
+            "id": "item_b9526e39"
+        },
+        {
+            "name": "iPhone 16 Plus",
+            "rank": "#44",
+            "category": "iPhone 16 Plus",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\44. Year_2024 _ iPhone 16 Plus _ Chip_Apple A18 _ Battery_4,674 mAh.jpg",
+            "start_time": 258.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\44. Year_2024 _ iPhone 16 Plus _ Chip_Apple A18 _ Battery_4,674 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 16 Plus",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2024",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.244852071005917,
+                    "scale_y": 1.244852071005917,
+                    "offset_x": -0.006792097177969922,
+                    "offset_y": -0.014900925504475833
+                }
+            },
+            "id": "item_ec8d5479"
+        },
+        {
+            "name": "iPhone 16 Pro",
+            "rank": "#45",
+            "category": "iPhone 16 Pro",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\45. Year_2024 _ iPhone 16 Pro _ Chip_Apple A18 Pro _ Battery_3,582 mAh.jpg",
+            "start_time": 264.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\45. Year_2024 _ iPhone 16 Pro _ Chip_Apple A18 Pro _ Battery_3,582 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 16 Pro",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2024",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.2538461538461538,
+                    "scale_y": 1.2538461538461538,
+                    "offset_x": -0.018940828402366792,
+                    "offset_y": -0.04011834319526621
+                }
+            },
+            "id": "item_4a003cc4"
+        },
+        {
+            "name": "iPhone 16 Pro Max",
+            "rank": "#46",
+            "category": "iPhone 16 Pro Max",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\46. Year_2024 _ iPhone 16 Pro Max _ Chip_Apple A18 Pro _ Battery_4,685 mAh.jpg",
+            "start_time": 270.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\46. Year_2024 _ iPhone 16 Pro Max _ Chip_Apple A18 Pro _ Battery_4,685 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 16 Pro Max",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2024",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.2483300460223534,
+                    "scale_y": 1.2483300460223534,
+                    "offset_x": -0.0002153133376320976,
+                    "offset_y": 0.0029640755912945516
+                }
+            },
+            "id": "item_26740d6d"
+        },
+        {
+            "name": "iPhone 16e",
+            "rank": "#47",
+            "category": "iPhone 16e",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\47. Year_2025 _ iPhone 16e _ Chip_Apple A18 _ Battery_~4,005 mAh.jpg",
+            "start_time": 276.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\47. Year_2025 _ iPhone 16e _ Chip_Apple A18 _ Battery_~4,005 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 16e",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2025",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3103616042077582,
+                    "scale_y": 1.3103616042077582,
+                    "offset_x": -0.024072353082486224,
+                    "offset_y": 0.008941587012592983
+                }
+            },
+            "id": "item_3626f174"
+        },
+        {
+            "name": "iPhone 17",
+            "rank": "#48",
+            "category": "iPhone 17",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\48. Year_2025 _ iPhone 17 _ Chip_Apple A19 _ Battery_~3,692 mAh.jpg",
+            "start_time": 282.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\48. Year_2025 _ iPhone 17 _ Chip_Apple A19 _ Battery_~3,692 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 17",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2025",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3540236686390532,
+                    "scale_y": 1.3540236686390532,
+                    "offset_x": 0.0003701795061447806,
+                    "offset_y": -0.04125519648004851
+                }
+            },
+            "id": "item_70d7326d"
+        },
+        {
+            "name": "iPhone Air",
+            "rank": "#49",
+            "category": "iPhone Air",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\49. Year_2025 _ iPhone Air _ Chip_Apple A19 Pro _ Battery_~3,149 mAh.jpg",
+            "start_time": 288.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\49. Year_2025 _ iPhone Air _ Chip_Apple A19 Pro _ Battery_~3,149 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone Air",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2025",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.2926386149463074,
+                    "scale_y": 1.2926386149463074,
+                    "offset_x": -0.00622099943736415,
+                    "offset_y": -0.026727709502857494
+                }
+            },
+            "id": "item_e6bcf0c2"
+        },
+        {
+            "name": "iPhone 17 Pro",
+            "rank": "#50",
+            "category": "iPhone 17 Pro",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\50. Year_2025 _ iPhone 17 Pro _ Chip_Apple A19 Pro _ Battery_~4,252 mAh.jpg",
+            "start_time": 294.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\50. Year_2025 _ iPhone 17 Pro _ Chip_Apple A19 Pro _ Battery_~4,252 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 17 Pro",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2025",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.0885207100591716,
+                    "scale_y": 1.0885207100591716,
+                    "offset_x": -0.0009685650887573338,
+                    "offset_y": -0.015463510848126276
+                }
+            },
+            "id": "item_1e94bcaf"
+        },
+        {
+            "name": "iPhone 17 Pro Max",
+            "rank": "#51",
+            "category": "iPhone 17 Pro Max",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\51. Year_2025 _ iPhone 17 Pro Max _ Chip_Apple A19 Pro _ Battery_~5,088 mAh.jpg",
+            "start_time": 300.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\51. Year_2025 _ iPhone 17 Pro Max _ Chip_Apple A19 Pro _ Battery_~5,088 mAh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 17 Pro Max",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2025",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.232124614373135,
+                    "scale_y": 1.232124614373135,
+                    "offset_x": -0.012783705392746259,
+                    "offset_y": -0.008074595375460195
+                }
+            },
+            "id": "item_fe59b462"
+        },
+        {
+            "name": "iPhone 17e",
+            "rank": "#52",
+            "category": "iPhone 17e",
+            "value": "Value",
+            "image_path": "C:\\Users\\ADMIN\\Downloads\\converted\\52. Year_2026 _ iPhone 17e _ Chip_Apple A19 _ Battery_Not officially stated by Apple.jpg",
+            "start_time": 306.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\Users\\ADMIN\\Downloads\\converted\\52. Year_2026 _ iPhone 17e _ Chip_Apple A19 _ Battery_Not officially stated by Apple.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 17e",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2026",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.3801183431952664,
+                    "scale_y": 1.3801183431952664,
+                    "offset_x": -0.016880626991351864,
+                    "offset_y": -0.004407828857533026
+                }
+            },
+            "id": "item_c0374151"
+        },
+        {
+            "name": "iPhone 18 Pro",
+            "rank": "#53",
+            "category": "iPhone 18 Pro",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/iPhone-18-Pro-b.webp",
+            "start_time": 312.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/iPhone-18-Pro-b.webp",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 18 Pro",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2026",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1480867850098622,
+                    "scale_y": 1.1480867850098622,
+                    "offset_x": -0.016863334471248576,
+                    "offset_y": 0.0004913771304305391
+                }
+            },
+            "id": "item_25186b4b"
+        },
+        {
+            "name": "iPhone 18 Pro Max",
+            "rank": "#54",
+            "category": "iPhone 18 Pro Max",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/IMG-21443907_m_jpeg_1_298cbba3-b8b6-48a5-b537-5b81e8c6db1a.webp",
+            "start_time": 318.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/IMG-21443907_m_jpeg_1_298cbba3-b8b6-48a5-b537-5b81e8c6db1a.webp",
+                    "role": "image"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "iPhone 18 Pro Max",
+                    "role": "category"
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "2026",
+                    "role": "name"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "contain",
+                    "scale_x": 1.1794871794871795,
+                    "scale_y": 1.1794871794871795,
+                    "offset_x": -0.007353920118343182,
+                    "offset_y": -0.0070348454963839735
+                }
+            },
+            "id": "item_51becf46"
+        }
+    ],
+    "timeline_clips": [],
+    "audio_paths": []
+}

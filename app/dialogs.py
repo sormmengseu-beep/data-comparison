@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -29,6 +30,7 @@ from PySide6.QtWidgets import (
 from app.settings import ROOT_DIR, SUPPORTED_TEXT_FILTER, SUPPORTED_IMAGE_FILTER
 from app.models.comparison_item import normalize_image_transform
 from app.widgets.image_editor import ImageEditorCanvas
+from app.utils.icons import IconButton
 
 
 class ImageEditorDialog(QDialog):
@@ -157,7 +159,33 @@ class ImageEditorDialog(QDialog):
 ITEM_FIELDS = ("name", "rank", "category", "value", "image_path")
 
 
-def parse_text_items(text: str, format_name: str = "Auto") -> list[dict[str, str]]:
+def _column_key(value: str) -> str:
+    return value.strip().casefold().replace(" ", "_")
+
+
+def import_columns(fields: list[dict[str, str]]) -> list[tuple[str, str]]:
+    columns = []
+    used: set[str] = set()
+    for field in fields:
+        if field.get("type") in {"image", "shape"}:
+            continue
+        label = str(field.get("label") or "Text").strip()
+        base_name = _column_key(label)
+        name = base_name
+        suffix = 2
+        while _column_key(name) in used:
+            name = f"{base_name}_{suffix}"
+            suffix += 1
+        used.add(_column_key(name))
+        columns.append((str(field["id"]), name))
+    return columns
+
+
+def parse_text_items(
+    text: str,
+    format_name: str = "Auto",
+    schema: list[dict[str, str]] | None = None,
+) -> list[dict[str, str]]:
     source = text.strip()
     if not source:
         raise ValueError("Add or upload some text first.")
@@ -172,11 +200,21 @@ def parse_text_items(text: str, format_name: str = "Auto") -> list[dict[str, str
             payload = payload.get("items", [payload])
         if not isinstance(payload, list):
             raise ValueError("JSON must contain an item or a list of items.")
-        return [_normalized_item(row) for row in payload if isinstance(row, dict)]
+        lookup = _schema_column_lookup(schema) if schema is not None else {}
+        return [
+            _normalized_item(
+                {lookup.get(_column_key(str(key)), str(key)): value for key, value in row.items()}
+                if schema is not None else row,
+                schema,
+            )
+            for row in payload if isinstance(row, dict)
+        ]
 
     if selected == "lines":
+        columns = import_columns(schema) if schema is not None else []
+        first_column = columns[0][0] if columns else "name"
         return [
-            {"name": line.strip(), "rank": "", "category": "", "value": "", "image_path": ""}
+            _normalized_item({first_column: line.strip()}, schema)
             for line in source.splitlines()
             if line.strip()
         ]
@@ -188,39 +226,95 @@ def parse_text_items(text: str, format_name: str = "Auto") -> list[dict[str, str
             delimiter = csv.Sniffer().sniff(sample, delimiters=",\t;|").delimiter
         except csv.Error:
             if all(separator not in sample for separator in (",", "\t", ";", "|")):
-                return parse_text_items(source, "Lines")
+                return parse_text_items(source, "CSV" if schema is not None else "Lines", schema)
 
     rows = list(csv.reader(io.StringIO(source), delimiter=delimiter))
     rows = [[cell.strip() for cell in row] for row in rows if any(cell.strip() for cell in row)]
     if not rows:
         raise ValueError("No rows were found.")
 
-    header = [cell.casefold().replace(" ", "_") for cell in rows[0]]
+    header = [_column_key(cell) for cell in rows[0]]
     aliases = {"image": "image_path", "imagepath": "image_path", "title": "name"}
-    header = [aliases.get(value, value) for value in header]
-    has_header = "name" in header and any(value in ITEM_FIELDS for value in header)
+    if schema is not None:
+        lookup = _schema_column_lookup(schema)
+        has_header = any(value in lookup for value in header) and all(
+            not value or value in lookup for value in header
+        )
+        fields = [lookup.get(value, value) for value in header] if has_header else [
+            field_id for field_id, _label in import_columns(schema)
+        ]
+    else:
+        header = [aliases.get(value, value) for value in header]
+        has_header = "name" in header and any(value in ITEM_FIELDS for value in header)
+        fields = header if has_header else list(ITEM_FIELDS)
     data_rows = rows[1:] if has_header else rows
-    fields = header if has_header else list(ITEM_FIELDS)
     result = []
     for row in data_rows:
         mapped = {field: row[index] for index, field in enumerate(fields) if index < len(row)}
-        result.append(_normalized_item(mapped))
+        result.append(_normalized_item(mapped, schema))
     return result
 
 
-def _normalized_item(row: dict) -> dict[str, str]:
+def _schema_column_lookup(schema: list[dict[str, str]]) -> dict[str, str]:
+    lookup = {}
+    for field in schema:
+        field_id = str(field["id"])
+        if field.get("type") == "shape":
+            continue
+        lookup[_column_key(field_id)] = field_id
+        role = str(field.get("role") or "")
+        if role:
+            lookup.setdefault(_column_key(role), field_id)
+    for field_id, label in import_columns(schema):
+        lookup[_column_key(label)] = field_id
+    image = next((field for field in schema if field.get("type") == "image"), None)
+    if image:
+        lookup["image_path"] = str(image["id"])
+        lookup.setdefault("image", str(image["id"]))
+        lookup.setdefault("imagepath", str(image["id"]))
+    if "name" in lookup:
+        lookup.setdefault("title", lookup["name"])
+    return lookup
+
+
+def _normalized_item(
+    row: dict, schema: list[dict[str, str]] | None = None
+) -> dict[str, str]:
     item = {field: str(row.get(field, "") or "").strip() for field in ITEM_FIELDS}
+    if schema is not None:
+        for field in schema:
+            field_id = str(field["id"])
+            item[field_id] = str(row.get(field_id, "") or "").strip()
+            role = str(field.get("role") or "")
+            if role in ITEM_FIELDS:
+                item["image_path" if field.get("type") == "image" else role] = item[field_id]
+        name_field = next(
+            (field for field in schema if field.get("type") not in {"image", "shape"}
+             and _column_key(field.get("label", "")) == "name"),
+            None,
+        )
+        if name_field is None:
+            name_field = next((field for field in schema if field.get("type") == "name"), None)
+        columns = import_columns(schema)
+        name_id = str(name_field["id"]) if name_field else columns[0][0] if columns else ""
+        item["name"] = item.get(name_id, "")
     if not item["name"]:
         item["name"] = "Untitled Item"
     return item
 
 
 class TextImportDialog(QDialog):
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(
+        self, parent: QWidget | None = None,
+        schema: list[dict[str, str]] | None = None,
+    ) -> None:
         super().__init__(parent)
         self.setWindowTitle("Import Text Data")
         self.resize(680, 520)
         self._items: list[dict[str, str]] = []
+        self.schema = [dict(field) for field in schema] if schema is not None else None
+        self.image_folder_edits: dict[str, QLineEdit] = {}
+        self._image_file_cache: dict[str, list[Path]] = {}
 
         layout = QVBoxLayout(self)
         top = QHBoxLayout()
@@ -239,12 +333,35 @@ class TextImportDialog(QDialog):
         layout.addLayout(top)
 
         self.text_edit = QPlainTextEdit()
-        self.text_edit.setPlaceholderText(
-            "name,rank,category,value,image_path\nArsenal,10th,NET WORTH,$2.6 billion,"
-        )
+        self.columns_label = QLabel()
+        self.columns_label.setWordWrap(True)
+        layout.addWidget(self.columns_label)
         layout.addWidget(self.text_edit, 1)
 
+        image_form = QFormLayout()
+        for field in self.schema or []:
+            if field.get("type") != "image":
+                continue
+            field_id = str(field["id"])
+            folder_row = QWidget()
+            folder_layout = QHBoxLayout(folder_row)
+            folder_layout.setContentsMargins(0, 0, 0, 0)
+            folder_edit = QLineEdit()
+            folder_edit.setPlaceholderText("Image folder (optional)")
+            folder_edit.setToolTip("Match filenames to text values; otherwise use file order.")
+            browse_button = IconButton("file", "Choose image folder")
+            folder_layout.addWidget(folder_edit, 1)
+            folder_layout.addWidget(browse_button)
+            image_form.addRow(f"{field.get('label') or 'Image'} folder", folder_row)
+            self.image_folder_edits[field_id] = folder_edit
+            browse_button.clicked.connect(
+                lambda _checked=False, edit=folder_edit: self._choose_image_folder(edit)
+            )
+            folder_edit.textChanged.connect(self._update_summary)
+        layout.addLayout(image_form)
+
         self.summary_label = QLabel("0 rows ready")
+        self.summary_label.setWordWrap(True)
         layout.addWidget(self.summary_label)
 
         buttons = QDialogButtonBox(
@@ -255,9 +372,10 @@ class TextImportDialog(QDialog):
 
         upload_button.clicked.connect(self._upload_file)
         self.text_edit.textChanged.connect(self._update_summary)
-        self.format_combo.currentTextChanged.connect(self._update_summary)
+        self.format_combo.currentTextChanged.connect(self._format_changed)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
+        self._format_changed()
 
     def imported_items(self) -> list[dict[str, str]]:
         return self._items
@@ -267,9 +385,8 @@ class TextImportDialog(QDialog):
 
     def accept(self) -> None:
         try:
-            self._items = parse_text_items(
-                self.text_edit.toPlainText(), self.format_combo.currentText()
-            )
+            self._image_file_cache.clear()
+            self._items = self._parse_items()
         except ValueError as exc:
             QMessageBox.warning(self, "Import Text Data", str(exc))
             return
@@ -295,14 +412,125 @@ class TextImportDialog(QDialog):
         if suffix in format_by_suffix:
             self.format_combo.setCurrentText(format_by_suffix[suffix])
 
+    def _format_changed(self) -> None:
+        columns = import_columns(self.schema) if self.schema is not None else [
+            (field, field) for field in ITEM_FIELDS
+        ]
+        labels = [label for _field_id, label in columns]
+        values_by_id = {
+            str(field["id"]): str(field.get("value") or "") for field in self.schema or []
+        }
+        values = [values_by_id.get(field_id) or "..." for field_id, _label in columns]
+        if self.schema is None:
+            values = ["Arsenal", "10th", "NET WORTH", "$2.6 billion", ""]
+        selected = self.format_combo.currentText()
+        self.columns_label.setText("Columns: " + ", ".join(labels))
+        if selected == "JSON":
+            placeholder = json.dumps([dict(zip(labels, values))], indent=2)
+        elif selected == "Lines":
+            placeholder = "\n".join([values[0], "..."]) if values else ""
+            self.columns_label.setText("Columns: " + (labels[0] if labels else ""))
+        else:
+            output = io.StringIO()
+            writer = csv.writer(
+                output, delimiter="\t" if selected == "TSV" else ",", lineterminator="\n"
+            )
+            writer.writerows([labels, values])
+            placeholder = output.getvalue().rstrip()
+        self.text_edit.setPlaceholderText(placeholder)
+        self._update_summary()
+
+    def _choose_image_folder(self, edit: QLineEdit) -> None:
+        path = QFileDialog.getExistingDirectory(
+            self, "Choose Image Folder", edit.text() or str(Path.home())
+        )
+        if path:
+            self._image_file_cache.clear()
+            edit.setText(path)
+
+    def _parse_items(self) -> list[dict[str, str]]:
+        items = parse_text_items(
+            self.text_edit.toPlainText(), self.format_combo.currentText(), self.schema
+        )
+        text_ids = [field_id for field_id, _label in import_columns(self.schema or [])]
+        for field in self.schema or []:
+            if field.get("type") != "image":
+                continue
+            field_id = str(field["id"])
+            folder_text = self.image_folder_edits[field_id].text().strip()
+            if not folder_text:
+                for item in items:
+                    item[field_id] = item[field_id] or str(field.get("value") or "")
+                continue
+            folder = Path(folder_text).expanduser()
+            if not folder.is_dir():
+                raise ValueError(f"Image folder not found: {folder_text}")
+            if folder_text not in self._image_file_cache:
+                try:
+                    self._image_file_cache[folder_text] = sorted(
+                        (path for path in folder.iterdir() if path.is_file()
+                         and path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}),
+                        key=lambda path: [
+                            part.zfill(20) if part.isdigit() else part.casefold()
+                            for part in re.split(r"(\d+)", path.name)
+                        ],
+                    )
+                except OSError as exc:
+                    raise ValueError(f"Unable to read image folder: {exc}") from exc
+            files = self._image_file_cache[folder_text]
+            if not files:
+                raise ValueError(f"No supported images found in: {folder_text}")
+            by_name = {self._image_name(path.stem): path for path in files}
+            by_path = {str(path.resolve()): path for path in files}
+            used: set[Path] = set()
+            pending = []
+            for item in items:
+                if item[field_id]:
+                    explicit = by_path.get(str(Path(item[field_id]).expanduser().resolve()))
+                    if explicit is not None:
+                        used.add(explicit)
+                    continue
+                candidates = [item["name"]] + [item.get(key, "") for key in text_ids]
+                match = next(
+                    (by_name[self._image_name(value)] for value in candidates
+                     if value and self._image_name(value) in by_name),
+                    None,
+                )
+                if match is None:
+                    pending.append(item)
+                else:
+                    item[field_id] = str(match.resolve())
+                    used.add(match)
+            remaining = iter(path for path in files if path not in used)
+            for item in pending:
+                path = next(remaining, None)
+                item[field_id] = str(path.resolve()) if path else ""
+        first_image = next(
+            (field for field in self.schema or [] if field.get("type") == "image"), None
+        )
+        if first_image:
+            for item in items:
+                item["image_path"] = item[str(first_image["id"])]
+        return items
+
+    @staticmethod
+    def _image_name(value: str) -> str:
+        return "".join(character for character in value.casefold() if character.isalnum())
+
     def _update_summary(self) -> None:
         try:
-            count = len(
-                parse_text_items(self.text_edit.toPlainText(), self.format_combo.currentText())
-            )
-            self.summary_label.setText(f"{count} row{'s' if count != 1 else ''} ready")
-        except ValueError:
-            self.summary_label.setText("0 rows ready")
+            items = self._parse_items()
+            count = len(items)
+            summary = f"{count} row{'s' if count != 1 else ''} ready"
+            if self.image_folder_edits:
+                total = count * len(self.image_folder_edits)
+                matched = sum(
+                    bool(item.get(field_id)) for item in items for field_id in self.image_folder_edits
+                )
+                summary += f" | {matched}/{total} images"
+            self.summary_label.setText(summary)
+        except ValueError as exc:
+            self.summary_label.setText(str(exc) if self.text_edit.toPlainText().strip() else "0 rows ready")
 
 
 @dataclass(frozen=True)

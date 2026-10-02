@@ -122,6 +122,15 @@ class ComparisonItem:
                 self.rank = value
             elif role == "value":
                 self.value = value
+        named_field = next(
+            (field for field in self.custom_fields
+             if field["type"] not in {"image", "shape"}
+             and field["label"].strip().casefold() == "name"
+             and field["value"]),
+            None,
+        )
+        if named_field is not None:
+            self.name = named_field["value"]
 
     def set_image_path(self, path: str) -> None:
         fields = self.display_fields()

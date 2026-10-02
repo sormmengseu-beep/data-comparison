@@ -1366,6 +1366,15 @@ class BoxStylePreview(QWidget):
         self._selected_field_id = field_id
         self.update()
 
+    def fields_in_visual_order(self) -> list[dict[str, str]]:
+        # Use the rendered geometry so free moves and image overlays share the import order.
+        snapshot = QPixmap(self.size())
+        snapshot.fill(Qt.GlobalColor.transparent)
+        self.render(snapshot)
+        fields_by_id = {str(field["id"]): field for field in self.item.display_fields()}
+        regions = sorted(self._field_regions, key=lambda region: (region[0].top(), region[0].left()))
+        return [dict(fields_by_id[field_id]) for _rect, field_id, _type in regions]
+
     def paintEvent(self, event) -> None:
         self._field_regions = []
         self._overlay_parent_regions = {}
@@ -2116,7 +2125,16 @@ class BoxCustomizationDialog(QDialog):
         self.snap_objects_check.setToolTip(
             "Shows smart guides and aligns objects while moving or resizing."
         )
-        form.addRow("Free move", self.snap_objects_check)
+        snap_row = QWidget()
+        snap_row.setObjectName("DesignerCompactOption")
+        snap_row.setSizePolicy(
+            QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed
+        )
+        snap_layout = QHBoxLayout(snap_row)
+        snap_layout.setContentsMargins(10, 0, 10, 0)
+        snap_layout.setSpacing(6)
+        snap_layout.addWidget(self.snap_objects_check)
+        form.addRow("Free move", snap_row)
         controls_layout.addWidget(layout_group)
 
         palette_group = QGroupBox("Add content")
@@ -4193,15 +4211,31 @@ class MainWindow(QMainWindow):
         self._refresh_all()
 
     def add_text(self) -> None:
-        dialog = TextImportDialog(self)
+        template = (
+            self.project.item_by_id(self.selected_item_id)
+            or (self.project.comparison_items[0] if self.project.comparison_items else None)
+            or ComparisonItem(name="Item", rank="#1", category="CATEGORY", value="Value")
+        )
+        schema = template.display_fields()
+        preview = BoxStylePreview(template, self.project.height, self)
+        preview.resize(640, 1080)
+        columns = self.project.preview_max_columns
+        preview.set_style(
+            template.image_fit or self.project.image_fit,
+            getattr(template, f"image_height_percent_{columns}", 0)
+            or getattr(self.project, f"image_height_percent_{columns}"),
+            self.project.card_border_color,
+            self.project.text_font_family,
+            self.project.field_styles,
+            self.project.text_font_size,
+            columns,
+        )
+        import_schema = preview.fields_in_visual_order()
+        preview.deleteLater()
+        dialog = TextImportDialog(self, schema=import_schema)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
         imported = dialog.imported_items()
-        existing_schema = (
-            self.project.comparison_items[0].display_fields()
-            if self.project.comparison_items and not dialog.replaces_items()
-            else None
-        )
         if dialog.replaces_items():
             self.project.comparison_items.clear()
         first_new_id = ""
@@ -4216,14 +4250,16 @@ class MainWindow(QMainWindow):
                 start_time=(index - 1) * self.project.item_fixed_duration,
                 duration=self.project.item_fixed_duration,
             )
+            fields = []
+            for template_field in schema:
+                field = dict(template_field)
+                if field.get("type") != "shape":
+                    field["value"] = row.get(str(field["id"]), "")
+                fields.append(field)
+            item.set_fields(fields)
+            item.name = row["name"]
             self.project.comparison_items.append(item)
             first_new_id = first_new_id or item.id
-        schema = existing_schema
-        if schema is None and self.project.comparison_items:
-            schema = self.project.comparison_items[0].display_fields()
-        if schema:
-            for existing_item in self.project.comparison_items:
-                existing_item.set_fields(self._fields_for_schema(existing_item, schema))
         self.project.apply_fixed_item_timing()
         self.selected_item_id = first_new_id
         self.current_time = 0.0
