@@ -21,10 +21,12 @@ from PySide6.QtGui import (
     QDrag,
     QFont,
     QFontMetrics,
+    QIcon,
     QKeySequence,
     QLinearGradient,
     QPainter,
     QPen,
+    QPixmap,
     QShortcut,
 )
 from PySide6.QtWidgets import (
@@ -94,6 +96,16 @@ from app.widgets.transport_controls import TransportControls
 
 
 SHAPE_ITEM_MIME_TYPE = "application/x-data-compare-shape-item"
+SUPPORTED_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp"}
+
+
+def _first_dropped_image(mime_data: QMimeData) -> str:
+    """Return the first supported local image in a drag payload."""
+    for url in mime_data.urls() if mime_data.hasUrls() else ():
+        path = url.toLocalFile()
+        if path and Path(path).suffix.lower() in SUPPORTED_IMAGE_SUFFIXES:
+            return path
+    return ""
 
 
 class ColorButton(QPushButton):
@@ -229,7 +241,19 @@ class ShapeToolButton(QToolButton):
         self.item_kind = item_kind
         self._press_position = QPoint()
         self._dragging = False
-        self.setText(symbol)
+        if item_kind == "text":
+            self.setText(symbol)
+        else:
+            pixmap = QPixmap(34, 34)
+            pixmap.fill(Qt.GlobalColor.transparent)
+            painter = QPainter(pixmap)
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.setBrush(self.palette().color(self.foregroundRole()))
+            painter.drawPath(shape_path(QRect(3, 3, 28, 28), item_kind, 5))
+            painter.end()
+            self.setIcon(QIcon(pixmap))
+            self.setIconSize(QSize(32, 32))
         self.setToolTip(f"Drag {label} onto the preview")
         self.setAccessibleName(label)
         self.setFixedSize(54, 46)
@@ -264,6 +288,47 @@ class ShapeToolButton(QToolButton):
             event.accept()
             return
         super().mouseReleaseEvent(event)
+
+
+class ImageUploadButton(QPushButton):
+    """Clickable image picker that also accepts files dragged from the desktop."""
+
+    image_dropped = Signal(str)
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__("+  Upload image   or drop a file here", parent)
+        self.setObjectName("DesignerImageDrop")
+        self.setAcceptDrops(True)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setToolTip("Choose an image, or drag a PNG, JPG, JPEG, or WebP file here")
+        self.setMinimumHeight(46)
+
+    def dragEnterEvent(self, event) -> None:
+        if _first_dropped_image(event.mimeData()):
+            self.setProperty("dragActive", True)
+            self.style().unpolish(self)
+            self.style().polish(self)
+            event.acceptProposedAction()
+            return
+        event.ignore()
+
+    def dragLeaveEvent(self, event) -> None:
+        self._set_drag_active(False)
+        super().dragLeaveEvent(event)
+
+    def dropEvent(self, event) -> None:
+        self._set_drag_active(False)
+        path = _first_dropped_image(event.mimeData())
+        if not path:
+            event.ignore()
+            return
+        self.image_dropped.emit(path)
+        event.acceptProposedAction()
+
+    def _set_drag_active(self, active: bool) -> None:
+        self.setProperty("dragActive", active)
+        self.style().unpolish(self)
+        self.style().polish(self)
 
 
 class ContentOrderDelegate(QStyledItemDelegate):
@@ -832,7 +897,9 @@ class BoxStylePreview(QWidget):
     image_clicked = Signal(str)
     field_selected = Signal(str)
     field_reorder_requested = Signal(str, str, bool)
+    layer_order_requested = Signal(str, str)
     item_dropped = Signal(str, QPoint)
+    image_file_dropped = Signal(str, QPoint)
     delete_requested = Signal(str)
 
     def __init__(
@@ -876,14 +943,20 @@ class BoxStylePreview(QWidget):
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
     def dragEnterEvent(self, event) -> None:
-        if event.mimeData().hasFormat(SHAPE_ITEM_MIME_TYPE):
+        if (
+            event.mimeData().hasFormat(SHAPE_ITEM_MIME_TYPE)
+            or _first_dropped_image(event.mimeData())
+        ):
             event.acceptProposedAction()
             return
         super().dragEnterEvent(event)
 
     def dragMoveEvent(self, event) -> None:
         if (
-            event.mimeData().hasFormat(SHAPE_ITEM_MIME_TYPE)
+            (
+                event.mimeData().hasFormat(SHAPE_ITEM_MIME_TYPE)
+                or _first_dropped_image(event.mimeData())
+            )
             and self._canvas_rect().contains(event.position().toPoint())
         ):
             event.acceptProposedAction()
@@ -891,12 +964,17 @@ class BoxStylePreview(QWidget):
         event.ignore()
 
     def dropEvent(self, event) -> None:
-        if not event.mimeData().hasFormat(SHAPE_ITEM_MIME_TYPE):
-            return super().dropEvent(event)
         position = event.position().toPoint()
         if not self._canvas_rect().contains(position):
             event.ignore()
             return
+        image_path = _first_dropped_image(event.mimeData())
+        if image_path:
+            self.image_file_dropped.emit(image_path, position)
+            event.acceptProposedAction()
+            return
+        if not event.mimeData().hasFormat(SHAPE_ITEM_MIME_TYPE):
+            return super().dropEvent(event)
         item_kind = bytes(
             event.mimeData().data(SHAPE_ITEM_MIME_TYPE)
         ).decode("utf-8")
@@ -912,6 +990,75 @@ class BoxStylePreview(QWidget):
             event.accept()
             return
         super().keyPressEvent(event)
+
+    def contextMenuEvent(self, event) -> None:
+        position = event.pos()
+        hit = next(
+            (
+                (field_id, field_type)
+                for region, field_id, field_type in reversed(self._field_regions)
+                if region.contains(position)
+            ),
+            None,
+        )
+        if hit is None:
+            super().contextMenuEvent(event)
+            return
+
+        field_id, _field_type = hit
+        self._selected_field_id = field_id
+        self.field_selected.emit(field_id)
+        self.setFocus()
+        self.update()
+
+        menu = self._layer_context_menu(field_id)
+        menu.exec(event.globalPos())
+        event.accept()
+
+    def _layer_context_menu(self, field_id: str) -> QMenu:
+        menu = QMenu(self)
+        sibling_ids = self._layer_sibling_ids(field_id)
+        try:
+            index = sibling_ids.index(field_id)
+        except ValueError:
+            index = -1
+        actions = (
+            ("Bring to Front", "bring_to_front", index >= 0 and index < len(sibling_ids) - 1),
+            ("Bring Forward", "bring_forward", index >= 0 and index < len(sibling_ids) - 1),
+            ("Send Backward", "send_backward", index > 0),
+            ("Send to Back", "send_to_back", index > 0),
+        )
+        for label, operation, enabled in actions:
+            action = menu.addAction(label)
+            action.setEnabled(enabled)
+            action.triggered.connect(
+                lambda _checked=False, op=operation: self.layer_order_requested.emit(
+                    field_id, op
+                )
+            )
+        return menu
+
+    def _layer_sibling_ids(self, field_id: str) -> list[str]:
+        fields = self.item.display_fields()
+        field_types = {
+            str(field.get("id", "")): str(field.get("type", "text"))
+            for field in fields
+        }
+
+        def parent_for(candidate_id: str) -> str:
+            if field_types.get(candidate_id) == "image":
+                return ""
+            parent_id = str(
+                self.field_styles.get(candidate_id, {}).get("parent_id", "")
+            )
+            return parent_id if field_types.get(parent_id) == "image" else ""
+
+        parent_id = parent_for(field_id)
+        return [
+            candidate_id
+            for candidate_id in field_types
+            if parent_for(candidate_id) == parent_id
+        ]
 
     def _canvas_rect(self) -> QRect:
         """Fit one correctly proportioned comparison box into the available panel."""
@@ -1972,31 +2119,87 @@ class BoxCustomizationDialog(QDialog):
         form.addRow("Free move", self.snap_objects_check)
         controls_layout.addWidget(layout_group)
 
-        palette_group = QGroupBox("Drag an item onto the preview")
+        palette_group = QGroupBox("Add content")
         self.shape_palette_group = palette_group
         palette_group.setObjectName("DesignerSection")
-        palette_layout = QGridLayout(palette_group)
-        palette_layout.setContentsMargins(10, 8, 10, 8)
-        palette_layout.setHorizontalSpacing(8)
-        palette_layout.setVerticalSpacing(6)
+        palette_layout = QVBoxLayout(palette_group)
+        palette_layout.setContentsMargins(10, 8, 10, 10)
+        palette_layout.setSpacing(8)
+
+        quick_row = QHBoxLayout()
+        quick_row.setSpacing(8)
+        text_button = ShapeToolButton("text", "Text", "T", palette_group)
+        text_button.setToolTip("Click to add text, or drag it onto the preview")
+        text_button.activated.connect(self._palette_item_activated)
+        self.upload_image_button = ImageUploadButton(palette_group)
+        self.upload_image_button.clicked.connect(self._choose_palette_image)
+        self.upload_image_button.image_dropped.connect(self._palette_image_dropped)
+        quick_row.addWidget(text_button)
+        quick_row.addWidget(self.upload_image_button, 1)
+        palette_layout.addLayout(quick_row)
+
+        shapes_label = QLabel("SHAPES  •  CLICK OR DRAG")
+        shapes_label.setObjectName("DesignerPaletteLabel")
+        palette_layout.addWidget(shapes_label)
+
+        shape_scroll = QScrollArea()
+        shape_scroll.setObjectName("DesignerShapeScroll")
+        shape_scroll.setWidgetResizable(True)
+        shape_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        shape_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        shape_scroll.setFixedHeight(178)
+        shape_container = QWidget()
+        shape_container.setObjectName("DesignerShapeGrid")
+        shape_grid = QGridLayout(shape_container)
+        shape_grid.setContentsMargins(5, 5, 5, 5)
+        shape_grid.setHorizontalSpacing(7)
+        shape_grid.setVerticalSpacing(7)
         palette_items = (
-            ("text", "Text", "T"),
-            ("rectangle", "Rectangle", "▭"),
+            ("rectangle", "Rectangle", "▰"),
             ("rounded", "Rounded rectangle", "▢"),
+            ("pill", "Pill", "▬"),
             ("circle", "Circle", "●"),
             ("ellipse", "Ellipse", "⬭"),
-            ("pill", "Pill", "▬"),
             ("triangle", "Triangle", "▲"),
+            ("triangle_down", "Down triangle", "▼"),
             ("diamond", "Diamond", "◆"),
+            ("pentagon", "Pentagon", "⬟"),
             ("hexagon", "Hexagon", "⬢"),
+            ("octagon", "Octagon", "8"),
             ("star", "Star", "★"),
+            ("burst", "Burst", "✹"),
+            ("chevron", "Chevron", "❯"),
+            ("arrow_left", "Left arrow", "←"),
+            ("arrow_right", "Right arrow", "→"),
+            ("parallelogram", "Parallelogram", "▱"),
+            ("trapezoid", "Trapezoid", "⏢"),
+            ("cross", "Cross", "✚"),
+            ("heart", "Heart", "♥"),
         )
-        self.shape_tool_buttons: dict[str, ShapeToolButton] = {}
+        self.shape_tool_buttons: dict[str, ShapeToolButton] = {"text": text_button}
+        self.additional_shape_tool_buttons: dict[str, ShapeToolButton] = {}
+        original_shape_kinds = {
+            "rectangle", "rounded", "pill", "circle", "ellipse", "triangle",
+            "diamond", "hexagon", "star",
+        }
         for index, (item_kind, label, symbol) in enumerate(palette_items):
-            button = ShapeToolButton(item_kind, label, symbol, palette_group)
+            button = ShapeToolButton(item_kind, label, symbol, shape_container)
             button.activated.connect(self._palette_item_activated)
-            self.shape_tool_buttons[item_kind] = button
-            palette_layout.addWidget(button, index // 5, index % 5)
+            target = (
+                self.shape_tool_buttons
+                if item_kind in original_shape_kinds
+                else self.additional_shape_tool_buttons
+            )
+            target[item_kind] = button
+            shape_grid.addWidget(button, index // 5, index % 5)
+        self.all_shape_tool_buttons = {
+            **self.shape_tool_buttons,
+            **self.additional_shape_tool_buttons,
+        }
+        shape_grid.setColumnStretch(5, 1)
+        shape_scroll.setWidget(shape_container)
+        self.shape_palette_scroll = shape_scroll
+        palette_layout.addWidget(shape_scroll)
         controls_layout.addWidget(palette_group)
 
         # Keep the ordering model internally, but selection and item creation are
@@ -2176,15 +2379,20 @@ class BoxCustomizationDialog(QDialog):
         self.box_preview.image_clicked.connect(self._edit_image)
         self.box_preview.field_selected.connect(self._preview_field_selected)
         self.box_preview.item_dropped.connect(self._preview_item_dropped)
+        self.box_preview.image_file_dropped.connect(self._preview_image_dropped)
         self.box_preview.delete_requested.connect(self._remove_selected_content)
         self.box_preview.field_reorder_requested.connect(
             self._preview_field_reorder_requested
+        )
+        self.box_preview.layer_order_requested.connect(
+            self._preview_layer_order_requested
         )
         preview_layout.addWidget(preview_title)
         preview_layout.addWidget(self.box_preview, 1)
         preview_help = QLabel(
             "Drag an icon onto the preview to add it. Select, move, and resize "
-            "objects with the handles; press Delete to remove the selected item."
+            "objects with the handles; right-click to change layer order; press "
+            "Delete to remove the selected item."
         )
         preview_help.setObjectName("DesignerHint")
         preview_help.setWordWrap(True)
@@ -3273,6 +3481,24 @@ class BoxCustomizationDialog(QDialog):
     def _preview_item_dropped(self, item_kind: str, position: QPoint) -> None:
         self._add_content_item(self._selected_field_id(), item_kind, position)
 
+    def _choose_palette_image(self) -> None:
+        path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Upload Image",
+            str(Path.home()),
+            SUPPORTED_IMAGE_FILTER,
+        )
+        if path:
+            self._add_content_item(self._selected_field_id(), "image", image_path=path)
+
+    def _palette_image_dropped(self, path: str) -> None:
+        self._add_content_item(self._selected_field_id(), "image", image_path=path)
+
+    def _preview_image_dropped(self, path: str, position: QPoint) -> None:
+        self._add_content_item(
+            self._selected_field_id(), "image", position, image_path=path
+        )
+
     def _show_add_item_menu(self, source_id: str = "") -> None:
         if source_id:
             self._preview_field_selected(source_id)
@@ -3281,13 +3507,24 @@ class BoxCustomizationDialog(QDialog):
             ("Text", "text"),
             ("Rectangle", "rectangle"),
             ("Rounded rectangle", "rounded"),
+            ("Pill", "pill"),
             ("Circle", "circle"),
             ("Ellipse", "ellipse"),
-            ("Pill", "pill"),
             ("Triangle", "triangle"),
+            ("Down triangle", "triangle_down"),
             ("Diamond", "diamond"),
+            ("Pentagon", "pentagon"),
             ("Hexagon", "hexagon"),
+            ("Octagon", "octagon"),
             ("Star", "star"),
+            ("Burst", "burst"),
+            ("Chevron", "chevron"),
+            ("Left arrow", "arrow_left"),
+            ("Right arrow", "arrow_right"),
+            ("Parallelogram", "parallelogram"),
+            ("Trapezoid", "trapezoid"),
+            ("Cross", "cross"),
+            ("Heart", "heart"),
         )
         for label, item_kind in options:
             action = menu.addAction(label)
@@ -3307,6 +3544,7 @@ class BoxCustomizationDialog(QDialog):
         source_id: str,
         item_kind: str,
         drop_position: QPoint | None = None,
+        image_path: str = "",
     ) -> str:
         fields = self._image_item.display_fields()
         source_index = next(
@@ -3318,27 +3556,41 @@ class BoxCustomizationDialog(QDialog):
             len(fields) - 1,
         )
         new_id = f"field_{uuid4().hex[:8]}"
-        is_shape = item_kind != "text"
-        label = item_kind.replace("_", " ").title() if is_shape else "Text"
-        field_type = "shape" if is_shape else "text"
+        is_image = item_kind == "image"
+        is_shape = item_kind not in {"text", "image"}
+        if is_image:
+            label = Path(image_path).stem or "Image"
+            field_type = "image"
+        else:
+            label = item_kind.replace("_", " ").title() if is_shape else "Text"
+            field_type = "shape" if is_shape else "text"
         new_field = {
             "id": new_id,
             "type": field_type,
             "label": label,
-            "value": "Text",
-            "role": "",
+            "value": image_path if is_image else "Text",
+            "role": "image" if is_image else "",
         }
         fields.insert(source_index + 1, new_field)
         self._image_item.set_fields(fields)
         self.field_types[new_id] = field_type
-        self.field_roles[new_id] = "category"
+        if not is_image:
+            self.field_roles[new_id] = "category"
         self._new_field_sources[new_id] = ""
-        style = self._complete_field_style({}, "#2563eb", "#ffffff")
-        style["shape"] = normalized_shape(item_kind if is_shape else "rectangle")
-        width, height = (700, 160) if not is_shape else (700, 220)
+        if is_image:
+            style = self._complete_image_style({})
+            width, height = 760, 420
+            self._images_changed = True
+        else:
+            style = self._complete_field_style({}, "#2563eb", "#ffffff")
+            style["shape"] = normalized_shape(item_kind if is_shape else "rectangle")
+            width, height = (700, 160) if not is_shape else (700, 220)
         if item_kind == "circle":
             width, height = 350, 207
-        elif item_kind in {"triangle", "diamond", "hexagon", "star"}:
+        elif item_kind in {
+            "triangle", "triangle_down", "diamond", "pentagon", "hexagon",
+            "octagon", "star", "burst", "cross", "heart",
+        }:
             width, height = 520, 310
         center_x = 500
         center_y = 500
@@ -3600,6 +3852,68 @@ class BoxCustomizationDialog(QDialog):
         self._hierarchy_drop_requested(
             source_id, target_id, drop_after, parent_id
         )
+
+    def _preview_layer_order_requested(
+        self, field_id: str, operation: str
+    ) -> None:
+        order = self._ordered_field_ids()
+        if field_id not in order:
+            return
+
+        field_types = {
+            str(field.get("id", "")): str(field.get("type", "text"))
+            for field in self._image_item.display_fields()
+        }
+
+        def parent_for(candidate_id: str) -> str:
+            if field_types.get(candidate_id) == "image":
+                return ""
+            parent_id = str(
+                self.field_styles.get(candidate_id, {}).get("parent_id", "")
+            )
+            return parent_id if field_types.get(parent_id) == "image" else ""
+
+        parent_id = parent_for(field_id)
+        siblings = [
+            candidate_id
+            for candidate_id in order
+            if parent_for(candidate_id) == parent_id
+        ]
+        try:
+            sibling_index = siblings.index(field_id)
+        except ValueError:
+            return
+
+        if operation == "bring_to_front":
+            target_index = len(siblings) - 1
+        elif operation == "bring_forward":
+            target_index = min(len(siblings) - 1, sibling_index + 1)
+        elif operation == "send_backward":
+            target_index = max(0, sibling_index - 1)
+        elif operation == "send_to_back":
+            target_index = 0
+        else:
+            return
+        if target_index == sibling_index:
+            return
+
+        target_id = siblings[target_index]
+        updated_order = list(order)
+        if operation in {"bring_forward", "send_backward"}:
+            source_position = updated_order.index(field_id)
+            target_position = updated_order.index(target_id)
+            updated_order[source_position], updated_order[target_position] = (
+                updated_order[target_position],
+                updated_order[source_position],
+            )
+        else:
+            updated_order.remove(field_id)
+            target_position = updated_order.index(target_id)
+            insert_at = target_position + int(operation == "bring_to_front")
+            updated_order.insert(insert_at, field_id)
+
+        self._rebuild_order_list(updated_order, field_id)
+        self._update_preview()
 
     def _preview_field_selected(self, field_id: str) -> None:
         for index in range(self.field_order_list.count()):

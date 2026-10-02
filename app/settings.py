@@ -102,6 +102,60 @@ QGroupBox#DesignerSection::title {
 QGroupBox#DesignerSection[accentSection="true"] {
     border: 1px solid @accentBorder;
 }
+QLabel#DesignerPaletteLabel {
+    color: @textMuted;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 3px 0 3px;
+}
+QPushButton#DesignerImageDrop {
+    background: @input;
+    border: 1px dashed @accentBorder;
+    border-radius: 9px;
+    color: @textMuted;
+    font-weight: 600;
+    text-align: left;
+    padding-left: 14px;
+}
+QPushButton#DesignerImageDrop:hover,
+QPushButton#DesignerImageDrop[dragActive="true"] {
+    background: @selectedSurface;
+    border: 1px solid @accent;
+    color: @text;
+}
+QScrollArea#DesignerShapeScroll {
+    background: @input;
+    border: 1px solid @border;
+    border-radius: 10px;
+}
+QWidget#DesignerShapeGrid {
+    background: @input;
+}
+QScrollArea#DesignerShapeScroll QToolButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    padding: 4px;
+}
+QScrollArea#DesignerShapeScroll QToolButton:hover {
+    background: @selectedSurface;
+    border: 1px solid @accentBorder;
+}
+QScrollArea#DesignerShapeScroll QScrollBar:vertical {
+    background: @input;
+    width: 10px;
+    margin: 3px;
+}
+QScrollArea#DesignerShapeScroll QScrollBar::handle:vertical {
+    background: @borderStrong;
+    border-radius: 4px;
+    min-height: 28px;
+}
+QScrollArea#DesignerShapeScroll QScrollBar::add-line:vertical,
+QScrollArea#DesignerShapeScroll QScrollBar::sub-line:vertical {
+    height: 0;
+}
 QWidget#DesignerPreviewPanel {
     background: @panel;
     border: 1px solid @border;

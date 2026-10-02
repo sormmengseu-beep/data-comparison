@@ -52,6 +52,84 @@ class ParentChildLayoutTests(unittest.TestCase):
         for item in restored.comparison_items:
             self.assertIn(child_id, {str(field["id"]) for field in item.display_fields()})
 
+    def test_preview_layer_menu_exposes_all_four_order_actions(self):
+        item = Project.sample().comparison_items[0]
+        preview = BoxStylePreview(item)
+        preview.field_styles = {}
+        field_ids = [str(field["id"]) for field in item.display_fields()]
+        selected_id = field_ids[0]
+
+        requested = []
+        preview.layer_order_requested.connect(
+            lambda field_id, operation: requested.append((field_id, operation))
+        )
+        menu = preview._layer_context_menu(selected_id)
+
+        self.assertEqual(
+            [action.text() for action in menu.actions()],
+            [
+                "Bring to Front",
+                "Bring Forward",
+                "Send Backward",
+                "Send to Back",
+            ],
+        )
+        menu.actions()[1].trigger()
+        self.assertEqual(requested, [(selected_id, "bring_forward")])
+        menu.deleteLater()
+        preview.deleteLater()
+
+    def test_layer_actions_reorder_only_siblings(self):
+        project = Project.sample()
+        dialog = BoxCustomizationDialog(project, project.comparison_items[0])
+        fields = dialog._image_item.display_fields()
+        image_id = next(str(field["id"]) for field in fields if field["type"] == "image")
+        text_ids = [
+            str(field["id"]) for field in fields if field["type"] != "image"
+        ]
+        child_ids = text_ids[:2]
+        for child_id in child_ids:
+            dialog.field_styles[child_id]["parent_id"] = image_id
+        dialog._rebuild_order_list(dialog._ordered_field_ids(), child_ids[0])
+
+        root_before = [
+            field_id
+            for field_id in dialog._ordered_field_ids()
+            if field_id not in child_ids
+        ]
+        dialog._preview_layer_order_requested(child_ids[0], "bring_to_front")
+        child_order = [
+            field_id
+            for field_id in dialog._ordered_field_ids()
+            if field_id in child_ids
+        ]
+        self.assertEqual(child_order, [child_ids[1], child_ids[0]])
+        self.assertEqual(
+            [
+                field_id
+                for field_id in dialog._ordered_field_ids()
+                if field_id not in child_ids
+            ],
+            root_before,
+        )
+        dialog.apply_changes()
+        for item in project.comparison_items:
+            persisted_child_order = [
+                str(field["id"])
+                for field in item.display_fields()
+                if str(field["id"]) in child_ids
+            ]
+            self.assertEqual(persisted_child_order, [child_ids[1], child_ids[0]])
+
+        dialog._preview_layer_order_requested(child_ids[0], "send_to_back")
+        child_order = [
+            field_id
+            for field_id in dialog._ordered_field_ids()
+            if field_id in child_ids
+        ]
+        self.assertEqual(child_order, child_ids)
+        dialog.deleteLater()
+
     def test_parent_image_fills_card_and_gradient_is_rendered(self):
         with tempfile.TemporaryDirectory() as directory:
             image_path = str(Path(directory) / "red.png")
