@@ -5,7 +5,7 @@ from pathlib import Path
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PySide6.QtCore import QPoint, QSettings, Qt
+from PySide6.QtCore import QPoint, QRect, QSettings, Qt
 from PySide6.QtGui import QColor, QImage
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QColorDialog,
     QDialog,
     QDialogButtonBox,
+    QSizePolicy,
     QSlider,
 )
 
@@ -26,6 +27,50 @@ class ParentChildLayoutTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = QApplication.instance() or QApplication([])
+
+    def test_box_customization_dialog_opens_medium_with_compact_color_buttons(self):
+        project = Project.sample()
+        dialog = BoxCustomizationDialog(project, project.comparison_items[0])
+
+        self.assertFalse(dialog.windowState() & Qt.WindowState.WindowMaximized)
+        self.assertFalse(dialog.windowFlags() & Qt.WindowType.WindowMaximizeButtonHint)
+        self.assertLessEqual(dialog.width(), 1280)
+        self.assertEqual(dialog.border_color_button.minimumWidth(), 124)
+        self.assertEqual(dialog.border_color_button.maximumWidth(), 124)
+        self.assertEqual(
+            dialog.border_color_button.sizePolicy().horizontalPolicy(),
+            QSizePolicy.Policy.Fixed,
+        )
+        dialog.deleteLater()
+
+    def test_selected_image_hides_unused_text_content_controls(self):
+        project = Project.sample()
+        dialog = BoxCustomizationDialog(project, project.comparison_items[0])
+        fields = dialog._image_item.display_fields()
+        image_id = next(str(field["id"]) for field in fields if field["type"] == "image")
+        text_id = next(str(field["id"]) for field in fields if field["type"] == "text")
+
+        image_row = next(
+            row
+            for row in range(dialog.field_order_list.count())
+            if dialog.field_order_list.item(row).data(Qt.ItemDataRole.UserRole) == image_id
+        )
+        dialog.field_order_list.setCurrentRow(image_row)
+        self.assertTrue(dialog.field_label_edit.isHidden())
+        self.assertTrue(dialog.field_value_edit.isHidden())
+        self.assertFalse(dialog.field_browse_button.isHidden())
+        self.assertFalse(dialog.image_gradient_combo.isHidden())
+
+        text_row = next(
+            row
+            for row in range(dialog.field_order_list.count())
+            if dialog.field_order_list.item(row).data(Qt.ItemDataRole.UserRole) == text_id
+        )
+        dialog.field_order_list.setCurrentRow(text_row)
+        self.assertFalse(dialog.field_label_edit.isHidden())
+        self.assertFalse(dialog.field_value_edit.isHidden())
+        self.assertTrue(dialog.field_browse_button.isHidden())
+        dialog.deleteLater()
 
     def test_hierarchy_is_applied_to_every_box_and_persisted(self):
         project = Project.sample()
@@ -220,6 +265,50 @@ class ParentChildLayoutTests(unittest.TestCase):
         self.assertIn(("v", preview.rect().center().x()), preview._snap_guides)
         dialog.deleteLater()
 
+    def test_designer_preview_uses_vector_editor_modifier_controls(self):
+        project = Project.sample()
+        dialog = BoxCustomizationDialog(project, project.comparison_items[0])
+        dialog.show()
+        self.app.processEvents()
+        field_id = dialog._add_content_item("", "rectangle")
+        preview = dialog.box_preview
+        preview.repaint()
+        self.app.processEvents()
+        region, _field_id, _field_type = next(
+            entry for entry in preview._field_regions if entry[1] == field_id
+        )
+        parent = preview._overlay_parent_regions[field_id]
+
+        preview._selected_field_id = field_id
+        preview.keyPressEvent(type("Event", (), {
+            "key": lambda self: Qt.Key.Key_Right,
+            "modifiers": lambda self: Qt.KeyboardModifier.ShiftModifier,
+            "accept": lambda self: None,
+        })())
+        self.assertGreater(int(dialog.field_styles[field_id]["overlay_x"]), 0)
+
+        preview._press_position = region.bottomRight()
+        preview._pressed_field_id = field_id
+        preview._overlay_interaction = "resize"
+        preview._resize_handle = "se"
+        preview._interaction_rect = QRect(region)
+        preview._interaction_parent_rect = QRect(parent)
+        preview._update_overlay_geometry(
+            region.bottomRight() + QPoint(80, 10),
+            Qt.KeyboardModifier.ShiftModifier,
+        )
+        resized = preview._overlay_rect(
+            parent,
+            region,
+            dialog.field_styles[field_id],
+        )
+        self.assertAlmostEqual(
+            resized.width() / resized.height(),
+            region.width() / region.height(),
+            delta=0.12,
+        )
+        dialog.deleteLater()
+
     def test_designer_preview_fits_available_space_at_box_aspect_ratio(self):
         item = Project.sample().comparison_items[0]
         preview = BoxStylePreview(item, project_height=1080)
@@ -305,7 +394,7 @@ class ParentChildLayoutTests(unittest.TestCase):
     def test_shape_items_can_hold_text_and_persist(self):
         project = Project.sample()
         dialog = BoxCustomizationDialog(project, project.comparison_items[0])
-        self.assertTrue(dialog.field_order_list.isHidden())
+        self.assertFalse(dialog.field_order_list.isHidden())
         self.assertFalse(dialog.box_preview.isAncestorOf(dialog.shape_palette_group))
         self.assertEqual(
             set(dialog.shape_tool_buttons),
@@ -337,6 +426,15 @@ class ParentChildLayoutTests(unittest.TestCase):
         self.assertEqual(shape_field["type"], "shape")
         self.assertEqual(dialog.field_styles[shape_id]["shape"], "circle")
         self.assertTrue(dialog.field_order_list.currentItem().text().startswith("SHAPE"))
+        dialog._preview_field_selected(shape_id)
+        self.assertFalse(dialog.content_group.isHidden())
+        self.assertFalse(dialog.field_label_edit.isHidden())
+        self.assertFalse(dialog.field_value_edit.isHidden())
+        dialog.field_value_edit.setText("Edited badge")
+        dialog._selected_field_content_changed()
+        fields = dialog._image_item.display_fields()
+        shape_field = next(field for field in fields if field["id"] == shape_id)
+        self.assertEqual(shape_field["value"], "Edited badge")
         for removed_control in (
             "shape_combo",
             "band_container_button",
@@ -349,7 +447,6 @@ class ParentChildLayoutTests(unittest.TestCase):
             self.assertFalse(hasattr(dialog, removed_control))
 
         dialog.apply_changes()
-        dialog.deleteLater()
         restored = Project.from_dict(project.to_dict())
         restored_shape = next(
             field
@@ -357,8 +454,29 @@ class ParentChildLayoutTests(unittest.TestCase):
             if field["id"] == shape_id
         )
         self.assertEqual(restored_shape["type"], "shape")
-        self.assertEqual(restored_shape["value"], "New badge")
+        self.assertEqual(restored_shape["value"], "Edited badge")
         self.assertEqual(restored.field_styles[shape_id]["shape"], "circle")
+        dialog.deleteLater()
+
+    def test_can_add_image_after_preview_image_deleted(self):
+        project = Project.sample()
+        dialog = BoxCustomizationDialog(project, project.comparison_items[0])
+        image_id = next(
+            str(field.get("id", ""))
+            for field in dialog._image_item.display_fields()
+            if field.get("type") == "image"
+        )
+        dialog._remove_selected_content(image_id)
+        self.assertFalse(
+            any(field.get("type") == "image" for field in dialog._image_item.display_fields())
+        )
+
+        new_id = dialog._add_content_item(dialog._selected_field_id(), "image")
+        fields = dialog._image_item.display_fields()
+        self.assertEqual(fields[0].get("id"), new_id)
+        self.assertEqual(fields[0].get("type"), "image")
+        self.assertEqual(dialog.field_order_list.item(0).data(Qt.ItemDataRole.UserRole), new_id)
+        dialog.deleteLater()
 
     def test_shape_gradient_and_free_geometry_survive_and_render(self):
         item = ComparisonItem(name="Gradient")

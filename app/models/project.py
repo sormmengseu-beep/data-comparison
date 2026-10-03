@@ -190,7 +190,7 @@ class Project:
         if not self.comparison_items:
             return 0.0
         fixed_duration = max(MIN_CLIP_DURATION, self.item_fixed_duration)
-        return (len(self.comparison_items) + 1) * fixed_duration
+        return len(self.comparison_items) * fixed_duration
 
     def apply_fixed_item_timing(self) -> None:
         fixed_duration = max(MIN_CLIP_DURATION, self.item_fixed_duration)

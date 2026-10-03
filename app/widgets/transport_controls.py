@@ -1,9 +1,23 @@
 from __future__ import annotations
 
 from PySide6.QtCore import Signal, Qt
-from PySide6.QtWidgets import QButtonGroup, QComboBox, QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import (
+    QButtonGroup,
+    QComboBox,
+    QDoubleSpinBox,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
-from app.settings import MAX_PREVIEW_COLUMNS_1080P, MIN_PREVIEW_COLUMNS_1080P, OPENING_ANIMATION_OPTIONS
+from app.settings import (
+    MAX_PREVIEW_COLUMNS_1080P,
+    MIN_CLIP_DURATION,
+    MIN_PREVIEW_COLUMNS_1080P,
+    OPENING_ANIMATION_OPTIONS,
+)
 from app.utils.icons import IconButton
 
 
@@ -16,6 +30,7 @@ class TransportControls(QWidget):
     jump_end_requested = Signal()
     columns_changed = Signal(int)
     opening_animation_changed = Signal(str)
+    box_duration_changed = Signal(float)
     customize_requested = Signal()
 
     def __init__(self) -> None:
@@ -101,6 +116,17 @@ class TransportControls(QWidget):
             "The remaining video keeps the current horizontal scroll."
         )
         opening_row.addWidget(self.opening_animation_combo)
+        duration_label = QLabel("Box duration")
+        duration_label.setObjectName("TransportCaption")
+        opening_row.addSpacing(14)
+        opening_row.addWidget(duration_label)
+        self.box_duration_spin = QDoubleSpinBox()
+        self.box_duration_spin.setRange(MIN_CLIP_DURATION, 24 * 60 * 60)
+        self.box_duration_spin.setDecimals(3)
+        self.box_duration_spin.setSingleStep(0.1)
+        self.box_duration_spin.setSuffix(" sec")
+        self.box_duration_spin.setMinimumWidth(120)
+        opening_row.addWidget(self.box_duration_spin)
         opening_row.addStretch(1)
         outer_layout.addLayout(opening_row)
 
@@ -117,6 +143,7 @@ class TransportControls(QWidget):
                 str(self.opening_animation_combo.currentData())
             )
         )
+        self.box_duration_spin.valueChanged.connect(self.box_duration_changed.emit)
         self.set_columns(MIN_PREVIEW_COLUMNS_1080P)
 
     def set_playing(self, playing: bool) -> None:
@@ -131,6 +158,11 @@ class TransportControls(QWidget):
             max(0, self.opening_animation_combo.findData(animation))
         )
         self.opening_animation_combo.blockSignals(False)
+
+    def set_box_duration(self, duration: float) -> None:
+        self.box_duration_spin.blockSignals(True)
+        self.box_duration_spin.setValue(max(MIN_CLIP_DURATION, float(duration)))
+        self.box_duration_spin.blockSignals(False)
 
     def set_columns(self, columns: int) -> None:
         columns = max(MIN_PREVIEW_COLUMNS_1080P, min(MAX_PREVIEW_COLUMNS_1080P, int(columns)))

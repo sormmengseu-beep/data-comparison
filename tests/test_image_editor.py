@@ -204,7 +204,7 @@ class ImageEditorTests(unittest.TestCase):
             editor.width_spin.setValue(150)
             return QDialog.DialogCode.Accepted
         with patch.object(ImageEditorDialog, "exec", accepted):
-            QTest.mouseClick(dialog.box_preview, Qt.MouseButton.LeftButton, pos=QPoint(100, 100))
+            QTest.mouseDClick(dialog.box_preview, Qt.MouseButton.LeftButton, pos=QPoint(100, 100))
         self.assertEqual(self.item.image_transforms, {})
         self.assertEqual(dialog.box_preview.item.image_transforms[self.field_id]["scale_x"], 1.5)
         dialog.reject()

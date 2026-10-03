@@ -120,7 +120,8 @@ class ColorButton(QPushButton):
         super().__init__(parent)
         self._color = color
         self._allow_alpha = allow_alpha
-        self.setMinimumWidth(104)
+        self.setFixedWidth(124)
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         if allow_alpha:
             self.setToolTip(
                 "Choose a color and use Alpha in the color picker to make this "
@@ -989,6 +990,21 @@ class BoxStylePreview(QWidget):
             self.delete_requested.emit(self._selected_field_id)
             event.accept()
             return
+        if event.key() == Qt.Key.Key_Escape and self._overlay_interaction:
+            self._reset_drag_state()
+            event.accept()
+            return
+        arrow_deltas = {
+            Qt.Key.Key_Left: QPoint(-1, 0),
+            Qt.Key.Key_Right: QPoint(1, 0),
+            Qt.Key.Key_Up: QPoint(0, -1),
+            Qt.Key.Key_Down: QPoint(0, 1),
+        }
+        if event.key() in arrow_deltas and self._selected_field_id:
+            step = 10 if event.modifiers() & Qt.KeyboardModifier.ShiftModifier else 1
+            if self._nudge_selected_overlay(arrow_deltas[event.key()] * step):
+                event.accept()
+                return
         super().keyPressEvent(event)
 
     def contextMenuEvent(self, event) -> None:
@@ -1080,23 +1096,52 @@ class BoxStylePreview(QWidget):
     def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
             position = event.position().toPoint()
-            hit_regions = list(reversed(self._field_regions))
             if self._selected_field_id:
-                hit_regions.sort(
-                    key=lambda entry: entry[1] != self._selected_field_id
+                selected_region = next(
+                    (
+                        region
+                        for region, field_id, _field_type in self._field_regions
+                        if field_id == self._selected_field_id
+                    ),
+                    None,
                 )
+                if selected_region is not None:
+                    handle = self._handle_at(position, selected_region)
+                    if handle:
+                        parent_rect = self._overlay_parent_regions.get(
+                            self._selected_field_id
+                        )
+                        if parent_rect is not None:
+                            self._press_position = position
+                            self._pressed_field_id = self._selected_field_id
+                            self._pressed_field_type = next(
+                                (
+                                    field_type
+                                    for _region, field_id, field_type in self._field_regions
+                                    if field_id == self._selected_field_id
+                                ),
+                                "",
+                            )
+                            self._overlay_interaction = "resize"
+                            self._resize_handle = handle
+                            self._interaction_rect = QRect(selected_region)
+                            self._interaction_parent_rect = QRect(parent_rect)
+                            self.setFocus()
+                            self.setCursor(Qt.CursorShape.ClosedHandCursor)
+                            event.accept()
+                            return
+            hit_regions = list(reversed(self._field_regions))
             for region, field_id, field_type in hit_regions:
                 parent_rect = self._overlay_parent_regions.get(field_id)
-                handle = self._handle_at(position, region) if parent_rect else ""
-                if handle or region.contains(position):
+                if region.contains(position):
                     self._press_position = position
                     self._pressed_field_id = field_id
                     self._pressed_field_type = field_type
                     if parent_rect is not None:
                         self._selected_field_id = field_id
                         self.field_selected.emit(field_id)
-                        self._overlay_interaction = "resize" if handle else "move"
-                        self._resize_handle = handle
+                        self._overlay_interaction = "move"
+                        self._resize_handle = ""
                         self._interaction_rect = QRect(region)
                         self._interaction_parent_rect = QRect(parent_rect)
                         self.setFocus()
@@ -1112,7 +1157,7 @@ class BoxStylePreview(QWidget):
             and self._press_position is not None
             and event.buttons() & Qt.MouseButton.LeftButton
         ):
-            self._update_overlay_geometry(position)
+            self._update_overlay_geometry(position, event.modifiers())
             event.accept()
             return
         if (
@@ -1165,13 +1210,6 @@ class BoxStylePreview(QWidget):
     def mouseReleaseEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton and self._pressed_field_id:
             if self._overlay_interaction:
-                if (
-                    self._press_position is not None
-                    and (event.position().toPoint() - self._press_position).manhattanLength()
-                    < QApplication.startDragDistance()
-                    and self._pressed_field_type == "image"
-                ):
-                    self.image_clicked.emit(self._pressed_field_id)
                 self._reset_drag_state()
                 event.accept()
                 return
@@ -1182,12 +1220,24 @@ class BoxStylePreview(QWidget):
                 )
             elif not self._dragging_field_id:
                 self.field_selected.emit(self._pressed_field_id)
-                if self._pressed_field_type == "image":
-                    self.image_clicked.emit(self._pressed_field_id)
             self._reset_drag_state()
             event.accept()
             return
         super().mouseReleaseEvent(event)
+
+    def mouseDoubleClickEvent(self, event) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            position = event.position().toPoint()
+            for region, field_id, field_type in reversed(self._field_regions):
+                if field_type == "image" and region.contains(position):
+                    self._selected_field_id = field_id
+                    self.field_selected.emit(field_id)
+                    self.image_clicked.emit(field_id)
+                    self.setFocus()
+                    self.update()
+                    event.accept()
+                    return
+        super().mouseDoubleClickEvent(event)
 
     def _reset_drag_state(self) -> None:
         self._press_position = None
@@ -1230,7 +1280,11 @@ class BoxStylePreview(QWidget):
                 return name
         return ""
 
-    def _update_overlay_geometry(self, position: QPoint) -> None:
+    def _update_overlay_geometry(
+        self,
+        position: QPoint,
+        modifiers: Qt.KeyboardModifier | Qt.KeyboardModifiers = Qt.KeyboardModifier.NoModifier,
+    ) -> None:
         delta = position - self._press_position
         original = self._interaction_rect
         parent = self._interaction_parent_rect
@@ -1241,29 +1295,161 @@ class BoxStylePreview(QWidget):
             y = max(parent.top(), min(original.y() + delta.y(), parent.bottom() - original.height() + 1))
             updated = QRect(x, y, original.width(), original.height())
         else:
-            left = original.left()
-            top = original.top()
-            right = original.right() + 1
-            bottom = original.bottom() + 1
-            handle = self._resize_handle
-            if "w" in handle:
-                left = max(parent.left(), min(left + delta.x(), right - min_width))
-            if "e" in handle:
-                right = min(parent.right() + 1, max(right + delta.x(), left + min_width))
-            if "n" in handle:
-                top = max(parent.top(), min(top + delta.y(), bottom - min_height))
-            if "s" in handle:
-                bottom = min(parent.bottom() + 1, max(bottom + delta.y(), top + min_height))
-            updated = QRect(left, top, right - left, bottom - top)
-        updated = self._snap_rect(updated, parent)
+            updated = self._resized_overlay_rect(
+                original,
+                parent,
+                self._resize_handle,
+                delta,
+                min_width,
+                min_height,
+                bool(modifiers & Qt.KeyboardModifier.ShiftModifier),
+                bool(modifiers & Qt.KeyboardModifier.AltModifier),
+            )
+        updated = self._snap_rect(
+            updated,
+            parent,
+            snap_allowed=not bool(modifiers & Qt.KeyboardModifier.ControlModifier),
+        )
         self._store_overlay_rect(
             self._pressed_field_id, updated, self._interaction_parent_rect
         )
         self.update()
 
-    def _snap_rect(self, rect: QRect, parent: QRect) -> QRect:
+    def _nudge_selected_overlay(self, delta: QPoint) -> bool:
+        current = next(
+            (
+                QRect(region)
+                for region, field_id, _field_type in self._field_regions
+                if field_id == self._selected_field_id
+            ),
+            QRect(),
+        )
+        parent = self._overlay_parent_regions.get(self._selected_field_id)
+        if current.isEmpty() or parent is None:
+            return False
+        updated = QRect(current).translated(delta)
+        updated.moveLeft(
+            max(parent.left(), min(updated.left(), parent.right() - updated.width() + 1))
+        )
+        updated.moveTop(
+            max(parent.top(), min(updated.top(), parent.bottom() - updated.height() + 1))
+        )
+        self._store_overlay_rect(self._selected_field_id, updated, parent)
+        self.update()
+        return True
+
+    def _resized_overlay_rect(
+        self,
+        original: QRect,
+        parent: QRect,
+        handle: str,
+        delta: QPoint,
+        min_width: int,
+        min_height: int,
+        keep_aspect: bool,
+        resize_from_center: bool,
+    ) -> QRect:
+        left = original.left()
+        top = original.top()
+        right = original.right() + 1
+        bottom = original.bottom() + 1
+        if "w" in handle:
+            left = max(parent.left(), min(left + delta.x(), right - min_width))
+        if "e" in handle:
+            right = min(parent.right() + 1, max(right + delta.x(), left + min_width))
+        if "n" in handle:
+            top = max(parent.top(), min(top + delta.y(), bottom - min_height))
+        if "s" in handle:
+            bottom = min(parent.bottom() + 1, max(bottom + delta.y(), top + min_height))
+
+        if resize_from_center:
+            if "w" in handle:
+                right = original.right() + 1 - (left - original.left())
+            if "e" in handle:
+                left = original.left() - (right - (original.right() + 1))
+            if "n" in handle:
+                bottom = original.bottom() + 1 - (top - original.top())
+            if "s" in handle:
+                top = original.top() - (bottom - (original.bottom() + 1))
+
+        width = max(min_width, right - left)
+        height = max(min_height, bottom - top)
+        if keep_aspect and original.height() > 0:
+            aspect = original.width() / original.height()
+            horizontal = "w" in handle or "e" in handle
+            vertical = "n" in handle or "s" in handle
+            if horizontal and not vertical:
+                height = max(min_height, round(width / aspect))
+            elif vertical and not horizontal:
+                width = max(min_width, round(height * aspect))
+            elif abs(width - original.width()) >= abs(height - original.height()):
+                height = max(min_height, round(width / aspect))
+            else:
+                width = max(min_width, round(height * aspect))
+            return self._place_resized_overlay_rect(
+                original,
+                parent,
+                handle,
+                min(width, parent.width()),
+                min(height, parent.height()),
+                resize_from_center,
+            )
+
+        return self._bound_overlay_rect(
+            QRect(left, top, width, height),
+            parent,
+        )
+
+    @staticmethod
+    def _place_resized_overlay_rect(
+        original: QRect,
+        parent: QRect,
+        handle: str,
+        width: int,
+        height: int,
+        resize_from_center: bool,
+    ) -> QRect:
+        if resize_from_center:
+            center = original.center()
+            rect = QRect(0, 0, width, height)
+            rect.moveCenter(center)
+            return BoxStylePreview._bound_overlay_rect(rect, parent)
+
+        if "w" in handle:
+            left = original.right() + 1 - width
+        elif "e" in handle:
+            left = original.left()
+        else:
+            left = original.center().x() - width // 2
+
+        if "n" in handle:
+            top = original.bottom() + 1 - height
+        elif "s" in handle:
+            top = original.top()
+        else:
+            top = original.center().y() - height // 2
+        return BoxStylePreview._bound_overlay_rect(QRect(left, top, width, height), parent)
+
+    @staticmethod
+    def _bound_overlay_rect(rect: QRect, parent: QRect) -> QRect:
+        bounded = QRect(rect)
+        if parent.isEmpty():
+            return bounded
+        if bounded.width() > parent.width():
+            bounded.setWidth(parent.width())
+        if bounded.height() > parent.height():
+            bounded.setHeight(parent.height())
+        bounded.moveLeft(
+            max(parent.left(), min(bounded.left(), parent.right() - bounded.width() + 1))
+        )
+        bounded.moveTop(
+            max(parent.top(), min(bounded.top(), parent.bottom() - bounded.height() + 1))
+        )
+        return bounded
+
+    def _snap_rect(self, rect: QRect, parent: QRect, snap_allowed: bool = True) -> QRect:
         self._snap_guides = []
-        if not self.snap_enabled:
+        if not self.snap_enabled or not snap_allowed:
             return rect
         threshold = 6
         x_targets = {parent.left(), parent.center().x(), parent.right() + 1}
@@ -1959,7 +2145,7 @@ class ProjectSettingsDialog(QDialog):
         project.apply_fixed_item_timing()
 
     def _update_animation_length(self, box_duration: float) -> None:
-        duration = (self._item_count + 1) * box_duration if self._item_count else 0.0
+        duration = self._item_count * box_duration if self._item_count else 0.0
         self.animation_length_label.setText(format_timestamp(duration))
 
 
@@ -1991,10 +2177,9 @@ class BoxCustomizationDialog(QDialog):
         self.custom_presets = self._load_custom_presets()
         self.setObjectName("BoxCustomizationDialog")
         self.setWindowTitle("Customize All Boxes")
-        self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, True)
-        self.setMinimumSize(1100, 700)
-        self.resize(1320, 840)
-        self.setWindowState(self.windowState() | Qt.WindowState.WindowMaximized)
+        self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, False)
+        self.setMinimumSize(980, 650)
+        self.resize(1280, 820)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(20, 18, 20, 16)
@@ -2110,14 +2295,6 @@ class BoxCustomizationDialog(QDialog):
         )
         form.addRow("Font size", self.text_font_size_spin)
 
-        self.duration_spin = QDoubleSpinBox()
-        self.duration_spin.setRange(MIN_CLIP_DURATION, 24 * 60 * 60)
-        self.duration_spin.setDecimals(3)
-        self.duration_spin.setSingleStep(0.1)
-        self.duration_spin.setSuffix(" sec")
-        self.duration_spin.setValue(project.item_fixed_duration)
-        form.addRow("Box duration", self.duration_spin)
-
         self.border_color_button = ColorButton(project.card_border_color)
         form.addRow("Box border", self.border_color_button)
         self.snap_objects_check = QCheckBox("Snap to edges, centers, and objects")
@@ -2158,14 +2335,13 @@ class BoxCustomizationDialog(QDialog):
 
         shapes_label = QLabel("SHAPES  •  CLICK OR DRAG")
         shapes_label.setObjectName("DesignerPaletteLabel")
-        palette_layout.addWidget(shapes_label)
 
         shape_scroll = QScrollArea()
         shape_scroll.setObjectName("DesignerShapeScroll")
         shape_scroll.setWidgetResizable(True)
         shape_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         shape_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        shape_scroll.setFixedHeight(178)
+        shape_scroll.setFixedHeight(252)
         shape_container = QWidget()
         shape_container.setObjectName("DesignerShapeGrid")
         shape_grid = QGridLayout(shape_container)
@@ -2217,15 +2393,37 @@ class BoxCustomizationDialog(QDialog):
         shape_grid.setColumnStretch(5, 1)
         shape_scroll.setWidget(shape_container)
         self.shape_palette_scroll = shape_scroll
-        palette_layout.addWidget(shape_scroll)
-        controls_layout.addWidget(palette_group)
 
-        # Keep the ordering model internally, but selection and item creation are
-        # now handled directly on the preview instead of through a visible list.
+        palette_body = QHBoxLayout()
+        palette_body.setSpacing(10)
+        shape_panel = QWidget()
+        shape_panel_layout = QVBoxLayout(shape_panel)
+        shape_panel_layout.setContentsMargins(0, 0, 0, 0)
+        shape_panel_layout.setSpacing(6)
+        shape_panel_layout.addWidget(shapes_label)
+        shape_panel_layout.addWidget(shape_scroll)
+        palette_body.addWidget(shape_panel, 3)
+
+        records_panel = QWidget()
+        records_layout = QVBoxLayout(records_panel)
+        records_layout.setContentsMargins(0, 0, 0, 0)
+        records_layout.setSpacing(6)
+        records_label = QLabel("RECORDS  â€¢  SELECT TO EDIT")
+        records_label.setObjectName("DesignerPaletteLabel")
+        records_layout.addWidget(records_label)
         self.field_order_list = ContentOrderList(self)
         self.field_order_list.setObjectName("DesignerOrderList")
         self.field_order_list.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.field_order_list.hide()
+        self.field_order_list.setItemDelegate(ContentOrderDelegate(self.field_order_list))
+        self.field_order_list.setDragEnabled(True)
+        self.field_order_list.setAcceptDrops(True)
+        self.field_order_list.setDragDropMode(QAbstractItemView.DragDropMode.InternalMove)
+        self.field_order_list.setDefaultDropAction(Qt.DropAction.MoveAction)
+        self.field_order_list.setFixedHeight(252)
+        records_layout.addWidget(self.field_order_list)
+        palette_body.addWidget(records_panel, 2)
+        palette_layout.addLayout(palette_body)
+        controls_layout.addWidget(palette_group)
 
         self.field_styles: dict[str, dict[str, str]] = {}
         self.field_roles: dict[str, str] = {}
@@ -2252,10 +2450,7 @@ class BoxCustomizationDialog(QDialog):
                         {"shape": "rectangle", "inset": "0", "corner_radius": "0"}
                     )
                 content_index += 1
-            type_label = self._field_type_label(field_type)
-            list_item = QListWidgetItem(
-                f"{type_label}  ·  {str(field_data.get('label') or 'Input')}"
-            )
+            list_item = QListWidgetItem(self._field_list_text(field_data))
             list_item.setData(Qt.ItemDataRole.UserRole, field_id)
             list_item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
             list_item.setData(
@@ -2492,6 +2687,13 @@ class BoxCustomizationDialog(QDialog):
         if self.field_order_list.count():
             self.field_order_list.setCurrentRow(0)
         self._load_values()
+
+    @staticmethod
+    def _set_form_row_visible(form: QFormLayout, field: QWidget, visible: bool) -> None:
+        label = form.labelForField(field)
+        if label is not None:
+            label.setVisible(visible)
+        field.setVisible(visible)
 
     def _populate_preset_combo(self, selected_data: str = "") -> None:
         current_data = selected_data or str(self.preset_combo.currentData() or "")
@@ -3030,8 +3232,7 @@ class BoxCustomizationDialog(QDialog):
                     ),
                 )
                 content_index += 1
-            type_label = self._field_type_label(field_type)
-            list_item = QListWidgetItem(f"{type_label}  ·  {field.get('label', 'Input')}")
+            list_item = QListWidgetItem(self._field_list_text(field))
             list_item.setData(Qt.ItemDataRole.UserRole, field_id)
             list_item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
             list_item.setData(
@@ -3131,7 +3332,6 @@ class BoxCustomizationDialog(QDialog):
         self.project.image_fit = str(self.image_fit_combo.currentData())
         self.project.text_font_family = self.text_font_combo.currentFont().family()
         self.project.text_font_size = self.text_font_size_spin.value()
-        self.project.item_fixed_duration = float(self.duration_spin.value())
         self.project.card_border_color = self.border_color_button.color()
         self.project.field_styles = {
             field_id: dict(style) for field_id, style in self.field_styles.items()
@@ -3244,6 +3444,17 @@ class BoxCustomizationDialog(QDialog):
             return "SHAPE"
         return "TEXT"
 
+    def _field_list_text(self, field: dict[str, str]) -> str:
+        field_type = str(field.get("type", "text"))
+        type_label = self._field_type_label(field_type)
+        value = str(field.get("value") or "").strip()
+        if field_type == "image" and value:
+            value = Path(value).name
+        label = value or str(field.get("label") or "Input").strip()
+        if len(label) > 34:
+            label = f"{label[:31]}..."
+        return f"{type_label}  ·  {label}"
+
     def _load_selected_field_style(self) -> None:
         field_id = self._selected_field_id()
         self.box_preview.set_selected_field(field_id)
@@ -3267,7 +3478,17 @@ class BoxCustomizationDialog(QDialog):
         self.field_value_edit.setPlaceholderText(
             "Choose an image" if is_image else "Enter value for this box"
         )
-        self.field_browse_button.setVisible(is_image)
+        field_type = str(field_data.get("type", "")) if field_data else ""
+        is_text = field_type in {"text", "name", "number", "shape"}
+        content_form = self.content_group.layout()
+        if isinstance(content_form, QFormLayout):
+            self._set_form_row_visible(content_form, self.field_label_edit, is_text)
+            self._set_form_row_visible(content_form, self.field_value_edit, is_text)
+            self._set_form_row_visible(content_form, self.field_browse_button, is_image)
+        else:
+            self.field_label_edit.setVisible(is_text)
+            self.field_value_edit.setVisible(is_text)
+            self.field_browse_button.setVisible(is_image)
         image_style = self.field_styles.get(field_id, {})
         self.image_height_spin.setValue(
             self._bounded_int(image_style.get("height_weight"), 100, 25, 400)
@@ -3291,17 +3512,20 @@ class BoxCustomizationDialog(QDialog):
         self.image_gradient_opacity_label.setVisible(is_image)
         self.image_gradient_opacity_spin.setVisible(is_image)
         self.content_group.setEnabled(field_data is not None)
+        self.content_group.setVisible(is_text or is_image)
         self._loading_field_content = False
         style = self.field_styles.get(field_id)
         if style is None or is_image:
             self.style_group.setTitle("Selected image")
             self.style_group.setEnabled(False)
+            self.style_group.setVisible(False)
             return
         self.style_group.setTitle(
             "Selected shape" if self.field_types.get(field_id) == "shape"
             else "Selected text band"
         )
         self.style_group.setEnabled(True)
+        self.style_group.setVisible(True)
         self._loading_field_style = True
         self.band_background_button.set_color(style["background_color"])
         self.band_fill_combo.setCurrentIndex(
@@ -3408,8 +3632,7 @@ class BoxCustomizationDialog(QDialog):
         self._image_item.set_fields(fields)
         current_item = self.field_order_list.currentItem()
         if current_item is not None:
-            type_label = self._field_type_label(str(field.get("type", "text")))
-            current_item.setText(f"{type_label}  ·  {field['label']}")
+            current_item.setText(self._field_list_text(field))
         self._update_preview()
 
     def _selected_image_height_changed(self, value: int) -> None:
@@ -3523,6 +3746,7 @@ class BoxCustomizationDialog(QDialog):
         menu = QMenu(self)
         options = (
             ("Text", "text"),
+            ("Image", "image"),
             ("Rectangle", "rectangle"),
             ("Rounded rectangle", "rounded"),
             ("Pill", "pill"),
@@ -3557,6 +3781,25 @@ class BoxCustomizationDialog(QDialog):
         if chosen is not None:
             self._add_content_item(source_id, str(chosen.data() or "text"))
 
+    @staticmethod
+    def _default_insert_index(
+        fields: list[dict[str, str]],
+        source_id: str,
+        item_kind: str,
+    ) -> int:
+        if item_kind == "image" and not any(
+            str(field.get("type", "")) == "image" for field in fields
+        ):
+            return 0
+        return next(
+            (
+                index + 1
+                for index, field in enumerate(fields)
+                if str(field.get("id", "")) == source_id
+            ),
+            len(fields),
+        )
+
     def _add_content_item(
         self,
         source_id: str,
@@ -3565,14 +3808,7 @@ class BoxCustomizationDialog(QDialog):
         image_path: str = "",
     ) -> str:
         fields = self._image_item.display_fields()
-        source_index = next(
-            (
-                index
-                for index, field in enumerate(fields)
-                if str(field.get("id", "")) == source_id
-            ),
-            len(fields) - 1,
-        )
+        insert_index = self._default_insert_index(fields, source_id, item_kind)
         new_id = f"field_{uuid4().hex[:8]}"
         is_image = item_kind == "image"
         is_shape = item_kind not in {"text", "image"}
@@ -3589,7 +3825,7 @@ class BoxCustomizationDialog(QDialog):
             "value": image_path if is_image else "Text",
             "role": "image" if is_image else "",
         }
-        fields.insert(source_index + 1, new_field)
+        fields.insert(insert_index, new_field)
         self._image_item.set_fields(fields)
         self.field_types[new_id] = field_type
         if not is_image:
@@ -3631,15 +3867,34 @@ class BoxCustomizationDialog(QDialog):
         )
         self.field_styles[new_id] = style
 
-        type_label = self._field_type_label(field_type)
-        list_item = QListWidgetItem(f"{type_label}  ·  {label}")
+        list_item = QListWidgetItem(self._field_list_text(new_field))
         list_item.setData(Qt.ItemDataRole.UserRole, new_id)
         list_item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
         list_item.setData(Qt.ItemDataRole.UserRole + 2, "")
         list_item.setToolTip(
             "Drag to reorder, or drop onto an image to make an overlay"
         )
-        insert_row = max(0, self.field_order_list.currentRow() + 1)
+        insert_row = self._default_insert_index(
+            [
+                {
+                    "id": str(
+                        self.field_order_list.item(index).data(
+                            Qt.ItemDataRole.UserRole
+                        )
+                        or ""
+                    ),
+                    "type": str(
+                        self.field_order_list.item(index).data(
+                            Qt.ItemDataRole.UserRole + 1
+                        )
+                        or ""
+                    ),
+                }
+                for index in range(self.field_order_list.count())
+            ],
+            source_id,
+            item_kind,
+        )
         self.field_order_list.insertItem(insert_row, list_item)
         self.field_order_list.setCurrentItem(list_item)
         self._field_order_changed()
@@ -3683,10 +3938,7 @@ class BoxCustomizationDialog(QDialog):
                 )
             )
 
-        type_label = self._field_type_label(field_type)
-        list_item = QListWidgetItem(
-            f"{type_label}  ·  {duplicate['label']}"
-        )
+        list_item = QListWidgetItem(self._field_list_text(duplicate))
         list_item.setData(Qt.ItemDataRole.UserRole, new_id)
         list_item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
         list_item.setData(
@@ -3745,10 +3997,7 @@ class BoxCustomizationDialog(QDialog):
         for field in ordered_fields:
             field_id = str(field.get("id", ""))
             field_type = str(field.get("type", "text"))
-            type_label = self._field_type_label(field_type)
-            item = QListWidgetItem(
-                f"{type_label}  ·  {str(field.get('label') or 'Input')}"
-            )
+            item = QListWidgetItem(self._field_list_text(field))
             item.setData(Qt.ItemDataRole.UserRole, field_id)
             item.setData(Qt.ItemDataRole.UserRole + 1, field_type)
             item.setData(
@@ -3937,7 +4186,10 @@ class BoxCustomizationDialog(QDialog):
         for index in range(self.field_order_list.count()):
             item = self.field_order_list.item(index)
             if str(item.data(Qt.ItemDataRole.UserRole) or "") == field_id:
-                self.field_order_list.setCurrentItem(item)
+                if self.field_order_list.currentItem() is item:
+                    self._load_selected_field_style()
+                else:
+                    self.field_order_list.setCurrentItem(item)
                 break
 
     def _field_role(self, field_data: dict[str, str], index: int) -> str:
@@ -3998,9 +4250,7 @@ class MainWindow(QMainWindow):
         app_title.setObjectName("AppTitle")
         self.project_title = QLabel()
         self.project_title.setObjectName("ProjectTitle")
-        self.import_data_button = QPushButton("Import Text")
         self.customize_boxes_button = QPushButton("Customize Boxes")
-        self.settings_button = QPushButton("Project Settings")
         self.theme_combo = QComboBox()
         self.theme_combo.addItems(["Dark", "Light"])
         self.theme_combo.setCurrentText(self.theme.title())
@@ -4011,9 +4261,7 @@ class MainWindow(QMainWindow):
         command_layout.addSpacing(8)
         command_layout.addWidget(self.project_title)
         command_layout.addStretch(1)
-        command_layout.addWidget(self.import_data_button)
         command_layout.addWidget(self.customize_boxes_button)
-        command_layout.addWidget(self.settings_button)
         command_layout.addWidget(QLabel("Theme"))
         command_layout.addWidget(self.theme_combo)
         command_layout.addWidget(self.toolbar_export_button)
@@ -4099,10 +4347,9 @@ class MainWindow(QMainWindow):
         self.transport.jump_end_requested.connect(lambda: self.set_current_time(self.project.total_duration()))
         self.transport.columns_changed.connect(self.set_preview_columns)
         self.transport.opening_animation_changed.connect(self.set_opening_animation)
+        self.transport.box_duration_changed.connect(self.set_box_duration)
         self.transport.customize_requested.connect(self.open_box_customization)
-        self.import_data_button.clicked.connect(self.add_text)
         self.customize_boxes_button.clicked.connect(self.open_box_customization)
-        self.settings_button.clicked.connect(self.open_project_settings)
         self.toolbar_export_button.clicked.connect(self.export_video)
         self.theme_combo.currentTextChanged.connect(self.set_theme)
 
@@ -4123,6 +4370,7 @@ class MainWindow(QMainWindow):
         self.assets.set_items(self.project.comparison_items, self.selected_item_id)
         self.transport.set_columns(self.project.preview_max_columns)
         self.transport.set_opening_animation(self.project.opening_animation)
+        self.transport.set_box_duration(self.project.item_fixed_duration)
         self.select_item(self.selected_item_id, update_asset_panel=False)
         self.set_current_time(self.current_time)
         self._update_status()
@@ -4183,6 +4431,16 @@ class MainWindow(QMainWindow):
         self.project.opening_animation = animation
         self.transport.set_opening_animation(animation)
         self.preview.update()
+
+    def set_box_duration(self, duration: float) -> None:
+        self.project.item_fixed_duration = max(MIN_CLIP_DURATION, float(duration))
+        self.project.apply_fixed_item_timing()
+        self.transport.set_box_duration(self.project.item_fixed_duration)
+        self.set_current_time(min(self.current_time, self.project.total_duration()))
+        self.preview.update()
+        self.timeline.set_project(self.project)
+        self.timeline.set_selected_item(self.selected_item_id)
+        self._update_status()
 
     def add_comparison_item(self) -> None:
         schema = (
@@ -4442,6 +4700,7 @@ class MainWindow(QMainWindow):
             return
         self.project.item_fixed_duration = max(MIN_CLIP_DURATION, float(duration))
         self.project.apply_fixed_item_timing()
+        self.transport.set_box_duration(self.project.item_fixed_duration)
         self.preview.update()
         self.timeline.set_project(self.project)
         self._update_status()
