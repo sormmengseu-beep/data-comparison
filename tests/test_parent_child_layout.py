@@ -523,6 +523,108 @@ class ParentChildLayoutTests(unittest.TestCase):
         self.assertEqual(outside, QColor(restored.canvas_background_color))
         preview.deleteLater()
 
+    def test_custom_preset_replaces_default_fields_and_restores_shape_text(self):
+        with tempfile.TemporaryDirectory() as directory:
+            settings_path = str(Path(directory) / "preferences.ini")
+            item = ComparisonItem(name="Custom")
+            item.set_fields(
+                [
+                    {
+                        "id": "photo", "type": "image", "label": "Image",
+                        "value": "", "role": "image",
+                    },
+                    {
+                        "id": "year", "type": "shape", "label": "Rounded",
+                        "value": "2003", "role": "",
+                    },
+                    {
+                        "id": "caption", "type": "shape", "label": "Text",
+                        "value": "First model", "role": "",
+                    },
+                ]
+            )
+            source = BoxCustomizationDialog(Project(comparison_items=[item]), item)
+            source.preferences = QSettings(settings_path, QSettings.Format.IniFormat)
+            source.field_styles["year"].update(
+                {
+                    "overlay_x": "100", "overlay_y": "800",
+                    "overlay_width": "800", "overlay_height": "100",
+                }
+            )
+            source.field_styles["caption"].update(
+                {
+                    "overlay_x": "100", "overlay_y": "600",
+                    "overlay_width": "800", "overlay_height": "100",
+                }
+            )
+            source.custom_presets = {"Custom": source._preset_from_current_controls()}
+            self.assertTrue(source._save_custom_presets_to_preferences())
+            source.deleteLater()
+
+            project = Project.sample()
+            project.comparison_items[0].image_transforms = {
+                "field_image": {"scale_x": 1.5, "offset_x": 0.2}
+            }
+            dialog = BoxCustomizationDialog(project, project.comparison_items[0])
+            dialog.preferences = QSettings(settings_path, QSettings.Format.IniFormat)
+            dialog.custom_presets = dialog._load_custom_presets()
+            dialog._populate_preset_combo("custom:Custom")
+            dialog.field_order_list.setCurrentRow(1)
+            for _ in range(2):
+                dialog._apply_selected_preset()
+                fields = dialog._image_item.display_fields()
+                self.assertEqual(
+                    [field["type"] for field in fields], ["image", "shape", "shape"]
+                )
+                self.assertEqual(
+                    [field["value"] for field in fields[1:]], ["2003", "First model"]
+                )
+                self.assertEqual(dialog.field_styles[fields[1]["id"]]["overlay_y"], "800")
+                self.assertEqual(dialog.field_styles[fields[2]["id"]]["overlay_y"], "600")
+                self.assertEqual(dialog.field_order_list.count(), 3)
+                field_ids = {field["id"] for field in fields}
+                self.assertEqual(set(dialog.field_styles), field_ids)
+                self.assertEqual(set(dialog.field_types), field_ids)
+                self.assertEqual(set(dialog.field_roles), field_ids - {"field_image"})
+                self.assertIn(dialog._selected_field_id(), field_ids)
+            self.assertEqual(
+                dialog._image_item.image_transforms["field_image"]["scale_x"], 1.5
+            )
+            dialog.apply_changes()
+            restored = Project.from_dict(project.to_dict())
+            for restored_item in restored.comparison_items:
+                fields = restored_item.display_fields()
+                self.assertEqual(
+                    [field["type"] for field in fields], ["image", "shape", "shape"]
+                )
+                self.assertEqual(
+                    [field["value"] for field in fields[1:]], ["2003", "First model"]
+                )
+            dialog.deleteLater()
+
+    def test_custom_preset_keeps_each_items_values_for_matching_fields(self):
+        project = Project.sample()
+        original_names = [item.name for item in project.comparison_items]
+        original_images = [item.image_path for item in project.comparison_items]
+        dialog = BoxCustomizationDialog(project, project.comparison_items[0])
+        preset = dialog._preset_from_current_controls()
+        preset["objects"] = [
+            obj for obj in preset["objects"] if obj["type"] in {"image", "name"}
+        ]
+        dialog.custom_presets = {"Image and name": preset}
+        dialog._populate_preset_combo("custom:Image and name")
+        dialog._apply_selected_preset()
+        self.assertEqual(dialog.field_order_list.count(), 2)
+        dialog.apply_changes()
+        for index, item in enumerate(project.comparison_items):
+            fields = item.display_fields()
+            self.assertEqual([field["type"] for field in fields], ["image", "name"])
+            self.assertEqual(
+                [field["value"] for field in fields],
+                [original_images[index], original_names[index]],
+            )
+        dialog.deleteLater()
+
     def test_custom_preset_is_flushed_and_restores_complete_object_layout(self):
         with tempfile.TemporaryDirectory() as directory:
             settings_path = str(Path(directory) / "preferences.ini")

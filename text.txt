@@ -1,52 +1,29 @@
-1. 2007 _ iPhone (1st Gen) _ Chip_Samsung S5L8900 _  1,400 mAh
-2. 2008 _ iPhone 3G _ Chip_Samsung S5L8900 _  1,150 mAh
-3. 2009 _ iPhone 3GS _ Chip_Samsung S5PC100 _  1,219 mAh
-4. 2010 _ iPhone 4 _ Chip_Apple A4 _  1,420 mAh
-5. 2011 _ iPhone 4s _ Chip_Apple A5 _  1,432 mAh
-6. 2012 _ iPhone 5 _ Chip_Apple A6 _  1,440 mAh
-7. 2013 _ iPhone 5c _ Chip_Apple A6 _  1,510 mAh
-8. 2013 _ iPhone 5s _ Chip_Apple A7 _  1,560 mAh
-9. 2014 _ iPhone 6 _ Chip_Apple A8 _  1,810 mAh
-10. 2014 _ iPhone 6 Plus _ Chip_Apple A8 _  2,915 mAh
-11. 2015 _ iPhone 6s _ Chip_Apple A9 _  1,715 mAh
-12. 2015 _ iPhone 6s Plus _ Chip_Apple A9 _  2,750 mAh
-13. 2016 _ iPhone SE (1st Gen) _ Chip_Apple A9 _  1,624 mAh
-14. 2016 _ iPhone 7 _ Chip_Apple A10 Fusion _  1,960 mAh
-15. 2016 _ iPhone 7 Plus _ Chip_Apple A10 Fusion _  2,900 mAh
-16. 2017 _ iPhone 8 _ Chip_Apple A11 Bionic _  1,821 mAh
-17. 2017 _ iPhone 8 Plus _ Chip_Apple A11 Bionic _  2,691 mAh
-18. 2017 _ iPhone X _ Chip_Apple A11 Bionic _  2,716 mAh
-19. 2018 _ iPhone XR _ Chip_Apple A12 Bionic _  2,942 mAh
-20. 2018 _ iPhone XS _ Chip_Apple A12 Bionic _  2,658 mAh
-21. 2018 _ iPhone XS Max _ Chip_Apple A12 Bionic _  3,174 mAh
-22. 2019 _ iPhone 11 _ Chip_Apple A13 Bionic _  3,110 mAh
-23. 2019 _ iPhone 11 Pro _ Chip_Apple A13 Bionic _  3,046 mAh
-24. 2019 _ iPhone 11 Pro Max _ Chip_Apple A13 Bionic _  3,969 mAh
-25. 2020 _ iPhone SE (2nd Gen) _ Chip_Apple A13 Bionic _  1,821 mAh
-26. 2020 _ iPhone 12 Mini _ Chip_Apple A14 Bionic _  2,227 mAh
-27. 2020 _ iPhone 12 _ Chip_Apple A14 Bionic _  2,815 mAh
-28. 2020 _ iPhone 12 Pro _ Chip_Apple A14 Bionic _  2,815 mAh
-29. 2020 _ iPhone 12 Pro Max _ Chip_Apple A14 Bionic _  3,687 mAh
-30. 2021 _ iPhone 13 Mini _ Chip_Apple A15 Bionic _  2,406 mAh
-31. 2021 _ iPhone 13 _ Chip_Apple A15 Bionic _  3,227 mAh
-32. 2021 _ iPhone 13 Pro _ Chip_Apple A15 Bionic _  3,095 mAh
-33. 2021 _ iPhone 13 Pro Max _ Chip_Apple A15 Bionic _  4,352 mAh
-34. 2022 _ iPhone SE (3rd Gen) _ Chip_Apple A15 Bionic _  2,018 mAh
-35. 2022 _ iPhone 14 _ Chip_Apple A15 Bionic _  3,279 mAh
-36. 2022 _ iPhone 14 Plus _ Chip_Apple A15 Bionic _  4,325 mAh
-37. 2022 _ iPhone 14 Pro _ Chip_Apple A16 Bionic _  3,200 mAh
-38. 2022 _ iPhone 14 Pro Max _ Chip_Apple A16 Bionic _  4,323 mAh
-39. 2023 _ iPhone 15 _ Chip_Apple A16 Bionic _  3,349 mAh
-40. 2023 _ iPhone 15 Plus _ Chip_Apple A16 Bionic _  4,383 mAh
-41. 2023 _ iPhone 15 Pro _ Chip_Apple A17 Pro _  3,274 mAh
-42. 2023 _ iPhone 15 Pro Max _ Chip_Apple A17 Pro _  4,422 mAh
-43. 2024 _ iPhone 16 _ Chip_Apple A18 _  3,561 mAh
-44. 2024 _ iPhone 16 Plus _ Chip_Apple A18 _  4,674 mAh
-45. 2024 _ iPhone 16 Pro _ Chip_Apple A18 Pro _  3,582 mAh
-46. 2024 _ iPhone 16 Pro Max _ Chip_Apple A18 Pro _  4,685 mAh
-47. 2025 _ iPhone 16e _ Chip_Apple A18 _  ~4,005 mAh
-48. 2025 _ iPhone 17 _ Chip_Apple A19 _  ~3,692 mAh
-49. 2025 _ iPhone Air _ Chip_Apple A19 Pro _  ~3,149 mAh
-50. 2025 _ iPhone 17 Pro _ Chip_Apple A19 Pro _  ~4,252 mAh
-51. 2025 _ iPhone 17 Pro Max _ Chip_Apple A19 Pro _  ~5,088 mAh
-52. 2026 _ iPhone 17e _ Chip_Apple A19 _  Not officially stated by Apple
+1.1994 _ PlayStation (PS1)
+3.2000 _ PlayStation 2 (PS2)
+4.2004 _ PlayStation 2 Slim
+5.2004 _ PlayStation Portable (PSP-1000)
+6.2006 _ PlayStation 3 (PS3)
+7.2007 _ PSP Slim & Lite (PSP-2000)
+8.2007 _ PlayStation 2 Slim (Revised)
+9.2008 _ PSP Brite (PSP-3000)
+10.2009 _ PSP Go (PSP-N1000)
+11.2009 _ PlayStation 3 Slim
+12.2011 _ PSP Street (E1000)
+13.2011 _ PlayStation Vita (PCH-1000)
+14.2012 _ PlayStation 3 Super Slim
+15.2013 _ PlayStation Vita Slim (PCH-2000)
+16.2013 _ PlayStation TV - PS Vita TV
+17.2013 _ PlayStation 4 (PS4)
+18.2016 _ PlayStation 4 Slim
+19.2016 _ PlayStation 4 Pro
+20.2016 _ PlayStation VR
+21.2018 _ PlayStation Classic
+22.2020 _ PlayStation 5 (Disc Edition)
+23.2020 _ PlayStation 5 Digital Edition
+24.2023 _ PlayStation 5 Slim (Disc Edition)
+25.2023 _ PlayStation 5 Slim Digital Edition
+26.2023 _ PlayStation Portal Remote Player
+27.2023 _ PlayStation VR2
+28.2024 _ PlayStation 5 Pro
+
+2.2000 _ PS one

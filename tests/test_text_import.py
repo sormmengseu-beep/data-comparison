@@ -36,7 +36,15 @@ class TextImportTests(unittest.TestCase):
 
     def test_custom_columns_map_to_field_ids_with_or_without_header(self):
         schema = custom_schema()
-        self.assertEqual(import_columns(schema), [("year", "name"), ("model", "model"), ("battery", "battery")])
+        self.assertEqual(
+            import_columns(schema),
+            [
+                ("year", "name"),
+                ("model", "model"),
+                ("battery", "battery"),
+                ("decoration", "star"),
+            ],
+        )
         for source in ("name,model,battery\n2007,iPhone,1400 mAh", "2007,iPhone,1400 mAh"):
             with self.subTest(source=source):
                 row = parse_text_items(source, "CSV", schema)[0]
@@ -65,6 +73,16 @@ class TextImportTests(unittest.TestCase):
         rows = parse_text_items("name\n2007\n2008", "Auto", schema)
         self.assertEqual([row["year"] for row in rows], ["2007", "2008"])
 
+    def test_shape_text_blocks_are_importable_columns(self):
+        schema = [
+            {"id": "photo", "type": "image", "label": "Image", "value": "", "role": "image"},
+            {"id": "year", "type": "shape", "label": "Rounded", "value": "2003", "role": ""},
+            {"id": "caption", "type": "shape", "label": "Text", "value": "Text", "role": ""},
+        ]
+        self.assertEqual(import_columns(schema), [("year", "rounded"), ("caption", "text")])
+        row = parse_text_items("rounded,text\n2007,iPhone", "CSV", schema)[0]
+        self.assertEqual((row["year"], row["caption"], row["name"]), ("2007", "iPhone", "2007"))
+
     def test_legacy_headers_work_with_default_box_schema(self):
         schema = ComparisonItem(name="Example").display_fields()
         row = parse_text_items("title,rank,category,value,imagepath\nArsenal,10th,NET WORTH,$2.6 billion,arsenal.png", "CSV", schema)[0]
@@ -80,12 +98,12 @@ class TextImportTests(unittest.TestCase):
 
     def test_placeholder_changes_with_format_and_omits_image_columns(self):
         dialog = TextImportDialog(schema=custom_schema())
-        self.assertTrue(dialog.text_edit.placeholderText().startswith("name,model,battery\n"))
+        self.assertTrue(dialog.text_edit.placeholderText().startswith("name,model,battery,star\n"))
         self.assertEqual(list(dialog.image_folder_edits), ["photo"])
         dialog.format_combo.setCurrentText("JSON")
         self.assertIn('"battery":', dialog.text_edit.placeholderText())
         dialog.format_combo.setCurrentText("TSV")
-        self.assertTrue(dialog.text_edit.placeholderText().startswith("name\tmodel\tbattery\n"))
+        self.assertTrue(dialog.text_edit.placeholderText().startswith("name\tmodel\tbattery\tstar\n"))
         dialog.deleteLater()
 
     def test_folder_matches_filenames_before_assigning_remaining_images(self):
@@ -175,6 +193,31 @@ class TextImportTests(unittest.TestCase):
                 if not replace:
                     self.assertEqual(original.display_fields(), custom_schema())
                 window.deleteLater()
+
+    def test_import_updates_shape_text_values(self):
+        window = MainWindow()
+        fields = [
+            {"id": "photo", "type": "image", "label": "Image", "value": "", "role": "image"},
+            {"id": "year", "type": "shape", "label": "Rounded", "value": "2003", "role": ""},
+            {"id": "caption", "type": "shape", "label": "Text", "value": "Text", "role": ""},
+        ]
+        original = ComparisonItem(name="Original", custom_fields=fields)
+        window.project = Project(comparison_items=[original])
+        window.selected_item_id = original.id
+
+        def accept_import(dialog):
+            dialog.text_edit.setPlainText("rounded,text\n2007,iPhone")
+            dialog.accept()
+            return QDialog.DialogCode.Accepted
+
+        with patch.object(TextImportDialog, "exec", accept_import):
+            window.add_text()
+        item = window.project.comparison_items[-1]
+        values = {field["id"]: field["value"] for field in item.display_fields()}
+        self.assertEqual(values["year"], "2007")
+        self.assertEqual(values["caption"], "iPhone")
+        self.assertEqual(item.name, "2007")
+        window.deleteLater()
 
 
 if __name__ == "__main__":

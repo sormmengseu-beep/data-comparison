@@ -2840,6 +2840,10 @@ class BoxCustomizationDialog(QDialog):
                         "type": field_type,
                         "role": role,
                         "label": str(raw_object.get("label") or field_type.title()),
+                        "value": (
+                            str(raw_object.get("value") or "")
+                            if field_type == "shape" else ""
+                        ),
                         "parent_index": parent_index,
                         "style": object_style,
                     }
@@ -3055,7 +3059,8 @@ class BoxCustomizationDialog(QDialog):
                     (
                         field
                         for field in fields
-                        if str(field.get("type") or "text") == field_type
+                        if field_type != "shape"
+                        and str(field.get("type") or "text") == field_type
                     ),
                     None,
                 )
@@ -3068,7 +3073,11 @@ class BoxCustomizationDialog(QDialog):
                         "type": field_type,
                         "role": role,
                         "label": str(preset_object.get("label") or field_type.title()),
-                        "value": str(match.get("value") or ""),
+                        "value": (
+                            str(preset_object.get("value") or "")
+                            if field_type == "shape"
+                            else str(match.get("value") or "")
+                        ),
                     }
                 )
                 fields.append(match)
@@ -3113,14 +3122,31 @@ class BoxCustomizationDialog(QDialog):
             self.field_styles[field_id]["parent_id"] = parent_id
 
         selected_id = self._selected_field_id()
-        self._image_item.set_fields(fields)
-        self._image_item.image_transforms.update(pending_transforms)
         ordered_ids = [
             object_to_field[index]
             for index in range(len(objects))
             if index in object_to_field
         ]
-        ordered_ids.extend(field_id for field_id in unused_ids if field_id not in ordered_ids)
+        self._image_item.set_fields([by_id[field_id] for field_id in ordered_ids])
+        self._image_item.image_transforms.update(pending_transforms)
+        self.field_styles = {
+            field_id: self.field_styles[field_id] for field_id in ordered_ids
+        }
+        self.field_types = {
+            field_id: self.field_types[field_id] for field_id in ordered_ids
+        }
+        self.field_roles = {
+            field_id: role
+            for field_id, role in self.field_roles.items()
+            if field_id in object_to_field.values()
+        }
+        self._new_field_sources = {
+            field_id: source_id
+            for field_id, source_id in self._new_field_sources.items()
+            if field_id in object_to_field.values()
+        }
+        if selected_id not in ordered_ids:
+            selected_id = ordered_ids[0] if ordered_ids else ""
         self._rebuild_order_list(ordered_ids, selected_id)
 
     def _apply_layout_template(self, template_name: str) -> None:
@@ -3305,6 +3331,10 @@ class BoxCustomizationDialog(QDialog):
                     "type": str(field.get("type") or "text"),
                     "role": str(field.get("role") or ""),
                     "label": str(field.get("label") or "Input"),
+                    "value": (
+                        str(field.get("value") or "")
+                        if field.get("type") == "shape" else ""
+                    ),
                     "parent_index": index_by_id.get(parent_id, -1),
                     "style": style,
                 }
@@ -4511,8 +4541,11 @@ class MainWindow(QMainWindow):
             fields = []
             for template_field in schema:
                 field = dict(template_field)
-                if field.get("type") != "shape":
-                    field["value"] = row.get(str(field["id"]), "")
+                field_id = str(field["id"])
+                if field.get("type") == "shape":
+                    field["value"] = row.get(field_id) or field.get("value", "")
+                else:
+                    field["value"] = row.get(field_id, "")
                 fields.append(field)
             item.set_fields(fields)
             item.name = row["name"]

@@ -167,7 +167,7 @@ def import_columns(fields: list[dict[str, str]]) -> list[tuple[str, str]]:
     columns = []
     used: set[str] = set()
     for field in fields:
-        if field.get("type") in {"image", "shape"}:
+        if field.get("type") == "image":
             continue
         label = str(field.get("label") or "Text").strip()
         base_name = _column_key(label)
@@ -259,8 +259,6 @@ def _schema_column_lookup(schema: list[dict[str, str]]) -> dict[str, str]:
     lookup = {}
     for field in schema:
         field_id = str(field["id"])
-        if field.get("type") == "shape":
-            continue
         lookup[_column_key(field_id)] = field_id
         role = str(field.get("role") or "")
         if role:
