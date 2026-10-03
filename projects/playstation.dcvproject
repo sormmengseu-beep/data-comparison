@@ -1,0 +1,2193 @@
+{
+    "project_name": "Football Comparison",
+    "resolution": {
+        "width": 1920,
+        "height": 1080
+    },
+    "fps": 60,
+    "duration": 196.0,
+    "background": "Dark",
+    "preview_max_columns": 3,
+    "item_fixed_duration": 7.0,
+    "opening_animation": "alternating",
+    "style": {
+        "canvas_background_color": "#ffffff",
+        "canvas_background_image": "",
+        "canvas_background_fit": "cover",
+        "card_border_color": "#01010a",
+        "name_background_color": "#f45b69",
+        "name_text_color": "#ffffff",
+        "category_background_color": "#050505",
+        "category_text_color": "#ffffff",
+        "rank_background_color": "#fbb10b",
+        "rank_text_color": "#080808",
+        "value_background_color": "#087be8",
+        "value_text_color": "#ffffff",
+        "text_font_family": "Arial Black",
+        "text_font_size": 52,
+        "image_fit": "cover",
+        "image_height_percent_3": 56,
+        "image_height_percent_4": 58,
+        "image_height_percent_5": 60,
+        "field_styles": {
+            "field_f76fa37e": {
+                "background_color": "",
+                "text_color": "",
+                "outline_width": "0",
+                "border_width": "0",
+                "font_size": "0",
+                "height_weight": "100",
+                "padding": "14",
+                "inset": "0",
+                "corner_radius": "0",
+                "font_weight": "700",
+                "outline_color": "#000000",
+                "border_color": "#000000",
+                "container_color": "",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#111827",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "overlay_x": "0",
+                "overlay_y": "0",
+                "overlay_width": "1000",
+                "overlay_height": "527",
+                "alignment": "center"
+            },
+            "field_4fd202b4": {
+                "background_color": "#acb8b5",
+                "text_color": "#ffffff",
+                "outline_width": "0",
+                "border_width": "0",
+                "font_size": "0",
+                "height_weight": "100",
+                "padding": "14",
+                "inset": "0",
+                "corner_radius": "0",
+                "font_weight": "700",
+                "outline_color": "#000000",
+                "border_color": "#000000",
+                "container_color": "#acb8b5",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "overlay_x": "0",
+                "overlay_y": "723",
+                "overlay_width": "1000",
+                "overlay_height": "277",
+                "alignment": "center"
+            },
+            "field_value": {
+                "background_color": "#099d13",
+                "text_color": "#ffffff",
+                "outline_width": "3",
+                "border_width": "0",
+                "font_size": "30",
+                "height_weight": "100",
+                "padding": "14",
+                "inset": "0",
+                "corner_radius": "0",
+                "font_weight": "400",
+                "outline_color": "#000000",
+                "border_color": "#000000",
+                "container_color": "#099d13",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#087be8",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "overlay_x": "0",
+                "overlay_y": "527",
+                "overlay_width": "1000",
+                "overlay_height": "96",
+                "alignment": "center"
+            },
+            "field_50c04758": {
+                "background_color": "#031943",
+                "text_color": "#fff017",
+                "outline_width": "6",
+                "border_width": "0",
+                "font_size": "80",
+                "height_weight": "100",
+                "padding": "14",
+                "inset": "0",
+                "corner_radius": "0",
+                "font_weight": "800",
+                "outline_color": "#000000",
+                "border_color": "#000000",
+                "container_color": "#031943",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "overlay_x": "0",
+                "overlay_y": "623",
+                "overlay_width": "1000",
+                "overlay_height": "100",
+                "alignment": "center"
+            },
+            "field_d2f1576c": {
+                "background_color": "",
+                "text_color": "",
+                "outline_width": "0",
+                "border_width": "0",
+                "font_size": "0",
+                "height_weight": "100",
+                "padding": "14",
+                "inset": "0",
+                "corner_radius": "0",
+                "font_weight": "700",
+                "outline_color": "#000000",
+                "border_color": "#000000",
+                "container_color": "",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#111827",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "overlay_x": "176",
+                "overlay_y": "756",
+                "overlay_width": "651",
+                "overlay_height": "212",
+                "alignment": "center"
+            }
+        }
+    },
+    "comparison_items": [
+        {
+            "name": "1994",
+            "rank": "#1",
+            "category": "CATEGORY",
+            "value": "PlayStation (PS1)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\01_Create_a_clean_high-quali.jpg",
+            "start_time": 0.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\01_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation (PS1)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "1994",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_5f515d94"
+        },
+        {
+            "name": "2000",
+            "rank": "#2",
+            "category": "CATEGORY",
+            "value": "PS one",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\02_Create_a_clean_high-quali.jpg",
+            "start_time": 7.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\02_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PS one",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2000",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_a416a337"
+        },
+        {
+            "name": "2000",
+            "rank": "#3",
+            "category": "CATEGORY",
+            "value": "PlayStation 2 (PS2)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\03_Create_a_clean_high-quali.jpg",
+            "start_time": 14.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\03_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 2 (PS2)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2000",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_dfd0645c"
+        },
+        {
+            "name": "2004",
+            "rank": "#4",
+            "category": "CATEGORY",
+            "value": "PlayStation 2 Slim",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\04_Create_a_clean_high-quali.jpg",
+            "start_time": 21.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\04_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 2 Slim",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2004",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_9e24c12e"
+        },
+        {
+            "name": "2004",
+            "rank": "#5",
+            "category": "CATEGORY",
+            "value": "PlayStation Portable (PSP-1000)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\05_Create_a_clean_high-quali.jpg",
+            "start_time": 28.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\05_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation Portable (PSP-1000)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2004",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_e36b6fcd"
+        },
+        {
+            "name": "2006",
+            "rank": "#6",
+            "category": "CATEGORY",
+            "value": "PlayStation 3 (PS3)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\06_Create_a_clean_high-quali.jpg",
+            "start_time": 35.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\06_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 3 (PS3)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2006",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_6e4d1fba"
+        },
+        {
+            "name": "2007",
+            "rank": "#7",
+            "category": "CATEGORY",
+            "value": "PSP Slim & Lite (PSP-2000)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\07_Create_a_clean_high-quali.jpg",
+            "start_time": 42.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\07_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PSP Slim & Lite (PSP-2000)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2007",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_426b3df1"
+        },
+        {
+            "name": "2007",
+            "rank": "#8",
+            "category": "CATEGORY",
+            "value": "PlayStation 2 Slim Revised",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\08_Create_a_clean_high-quali.jpg",
+            "start_time": 49.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\08_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 2 Slim Revised",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2007",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_13536089"
+        },
+        {
+            "name": "2008",
+            "rank": "#9",
+            "category": "CATEGORY",
+            "value": "PSP Brite (PSP-3000)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\09_Create_a_clean_high-quali.jpg",
+            "start_time": 56.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\09_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PSP Brite (PSP-3000)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2008",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_9164f4d7"
+        },
+        {
+            "name": "2009",
+            "rank": "#10",
+            "category": "CATEGORY",
+            "value": "PSP Go (PSP-N1000)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\10_Create_a_clean_high-quali.jpg",
+            "start_time": 63.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\10_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PSP Go (PSP-N1000)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2009",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_a31505f9"
+        },
+        {
+            "name": "2009",
+            "rank": "#11",
+            "category": "CATEGORY",
+            "value": "PlayStation 3 Slim",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\11_Create_a_clean_high-quali.jpg",
+            "start_time": 70.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\11_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 3 Slim",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2009",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_522be507"
+        },
+        {
+            "name": "2011",
+            "rank": "#12",
+            "category": "CATEGORY",
+            "value": "PSP Street (E1000)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\12_Create_a_clean_high-quali.jpg",
+            "start_time": 77.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\12_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PSP Street (E1000)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2011",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_b5464754"
+        },
+        {
+            "name": "2011",
+            "rank": "#13",
+            "category": "CATEGORY",
+            "value": "PlayStation Vita (PCH-1000)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\13_Create_a_clean_high-quali.jpg",
+            "start_time": 84.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\13_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation Vita (PCH-1000)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2011",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_4076c169"
+        },
+        {
+            "name": "2012",
+            "rank": "#14",
+            "category": "CATEGORY",
+            "value": "PlayStation 3 Super Slim",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\14_Create_a_clean_high-quali.jpg",
+            "start_time": 91.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\14_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 3 Super Slim",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2012",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_4f4c8738"
+        },
+        {
+            "name": "2013",
+            "rank": "#15",
+            "category": "CATEGORY",
+            "value": "PlayStation Vita Slim (PCH-2000)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\15_Create_a_clean_high-quali.jpg",
+            "start_time": 98.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\15_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation Vita Slim (PCH-2000)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2013",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_a1ba6869"
+        },
+        {
+            "name": "2013",
+            "rank": "#16",
+            "category": "CATEGORY",
+            "value": "PlayStation TV (PS Vita TV)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\16_Create_a_clean_high-quali.jpg",
+            "start_time": 105.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\16_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation TV (PS Vita TV)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2013",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_383258ee"
+        },
+        {
+            "name": "2013",
+            "rank": "#17",
+            "category": "CATEGORY",
+            "value": "PlayStation 4 (PS4)",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\17_Create_a_clean_high-quali.jpg",
+            "start_time": 112.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\17_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 4 (PS4)",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2013",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_576f506f"
+        },
+        {
+            "name": "2016",
+            "rank": "#18",
+            "category": "CATEGORY",
+            "value": "PlayStation 4 Slim",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\18_Create_a_clean_high-quali.jpg",
+            "start_time": 119.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\18_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 4 Slim",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2016",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_0bfc5c5d"
+        },
+        {
+            "name": "2016",
+            "rank": "#19",
+            "category": "CATEGORY",
+            "value": "PlayStation 4 Pro",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\19_Create_a_clean_high-quali.jpg",
+            "start_time": 126.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\19_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 4 Pro",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2016",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_cfc26b03"
+        },
+        {
+            "name": "2016",
+            "rank": "#20",
+            "category": "CATEGORY",
+            "value": "PlayStation VR",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\20_Create_a_clean_high-quali.jpg",
+            "start_time": 133.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\20_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation VR",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2016",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_d56ba99a"
+        },
+        {
+            "name": "2018",
+            "rank": "#21",
+            "category": "CATEGORY",
+            "value": "PlayStation Classic",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\21_Create_a_clean_high-quali.jpg",
+            "start_time": 140.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\21_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation Classic",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2018",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_1df1dd93"
+        },
+        {
+            "name": "2020",
+            "rank": "#22",
+            "category": "CATEGORY",
+            "value": "PlayStation 5 Disc Edition",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\22_Create_a_clean_high-quali.jpg",
+            "start_time": 147.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\22_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 5 Disc Edition",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2020",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_157c9d1b"
+        },
+        {
+            "name": "2020",
+            "rank": "#23",
+            "category": "CATEGORY",
+            "value": "PlayStation 5 Digital Edition",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\23_Create_a_clean_high-quali.jpg",
+            "start_time": 154.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\23_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 5 Digital Edition",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2020",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_e6444306"
+        },
+        {
+            "name": "2023",
+            "rank": "#24",
+            "category": "CATEGORY",
+            "value": "PlayStation 5 Slim Disc Edition",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\24_Create_a_clean_high-quali.jpg",
+            "start_time": 161.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\24_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 5 Slim Disc Edition",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2023",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_de8685f9"
+        },
+        {
+            "name": "2023",
+            "rank": "#25",
+            "category": "CATEGORY",
+            "value": "PlayStation 5 Slim Digital Edition",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\25_Create_a_clean_high-quali.jpg",
+            "start_time": 168.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\25_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 5 Slim Digital Edition",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2023",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_d6d1ad40"
+        },
+        {
+            "name": "2023",
+            "rank": "#26",
+            "category": "CATEGORY",
+            "value": "PlayStation Portal Remote Player",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\26_Create_a_clean_high-quali.jpg",
+            "start_time": 175.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\26_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation Portal Remote Player",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2023",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_22cf321c"
+        },
+        {
+            "name": "2023",
+            "rank": "#27",
+            "category": "CATEGORY",
+            "value": "PlayStation VR2",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\27_Create_a_clean_high-quali.jpg",
+            "start_time": 182.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\27_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation VR2",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2023",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_35df79bb"
+        },
+        {
+            "name": "2024",
+            "rank": "#28",
+            "category": "CATEGORY",
+            "value": "PlayStation 5 Pro",
+            "image_path": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\28_Create_a_clean_high-quali.jpg",
+            "start_time": 189.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_f76fa37e",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\2\\zapi-img\\converted\\converted\\28_Create_a_clean_high-quali.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_4fd202b4",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_value",
+                    "type": "number",
+                    "label": "Year",
+                    "value": "PlayStation 5 Pro",
+                    "role": "value"
+                },
+                {
+                    "id": "field_50c04758",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "2024",
+                    "role": ""
+                },
+                {
+                    "id": "field_d2f1576c",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/2/thumb-1920-687027.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_d2f1576c": {
+                    "fit": "cover",
+                    "scale_x": 1.1953672221115914,
+                    "scale_y": 1.1953672221115914,
+                    "offset_x": 0.0001379373051732958,
+                    "offset_y": -0.011437336726928996
+                }
+            },
+            "id": "item_d17aafb0"
+        }
+    ],
+    "timeline_clips": [],
+    "audio_paths": [
+        "C:/YT/9-Data comparison/Vibe Tracks - Take You Home Tonight Festival Progressive House NCS - Fanmade.mp3",
+        "C:/YT/9-Data comparison/Vibe Tracks - Take You Home Tonight Festival Progressive House NCS - Fanmade.mp3"
+    ]
+}

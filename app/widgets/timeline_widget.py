@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from PySide6.QtCore import QPoint, QRect, QTimer, Qt, Signal
-from PySide6.QtGui import QColor, QFont, QKeyEvent, QMouseEvent, QPainter, QPen
+from PySide6.QtGui import QColor, QFont, QKeyEvent, QLinearGradient, QMouseEvent, QPainter, QPen
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
@@ -21,26 +21,26 @@ from app.widgets.timeline_track import DEFAULT_TRACKS
 
 TIMELINE_COLORS = {
     "dark": {
-        "canvas": "#12161c",
-        "ruler": "#171c23",
-        "ruler_line": "#6b7280",
-        "major_tick": "#9ca3af",
-        "minor_tick": "#4b5563",
-        "text": "#d1d5db",
-        "row_even": "#161b22",
-        "row_odd": "#14181f",
-        "divider": "#27303a",
+        "canvas": "#40151d1a",
+        "ruler": "#303c5149",
+        "ruler_line": "#708c7f",
+        "major_tick": "#b2c2bc",
+        "minor_tick": "#53665d",
+        "text": "#d7e4dd",
+        "row_even": "#12ffffff",
+        "row_odd": "#12000000",
+        "divider": "#25e8fff7",
     },
     "light": {
-        "canvas": "#eef2f7",
-        "ruler": "#ffffff",
-        "ruler_line": "#b8c3d1",
-        "major_tick": "#667085",
-        "minor_tick": "#b8c3d1",
-        "text": "#344054",
-        "row_even": "#ffffff",
-        "row_odd": "#f8fafc",
-        "divider": "#d9e0e8",
+        "canvas": "#70edf3f0",
+        "ruler": "#90ffffff",
+        "ruler_line": "#a3b9ae",
+        "major_tick": "#526c61",
+        "minor_tick": "#a3b9ae",
+        "text": "#233830",
+        "row_even": "#40ffffff",
+        "row_odd": "#10a3b9ae",
+        "divider": "#283e5f51",
     },
 }
 
@@ -161,13 +161,17 @@ class TimelineCanvas(QWidget):
             rect = QRect(x, y + 7, width, self.track_height - 14)
             self._clips.append(PaintedClip(item.id, "Comparison", rect))
             selected = item.id == self.selected_id
-            fill = QColor("#2563eb" if selected else color.name())
-            painter.setBrush(fill)
-            painter.setPen(QPen(QColor("#bfdbfe" if selected else "#1d4ed8"), 2 if selected else 1))
+            fill = QColor("#2563eb" if selected else "#426fae")
+            surface = QLinearGradient(rect.topLeft(), rect.bottomLeft())
+            surface.setColorAt(0, fill.lighter(125))
+            surface.setColorAt(1, fill)
+            painter.setBrush(surface)
+            painter.setPen(QPen(QColor("#93c5fd" if selected else "#7d9fcf"), 2 if selected else 1))
             painter.drawRoundedRect(rect, 5, 5)
             painter.setPen(QColor("#ffffff"))
             painter.setFont(QFont("Segoe UI", 9, QFont.Weight.Bold))
-            painter.drawText(rect.adjusted(8, 0, -8, 0), Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft, item.name)
+            label = painter.fontMetrics().elidedText(item.name, Qt.TextElideMode.ElideRight, max(0, rect.width() - 16))
+            painter.drawText(rect.adjusted(8, 0, -8, 0), Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft, label)
 
     def _draw_image_markers(self, painter: QPainter, y: int, color: QColor) -> None:
         painter.setBrush(QColor(color.name()))

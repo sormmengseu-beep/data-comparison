@@ -399,7 +399,6 @@ class ParentChildLayoutTests(unittest.TestCase):
         self.assertEqual(
             set(dialog.shape_tool_buttons),
             {
-                "text",
                 "rectangle",
                 "rounded",
                 "circle",

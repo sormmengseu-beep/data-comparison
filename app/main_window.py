@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from pathlib import Path
 from uuid import uuid4
 
@@ -25,6 +26,7 @@ from PySide6.QtGui import (
     QKeySequence,
     QLinearGradient,
     QPainter,
+    QPalette,
     QPen,
     QPixmap,
     QShortcut,
@@ -69,13 +71,16 @@ from PySide6.QtWidgets import (
 
 from app.models.comparison_item import ComparisonItem
 from app.models.project import Project
-from app.dialogs import ExportDialog, ImageEditorDialog, TextImportDialog
+from app.dialogs import ExportDialog, ExportOptions, ImageEditorDialog, TextImportDialog
 from app.exporter import ExportError, export_preview
 from app.project_manager import ProjectError, ProjectManager
 from app.settings import (
     APP_NAME,
+    CANVAS_HEIGHT,
     CANVAS_WIDTH,
     DEFAULT_DURATION,
+    DARK_COLORS,
+    LIGHT_COLORS,
     MAX_PREVIEW_COLUMNS_1080P,
     MIN_PREVIEW_COLUMNS_1080P,
     MIN_CLIP_DURATION,
@@ -87,6 +92,7 @@ from app.settings import (
     app_style,
 )
 from app.utils.time_utils import clamp, format_timestamp
+from app.utils.icons import IconButton
 from app.utils.image_utils import ImageCache, draw_image, image_field_frame_size
 from app.utils.shape_utils import FILL_OPTIONS, fill_brush, normalized_shape, shape_path
 from app.widgets.asset_panel import AssetPanel
@@ -224,7 +230,7 @@ class ColorButton(QPushButton):
         )
         self.setStyleSheet(
             f"QPushButton {{ background: {background}; color: {foreground}; "
-            "border: 1px solid #64748b; font-weight: 700; }}"
+            "border: 1px solid rgba(150, 175, 164, 100); font-weight: 700; }"
         )
 
 
@@ -291,47 +297,6 @@ class ShapeToolButton(QToolButton):
         super().mouseReleaseEvent(event)
 
 
-class ImageUploadButton(QPushButton):
-    """Clickable image picker that also accepts files dragged from the desktop."""
-
-    image_dropped = Signal(str)
-
-    def __init__(self, parent: QWidget | None = None) -> None:
-        super().__init__("+  Upload image   or drop a file here", parent)
-        self.setObjectName("DesignerImageDrop")
-        self.setAcceptDrops(True)
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setToolTip("Choose an image, or drag a PNG, JPG, JPEG, or WebP file here")
-        self.setMinimumHeight(46)
-
-    def dragEnterEvent(self, event) -> None:
-        if _first_dropped_image(event.mimeData()):
-            self.setProperty("dragActive", True)
-            self.style().unpolish(self)
-            self.style().polish(self)
-            event.acceptProposedAction()
-            return
-        event.ignore()
-
-    def dragLeaveEvent(self, event) -> None:
-        self._set_drag_active(False)
-        super().dragLeaveEvent(event)
-
-    def dropEvent(self, event) -> None:
-        self._set_drag_active(False)
-        path = _first_dropped_image(event.mimeData())
-        if not path:
-            event.ignore()
-            return
-        self.image_dropped.emit(path)
-        event.acceptProposedAction()
-
-    def _set_drag_active(self, active: bool) -> None:
-        self.setProperty("dragActive", active)
-        self.style().unpolish(self)
-        self.style().polish(self)
-
-
 class ContentOrderDelegate(QStyledItemDelegate):
     BUTTON_SIZE = 28
     BUTTON_GAP = 7
@@ -354,26 +319,25 @@ class ContentOrderDelegate(QStyledItemDelegate):
         row_rect = option.rect.adjusted(3, 3, -3, -3)
         selected = bool(option.state & QStyle.StateFlag.State_Selected)
         hovered = bool(option.state & QStyle.StateFlag.State_MouseOver)
-        is_dark = option.palette.base().color().lightness() < 128
-        if is_dark:
-            background = QColor("#182d4b") if selected else QColor("#13171c")
-            border = QColor("#3b82f6") if selected else QColor(
-                "#3a424e" if hovered else "#303640"
-            )
-            text_color = QColor("#dbeafe") if selected else QColor("#f1f3f5")
-            muted_color = QColor("#93b5df") if selected else QColor("#aeb6c2")
-        else:
-            background = QColor("#eff6ff") if selected else QColor("#f8fafc")
-            border = QColor("#93c5fd") if selected else QColor(
-                "#b8c3d1" if hovered else "#d9e0e8"
-            )
-            text_color = QColor("#1d4ed8") if selected else QColor("#172033")
-            muted_color = QColor("#52739b") if selected else QColor("#667085")
-        painter.setBrush(background)
+        accent = option.palette.highlight().color()
+        background = QColor(accent if selected else Qt.GlobalColor.white)
+        is_dark = option.palette.text().color().lightness() > 128
+        background.setAlpha(38 if selected else (10 if is_dark else 85))
+        border = QColor(accent if selected else option.palette.text().color())
+        if not selected:
+            border.setAlpha(65 if hovered else 30)
+        text_color = option.palette.link().color() if selected else option.palette.text().color()
+        muted_color = option.palette.placeholderText().color()
+        surface = QLinearGradient(row_rect.topLeft(), row_rect.bottomLeft())
+        highlight = QColor(background)
+        highlight.setAlpha(min(255, background.alpha() + 18))
+        surface.setColorAt(0, highlight)
+        surface.setColorAt(1, background)
+        painter.setBrush(surface)
         painter.setPen(QPen(border, 1))
-        painter.drawRoundedRect(row_rect, 10, 10)
+        painter.drawRoundedRect(row_rect, 8, 8)
 
-        grip_color = QColor("#3b82f6") if selected else muted_color
+        grip_color = accent if selected else muted_color
         painter.setPen(Qt.PenStyle.NoPen)
         painter.setBrush(grip_color)
         center_y = row_rect.center().y()
@@ -386,7 +350,7 @@ class ContentOrderDelegate(QStyledItemDelegate):
         parent_id = str(index.data(Qt.ItemDataRole.UserRole + 2) or "")
         child_indent = 26 if parent_id else 0
         if parent_id:
-            painter.setPen(QPen(QColor("#60a5fa"), 2))
+            painter.setPen(QPen(accent, 2))
             branch_x = row_rect.left() + 17
             painter.drawLine(branch_x, row_rect.top() + 7, branch_x, row_rect.center().y())
             painter.drawLine(branch_x, row_rect.center().y(), branch_x + 11, row_rect.center().y())
@@ -420,20 +384,21 @@ class ContentOrderDelegate(QStyledItemDelegate):
                 76,
                 20,
             )
-            badge_fill = QColor("#dbeafe" if not is_dark else "#17365f")
-            painter.setPen(QPen(QColor("#3b82f6"), 1))
+            badge_fill = QColor(accent)
+            badge_fill.setAlpha(22)
+            painter.setPen(QPen(accent, 1))
             painter.setBrush(badge_fill)
             painter.drawRoundedRect(badge_rect, 10, 10)
             badge_font = QFont(option.font)
             badge_font.setPixelSize(9)
             badge_font.setBold(True)
             painter.setFont(badge_font)
-            painter.setPen(QColor("#2563eb" if not is_dark else "#93c5fd"))
+            painter.setPen(option.palette.link().color())
             painter.drawText(badge_rect, Qt.AlignmentFlag.AlignCenter, "BACKGROUND")
 
-        self._draw_action_button(painter, add_rect, QColor("#2563eb"), False)
+        self._draw_action_button(painter, add_rect, option.palette.link().color(), False)
         can_delete = bool(option.widget and option.widget.count() > 1)
-        delete_color = QColor("#dc2626") if can_delete else QColor("#94a3b8")
+        delete_color = QColor("#e36e87") if can_delete else muted_color
         self._draw_action_button(painter, delete_rect, delete_color, True)
         painter.restore()
 
@@ -2040,6 +2005,87 @@ class BoxStylePreview(QWidget):
         return max(minimum, min(maximum, value))
 
 
+class CanvasBackgroundDialog(QDialog):
+    def __init__(self, project: Project, current_time: float, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setWindowTitle("Canvas Background")
+        self.setMinimumWidth(560)
+        self.resize(640, 500)
+        self._project = deepcopy(project)
+
+        layout = QVBoxLayout(self)
+        self.preview = PreviewWidget()
+        self.preview.set_project(self._project)
+        self.preview.set_current_time(current_time)
+        self.preview.setToolTip("")
+        layout.addWidget(self.preview, 1)
+
+        form = QFormLayout()
+        self.color_button = ColorButton(project.canvas_background_color)
+        form.addRow("Color", self.color_button)
+        image_row = QHBoxLayout()
+        self.image_edit = QLineEdit(project.canvas_background_image)
+        self.image_edit.setReadOnly(True)
+        self.image_edit.setPlaceholderText("No image")
+        self.choose_button = IconButton("image", "Upload background image")
+        self.choose_button.setFixedSize(40, 40)
+        self.remove_button = IconButton("trash", "Remove background image")
+        self.remove_button.setFixedSize(40, 40)
+        image_row.addWidget(self.image_edit, 1)
+        image_row.addWidget(self.choose_button)
+        image_row.addWidget(self.remove_button)
+        form.addRow("Image", image_row)
+        self.fit_combo = QComboBox()
+        for label, value in (
+            ("Cover - crop to fill", "cover"),
+            ("Contain - show full image", "contain"),
+            ("Stretch - fill frame", "stretch"),
+        ):
+            self.fit_combo.addItem(label, value)
+        self.fit_combo.setCurrentIndex(max(0, self.fit_combo.findData(project.canvas_background_fit)))
+        form.addRow("Image fit", self.fit_combo)
+        layout.addLayout(form)
+
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Apply")
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setObjectName("PrimaryButton")
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+        layout.addWidget(buttons)
+
+        self.color_button.color_changed.connect(self._update_preview)
+        self.image_edit.textChanged.connect(self._update_preview)
+        self.fit_combo.currentIndexChanged.connect(self._update_preview)
+        self.choose_button.clicked.connect(self._choose_image)
+        self.remove_button.clicked.connect(lambda: self.image_edit.clear())
+        self._update_preview()
+
+    def _choose_image(self) -> None:
+        directory = str(Path(self.image_edit.text()).parent) if self.image_edit.text() else ""
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Upload Background Image", directory, SUPPORTED_IMAGE_FILTER
+        )
+        if not path:
+            return
+        if QPixmap(path).isNull():
+            QMessageBox.warning(self, "Background Image", "The selected image could not be opened.")
+            return
+        self.image_edit.setText(str(Path(path).resolve()))
+
+    def _update_preview(self, *_args) -> None:
+        self.apply_to(self._project)
+        self.remove_button.setEnabled(bool(self.image_edit.text()))
+        self.fit_combo.setEnabled(bool(self.image_edit.text()))
+        self.preview.set_project(self._project)
+
+    def apply_to(self, project: Project) -> None:
+        project.canvas_background_color = self.color_button.color()
+        project.canvas_background_image = self.image_edit.text()
+        project.canvas_background_fit = str(self.fit_combo.currentData())
+
+
 class ProjectSettingsDialog(QDialog):
     def __init__(self, project: Project, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -2172,6 +2218,7 @@ class BoxCustomizationDialog(QDialog):
         self.project = project
         self.item = item
         self._image_item = ComparisonItem.from_dict(item.to_dict())
+        self._all_box_image_updates: dict[str, tuple[str, dict[str, float | str]]] = {}
         self._images_changed = False
         self.preferences = QSettings("DataCompareTools", "DataComparisonVideoMaker")
         self.custom_presets = self._load_custom_presets()
@@ -2222,7 +2269,7 @@ class BoxCustomizationDialog(QDialog):
         controls_layout.setContentsMargins(8, 4, 12, 8)
         controls_layout.setSpacing(12)
 
-        layout_group = QGroupBox("Box layout")
+        layout_group = QGroupBox()
         layout_group.setObjectName("DesignerSection")
         form = QFormLayout(layout_group)
         form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
@@ -2247,14 +2294,12 @@ class BoxCustomizationDialog(QDialog):
             QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon
         )
         self.preset_combo.setMinimumContentsLength(12)
-        self.apply_preset_button = QPushButton("Apply")
-        self.apply_preset_button.setObjectName("PresetAction")
-        self.save_preset_button = QPushButton("Save")
-        self.save_preset_button.setObjectName("PresetAction")
-        self.save_preset_button.setToolTip("Save these settings as a custom preset")
-        self.delete_preset_button = QPushButton("Delete")
-        self.delete_preset_button.setObjectName("PresetAction")
-        self.delete_preset_button.setToolTip("Delete the selected custom preset")
+        self.apply_preset_button = IconButton("check", "Apply selected preset", preset_row)
+        self.save_preset_button = IconButton("save", "Save current design as a custom preset", preset_row)
+        self.delete_preset_button = IconButton("trash", "Delete selected custom preset", preset_row)
+        for button in (self.apply_preset_button, self.save_preset_button, self.delete_preset_button):
+            button.setObjectName("PresetAction")
+            button.setFixedSize(40, 40)
         preset_layout.addWidget(self.preset_combo, 1)
         preset_layout.addWidget(self.apply_preset_button)
         preset_layout.addWidget(self.save_preset_button)
@@ -2262,17 +2307,11 @@ class BoxCustomizationDialog(QDialog):
         form.addRow("Preset", preset_row)
         self._populate_preset_combo()
 
-        slider_row = QWidget()
-        slider_layout = QHBoxLayout(slider_row)
-        slider_layout.setContentsMargins(0, 0, 0, 0)
-        self.image_height_slider = QSlider(Qt.Orientation.Horizontal)
+        # Presets retain their image-height setting without exposing a slider.
+        self.image_height_slider = QSlider(Qt.Orientation.Horizontal, self)
         self.image_height_slider.setRange(35, 75)
         self.image_height_slider.setSingleStep(1)
-        self.image_height_value = QLabel()
-        self.image_height_value.setMinimumWidth(46)
-        slider_layout.addWidget(self.image_height_slider, 1)
-        slider_layout.addWidget(self.image_height_value)
-        form.addRow("Images total height", slider_row)
+        self.image_height_slider.hide()
 
         self.image_fit_combo = QComboBox()
         self.image_fit_combo.addItem("Cover - crop to fill", "cover")
@@ -2314,24 +2353,12 @@ class BoxCustomizationDialog(QDialog):
         form.addRow("Free move", snap_row)
         controls_layout.addWidget(layout_group)
 
-        palette_group = QGroupBox("Add content")
+        palette_group = QGroupBox()
         self.shape_palette_group = palette_group
         palette_group.setObjectName("DesignerSection")
         palette_layout = QVBoxLayout(palette_group)
         palette_layout.setContentsMargins(10, 8, 10, 10)
         palette_layout.setSpacing(8)
-
-        quick_row = QHBoxLayout()
-        quick_row.setSpacing(8)
-        text_button = ShapeToolButton("text", "Text", "T", palette_group)
-        text_button.setToolTip("Click to add text, or drag it onto the preview")
-        text_button.activated.connect(self._palette_item_activated)
-        self.upload_image_button = ImageUploadButton(palette_group)
-        self.upload_image_button.clicked.connect(self._choose_palette_image)
-        self.upload_image_button.image_dropped.connect(self._palette_image_dropped)
-        quick_row.addWidget(text_button)
-        quick_row.addWidget(self.upload_image_button, 1)
-        palette_layout.addLayout(quick_row)
 
         shapes_label = QLabel("SHAPES  •  CLICK OR DRAG")
         shapes_label.setObjectName("DesignerPaletteLabel")
@@ -2370,7 +2397,7 @@ class BoxCustomizationDialog(QDialog):
             ("cross", "Cross", "✚"),
             ("heart", "Heart", "♥"),
         )
-        self.shape_tool_buttons: dict[str, ShapeToolButton] = {"text": text_button}
+        self.shape_tool_buttons: dict[str, ShapeToolButton] = {}
         self.additional_shape_tool_buttons: dict[str, ShapeToolButton] = {}
         original_shape_kinds = {
             "rectangle", "rounded", "pill", "circle", "ellipse", "triangle",
@@ -2408,7 +2435,7 @@ class BoxCustomizationDialog(QDialog):
         records_layout = QVBoxLayout(records_panel)
         records_layout.setContentsMargins(0, 0, 0, 0)
         records_layout.setSpacing(6)
-        records_label = QLabel("RECORDS  â€¢  SELECT TO EDIT")
+        records_label = QLabel("RECORDS  |  SELECT TO EDIT")
         records_label.setObjectName("DesignerPaletteLabel")
         records_layout.addWidget(records_label)
         self.field_order_list = ContentOrderList(self)
@@ -2463,7 +2490,7 @@ class BoxCustomizationDialog(QDialog):
             self.field_order_list.addItem(list_item)
         self._sync_order_item_hierarchy()
 
-        self.content_group = QGroupBox("Selected content")
+        self.content_group = QGroupBox()
         self.content_group.setObjectName("DesignerSection")
         content_form = QFormLayout(self.content_group)
         content_form.setFieldGrowthPolicy(
@@ -2509,7 +2536,7 @@ class BoxCustomizationDialog(QDialog):
         )
         controls_layout.addWidget(self.content_group)
 
-        self.style_group = QGroupBox("Selected text band")
+        self.style_group = QGroupBox()
         self.style_group.setObjectName("DesignerSection")
         style_form = QFormLayout(self.style_group)
         style_form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
@@ -2634,9 +2661,7 @@ class BoxCustomizationDialog(QDialog):
         layout.addWidget(footer)
 
         self.columns_combo.currentIndexChanged.connect(self._load_values)
-        self.image_height_slider.valueChanged.connect(
-            self._image_height_changed
-        )
+        self.image_height_slider.valueChanged.connect(self._update_preview)
         self.image_fit_combo.currentIndexChanged.connect(self._update_preview)
         self.text_font_combo.currentFontChanged.connect(self._update_preview)
         self.text_font_size_spin.valueChanged.connect(self._update_preview)
@@ -3384,6 +3409,8 @@ class BoxCustomizationDialog(QDialog):
                     field_id = str(field.get("id", ""))
                     if field_id in values_by_id:
                         field["value"] = values_by_id[field_id]
+                    if field.get("type") == "image" and field_id in self._all_box_image_updates:
+                        field["value"] = self._all_box_image_updates[field_id][0]
                     fields.append(field)
             existing_item.set_fields(fields)
             if existing_item is self.item:
@@ -3397,6 +3424,13 @@ class BoxCustomizationDialog(QDialog):
                 source_transform = existing_item.image_transforms.get(source_id)
                 if source_transform is not None:
                     existing_item.image_transforms[new_id] = dict(source_transform)
+            image_ids = {field["id"] for field in fields if field.get("type") == "image"}
+            for field_id, (_path, transform) in self._all_box_image_updates.items():
+                if field_id not in image_ids:
+                    continue
+                if existing_item is self.item:
+                    transform = self._image_item.image_transforms.get(field_id, transform)
+                existing_item.image_transforms[field_id] = dict(transform)
             for layout_columns in range(
                 MIN_PREVIEW_COLUMNS_1080P, MAX_PREVIEW_COLUMNS_1080P + 1
             ):
@@ -3430,6 +3464,8 @@ class BoxCustomizationDialog(QDialog):
         field["value"] = dialog.image_path
         self._image_item.set_fields(fields)
         self._image_item.image_transforms[field_id] = dialog.image_transform()
+        if dialog.apply_to_all_boxes:
+            self._all_box_image_updates[field_id] = (dialog.image_path, dialog.image_transform())
         self._images_changed = True
         self._update_preview()
 
@@ -3444,10 +3480,6 @@ class BoxCustomizationDialog(QDialog):
         self.border_color_button.set_color(self.project.card_border_color)
         width = CANVAS_WIDTH // columns
         self.box_size_label.setText(f"{width} x {self.project.height} px per box")
-        self._update_preview()
-
-    def _image_height_changed(self, value: int) -> None:
-        self.image_height_value.setText(f"{value}%")
         self._update_preview()
 
     def _update_preview(self, *_args) -> None:
@@ -3546,14 +3578,9 @@ class BoxCustomizationDialog(QDialog):
         self._loading_field_content = False
         style = self.field_styles.get(field_id)
         if style is None or is_image:
-            self.style_group.setTitle("Selected image")
             self.style_group.setEnabled(False)
             self.style_group.setVisible(False)
             return
-        self.style_group.setTitle(
-            "Selected shape" if self.field_types.get(field_id) == "shape"
-            else "Selected text band"
-        )
         self.style_group.setEnabled(True)
         self.style_group.setVisible(True)
         self._loading_field_style = True
@@ -3751,19 +3778,6 @@ class BoxCustomizationDialog(QDialog):
 
     def _preview_item_dropped(self, item_kind: str, position: QPoint) -> None:
         self._add_content_item(self._selected_field_id(), item_kind, position)
-
-    def _choose_palette_image(self) -> None:
-        path, _ = QFileDialog.getOpenFileName(
-            self,
-            "Upload Image",
-            str(Path.home()),
-            SUPPORTED_IMAGE_FILTER,
-        )
-        if path:
-            self._add_content_item(self._selected_field_id(), "image", image_path=path)
-
-    def _palette_image_dropped(self, path: str) -> None:
-        self._add_content_item(self._selected_field_id(), "image", image_path=path)
 
     def _preview_image_dropped(self, path: str, position: QPoint) -> None:
         self._add_content_item(
@@ -4280,7 +4294,6 @@ class MainWindow(QMainWindow):
         app_title.setObjectName("AppTitle")
         self.project_title = QLabel()
         self.project_title.setObjectName("ProjectTitle")
-        self.customize_boxes_button = QPushButton("Customize Boxes")
         self.theme_combo = QComboBox()
         self.theme_combo.addItems(["Dark", "Light"])
         self.theme_combo.setCurrentText(self.theme.title())
@@ -4291,7 +4304,6 @@ class MainWindow(QMainWindow):
         command_layout.addSpacing(8)
         command_layout.addWidget(self.project_title)
         command_layout.addStretch(1)
-        command_layout.addWidget(self.customize_boxes_button)
         command_layout.addWidget(QLabel("Theme"))
         command_layout.addWidget(self.theme_combo)
         command_layout.addWidget(self.toolbar_export_button)
@@ -4359,7 +4371,6 @@ class MainWindow(QMainWindow):
 
     def _connect_signals(self) -> None:
         self.assets.add_item_requested.connect(self.add_comparison_item)
-        self.assets.upload_image_requested.connect(self.import_image)
         self.assets.add_text_requested.connect(self.add_text)
         self.assets.add_audio_requested.connect(self.import_audio)
         self.assets.item_selected.connect(self.select_item)
@@ -4379,7 +4390,8 @@ class MainWindow(QMainWindow):
         self.transport.opening_animation_changed.connect(self.set_opening_animation)
         self.transport.box_duration_changed.connect(self.set_box_duration)
         self.transport.customize_requested.connect(self.open_box_customization)
-        self.customize_boxes_button.clicked.connect(self.open_box_customization)
+        self.transport.screenshot_requested.connect(self.save_screenshot)
+        self.transport.background_requested.connect(self.open_canvas_background)
         self.toolbar_export_button.clicked.connect(self.export_video)
         self.theme_combo.currentTextChanged.connect(self.set_theme)
 
@@ -4557,6 +4569,15 @@ class MainWindow(QMainWindow):
         self._refresh_all()
         self.statusBar().showMessage(f"Imported {len(imported)} items", 3500)
 
+    def open_canvas_background(self) -> None:
+        self.pause_playback()
+        dialog = CanvasBackgroundDialog(self.project, self.current_time, self)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        dialog.apply_to(self.project)
+        self.preview.set_project(self.project)
+        self.statusBar().showMessage("Updated canvas background", 3500)
+
     def open_box_customization(self, item_id: str = "") -> None:
         item = self.project.item_by_id(item_id or self.selected_item_id)
         if item is None:
@@ -4599,8 +4620,27 @@ class MainWindow(QMainWindow):
         field["value"] = dialog.image_path
         item.set_fields(fields)
         item.image_transforms[field_id] = dialog.image_transform()
+        if dialog.apply_to_all_boxes:
+            transform = dialog.image_transform()
+            for existing_item in self.project.comparison_items:
+                existing_fields = existing_item.display_fields()
+                target_field = next(
+                    (
+                        field for field in existing_fields
+                        if field.get("id") == field_id and field.get("type") == "image"
+                    ),
+                    None,
+                )
+                if target_field is not None:
+                    target_field["value"] = dialog.image_path
+                    existing_item.set_fields(existing_fields)
+                    existing_item.image_transforms[field_id] = dict(transform)
         self._refresh_all()
-        self.statusBar().showMessage(f"Updated image for {item.name}", 3500)
+        message = (
+            "Applied image and placement to all boxes"
+            if dialog.apply_to_all_boxes else f"Updated image for {item.name}"
+        )
+        self.statusBar().showMessage(message, 3500)
 
     def import_image(self) -> None:
         if not self.selected_item_id:
@@ -4846,6 +4886,32 @@ class MainWindow(QMainWindow):
             self.set_current_time(min(self.current_time, self.project.total_duration()))
             self._refresh_all()
 
+    def save_screenshot(self) -> None:
+        self.pause_playback()
+        frame_time = self.current_time
+        directory = self.project_path.parent if self.project_path else Path.home()
+        dialog = QFileDialog(self, "Save Screenshot", str(directory), "PNG image (*.png)")
+        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
+        dialog.setDefaultSuffix("png")
+        dialog.selectFile(f"screenshot_{round(frame_time * 1000):06d}.png")
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        options = ExportOptions(
+            path=Path(dialog.selectedFiles()[0]),
+            format_name="png",
+            width=CANVAS_WIDTH,
+            height=CANVAS_HEIGHT,
+            fps=self.project.fps,
+            duration=self.project.total_duration(),
+        )
+        try:
+            completed = export_preview(self.preview, options, frame_time)
+        except (ExportError, OSError) as exc:
+            self._warning(str(exc))
+            return
+        if completed:
+            self.statusBar().showMessage(f"Screenshot saved: {options.path}", 5000)
+
     def export_video(self) -> None:
         dialog = ExportDialog(
             self.project.name,
@@ -4945,6 +5011,34 @@ class MainWindow(QMainWindow):
         self.preferences.setValue("theme", normalized)
         application = QApplication.instance()
         if application is not None:
+            colors = LIGHT_COLORS if normalized == "light" else DARK_COLORS
+            palette = QPalette()
+            for role, token in (
+                (QPalette.ColorRole.Window, "@base"),
+                (QPalette.ColorRole.Base, "@base"),
+                (QPalette.ColorRole.AlternateBase, "@popup"),
+                (QPalette.ColorRole.Button, "@base"),
+                (QPalette.ColorRole.WindowText, "@text"),
+                (QPalette.ColorRole.Text, "@text"),
+                (QPalette.ColorRole.ButtonText, "@text"),
+                (QPalette.ColorRole.PlaceholderText, "@textMuted"),
+                (QPalette.ColorRole.Mid, "@textDisabled"),
+                (QPalette.ColorRole.Highlight, "@accent"),
+                (QPalette.ColorRole.Link, "@selectedText"),
+                (QPalette.ColorRole.ToolTipBase, "@popup"),
+                (QPalette.ColorRole.ToolTipText, "@text"),
+            ):
+                palette.setColor(role, QColor(colors[token]))
+            palette.setColor(QPalette.ColorRole.HighlightedText, QColor("#ffffff"))
+            for role in (
+                QPalette.ColorRole.WindowText,
+                QPalette.ColorRole.Text,
+                QPalette.ColorRole.ButtonText,
+            ):
+                palette.setColor(
+                    QPalette.ColorGroup.Disabled, role, QColor(colors["@textDisabled"])
+                )
+            application.setPalette(palette)
             application.setStyleSheet(app_style(normalized))
         self.timeline.set_theme(normalized)
         self.update()

@@ -70,7 +70,7 @@ QLabel#DesignerSubtitle, QLabel#DesignerHint {
 QLabel#DesignerBadge {
     background: @selectedSurface;
     border: 1px solid @accentBorder;
-    border-radius: 10px;
+    border-radius: 8px;
     color: @accentBorder;
     font-size: 10px;
     font-weight: 700;
@@ -86,18 +86,11 @@ QWidget#DesignerInspector {
 QGroupBox#DesignerSection {
     background: @panel;
     border: 1px solid @border;
-    border-radius: 12px;
+    border-radius: 8px;
+    border-top-color: @glassEdge;
     font-weight: 700;
-    margin-top: 18px;
-    padding: 18px 14px 14px 14px;
-}
-QGroupBox#DesignerSection::title {
-    subcontrol-origin: margin;
-    subcontrol-position: top left;
-    left: 12px;
-    padding: 2px 7px;
-    color: @text;
-    background: @panel;
+    margin-top: 0;
+    padding: 12px 14px;
 }
 QGroupBox#DesignerSection[accentSection="true"] {
     border: 1px solid @accentBorder;
@@ -106,28 +99,13 @@ QLabel#DesignerPaletteLabel {
     color: @textMuted;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
     padding: 2px 3px 0 3px;
-}
-QPushButton#DesignerImageDrop {
-    background: @input;
-    border: 1px dashed @accentBorder;
-    border-radius: 9px;
-    color: @textMuted;
-    font-weight: 600;
-    text-align: left;
-    padding-left: 14px;
-}
-QPushButton#DesignerImageDrop:hover,
-QPushButton#DesignerImageDrop[dragActive="true"] {
-    background: @selectedSurface;
-    border: 1px solid @accent;
-    color: @text;
 }
 QScrollArea#DesignerShapeScroll {
     background: @input;
     border: 1px solid @border;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 QWidget#DesignerShapeGrid {
     background: @input;
@@ -135,7 +113,7 @@ QWidget#DesignerShapeGrid {
 QScrollArea#DesignerShapeScroll QToolButton {
     background: transparent;
     border: 1px solid transparent;
-    border-radius: 9px;
+    border-radius: 8px;
     padding: 4px;
 }
 QScrollArea#DesignerShapeScroll QToolButton:hover {
@@ -159,7 +137,8 @@ QScrollArea#DesignerShapeScroll QScrollBar::sub-line:vertical {
 QWidget#DesignerPreviewPanel {
     background: @panel;
     border: 1px solid @border;
-    border-radius: 14px;
+    border-radius: 8px;
+    border-top-color: @glassEdge;
 }
 QLabel#DesignerPreviewTitle {
     color: @text;
@@ -172,8 +151,8 @@ QWidget#DesignerFooter {
 }
 QListWidget#DesignerOrderList {
     background: @input;
-    border: 1px solid @accentBorder;
-    border-radius: 10px;
+    border: 1px solid @border;
+    border-radius: 8px;
     padding: 4px;
     outline: none;
 }
@@ -204,10 +183,9 @@ QDialog#BoxCustomizationDialog QWidget#DesignerCompactOption QCheckBox {
     border: none;
     padding: 0;
 }
-QDialog#BoxCustomizationDialog QPushButton#PresetAction {
-    min-width: 58px;
-    padding-left: 9px;
-    padding-right: 9px;
+QDialog#BoxCustomizationDialog QToolButton#PresetAction {
+    border-radius: 8px;
+    padding: 0;
 }
 QDialog#BoxCustomizationDialog QDialogButtonBox QPushButton {
     min-width: 82px;
@@ -244,13 +222,24 @@ QMenuBar {
     padding: 3px;
 }
 QMenuBar::item:selected, QMenu::item:selected {
-    background: @accent;
-    color: white;
+    background: @selectedSurface;
+    color: @selectedText;
 }
 QMenu {
-    background: @panel;
+    background: @popup;
     color: @text;
     border: 1px solid @border;
+    border-radius: 8px;
+    padding: 5px;
+}
+QMenu::item {
+    padding: 7px 24px 7px 12px;
+    border-radius: 4px;
+}
+QMenu::separator {
+    height: 1px;
+    background: @border;
+    margin: 4px 8px;
 }
 QWidget {
     color: @text;
@@ -258,6 +247,7 @@ QWidget {
 QFrame#Panel, QWidget#Panel {
     background: @panel;
     border: 1px solid @border;
+    border-top-color: @glassEdge;
 }
 QWidget#EditorToolbar {
     background: @chrome;
@@ -282,9 +272,11 @@ QPushButton, QToolButton {
     border-radius: 6px;
     color: @text;
     padding: 7px 10px;
+    border-top-color: @glassEdge;
 }
 QPushButton:hover, QToolButton:hover {
     background: @controlHover;
+    border-color: @accentBorder;
 }
 QPushButton:pressed, QToolButton:pressed {
     background: @accentPressed;
@@ -295,13 +287,13 @@ QPushButton:checked, QToolButton:checked {
     color: white;
     font-weight: 700;
 }
-QPushButton#PrimaryButton {
+QPushButton#PrimaryButton, QToolButton#PrimaryButton {
     background: @accent;
     border-color: @accentBorder;
     color: white;
     font-weight: 700;
 }
-QPushButton#PrimaryButton:hover {
+QPushButton#PrimaryButton:hover, QToolButton#PrimaryButton:hover {
     background: @accentHover;
 }
 QToolButton#AddIconButton {
@@ -333,8 +325,75 @@ QLineEdit, QPlainTextEdit, QDoubleSpinBox, QSpinBox, QComboBox {
     min-height: 22px;
     selection-background-color: @accent;
 }
+QPushButton:disabled, QToolButton:disabled,
+QLineEdit:disabled, QComboBox:disabled, QSpinBox:disabled, QDoubleSpinBox:disabled {
+    color: @textDisabled;
+    background: @input;
+    border-color: @border;
+}
 QLineEdit:focus, QPlainTextEdit:focus, QDoubleSpinBox:focus, QSpinBox:focus, QComboBox:focus {
     border-color: @accentBorder;
+}
+QComboBox::drop-down {
+    border: none;
+    width: 22px;
+}
+QComboBox::down-arrow {
+    image: url("@chevron");
+    width: 14px;
+    height: 14px;
+}
+QComboBox QAbstractItemView {
+    background: @popup;
+    color: @text;
+    border: 1px solid @borderStrong;
+    selection-background-color: @selectedSurface;
+    selection-color: @selectedText;
+    padding: 4px;
+    outline: none;
+}
+QCheckBox, QRadioButton {
+    spacing: 7px;
+    color: @text;
+}
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid @borderStrong;
+    background: @input;
+}
+QCheckBox::indicator {
+    border-radius: 4px;
+}
+QRadioButton::indicator {
+    border-radius: 8px;
+}
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background: @accent;
+    border-color: @accentBorder;
+}
+QCheckBox::indicator:checked {
+    image: url("@check");
+}
+QRadioButton::indicator:checked {
+    border: 4px solid @accentBorder;
+}
+QCheckBox::indicator:hover, QRadioButton::indicator:hover {
+    border-color: @accentBorder;
+}
+QGroupBox {
+    border: 1px solid @border;
+    border-top-color: @glassEdge;
+    border-radius: 8px;
+    margin-top: 12px;
+    padding: 12px;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+    left: 8px;
+    color: @textMuted;
 }
 QListWidget {
     background: @input;
@@ -348,8 +407,8 @@ QListWidget::item {
     margin: 2px;
 }
 QListWidget::item:selected {
-    background: @selection;
-    color: white;
+    background: @selectedSurface;
+    color: @selectedText;
 }
 QScrollArea {
     background: @input;
@@ -384,6 +443,10 @@ QScrollBar::add-page, QScrollBar::sub-page {
 QSlider::groove:horizontal {
     height: 5px;
     background: @borderStrong;
+    border-radius: 2px;
+}
+QSlider::sub-page:horizontal {
+    background: @accent;
     border-radius: 2px;
 }
 QSlider::handle:horizontal {
@@ -426,9 +489,10 @@ QTabBar::tab:selected {
     color: white;
 }
 QToolTip {
-    background: @panel;
+    background: @popup;
     color: @text;
     border: 1px solid @borderStrong;
+    padding: 6px;
 }
 QLabel#Thumbnail {
     background: @input;
@@ -445,7 +509,8 @@ QWidget#TransportBar {
 QWidget#PlaybackGroup, QWidget#ColumnsGroup {
     background: @input;
     border: 1px solid @border;
-    border-radius: 12px;
+    border-radius: 8px;
+    border-top-color: @glassEdge;
 }
 QToolButton#TransportIconButton {
     background: transparent;
@@ -461,10 +526,28 @@ QToolButton#TransportIconButton:hover {
 QToolButton#TransportIconButton:pressed {
     background: @border;
 }
+QToolButton#CustomizeButton, QToolButton#ScreenshotButton, QToolButton#BackgroundButton {
+    background: @control;
+    border: 1px solid @borderStrong;
+    border-top-color: @glassEdge;
+    border-radius: 8px;
+    color: @text;
+    padding: 0;
+}
+QToolButton#CustomizeButton:hover, QToolButton#ScreenshotButton:hover,
+QToolButton#BackgroundButton:hover {
+    background: @controlHover;
+    border-color: @accentBorder;
+}
+QToolButton#CustomizeButton:pressed, QToolButton#ScreenshotButton:pressed,
+QToolButton#BackgroundButton:pressed {
+    background: @accentPressed;
+    color: white;
+}
 QToolButton#PlaybackButton {
     background: @accent;
     border: 1px solid @accent;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 0;
     color: white;
 }
@@ -475,6 +558,8 @@ QToolButton#PlaybackButton:pressed {
     background: @accentPressed;
 }
 QToolButton#TransportIconButton:focus, QToolButton#PlaybackButton:focus,
+QToolButton#CustomizeButton:focus, QToolButton#ScreenshotButton:focus,
+QToolButton#BackgroundButton:focus,
 QToolButton#ItemEditButton:focus {
     border: 1px solid @accentBorder;
 }
@@ -503,12 +588,12 @@ QLabel#ItemCount {
     background: @input;
     color: @textMuted;
     border: 1px solid @border;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 3px 8px;
     font-size: 11px;
 }
 QListWidget#ComparisonItemList {
-    background: @panel;
+    background: transparent;
     border: none;
 }
 QListWidget#ComparisonItemList::item {
@@ -523,9 +608,10 @@ QListWidget#ComparisonItemList::item:selected {
     background: transparent;
 }
 QWidget#ComparisonItemRow {
-    background: @input;
+    background: @control;
     border: 1px solid @border;
-    border-radius: 10px;
+    border-top-color: @glassEdge;
+    border-radius: 8px;
 }
 QWidget#ComparisonItemRow:hover {
     border-color: @borderStrong;
@@ -580,59 +666,70 @@ QWidget#ComparisonItemRow[selected="true"] QToolButton#ItemEditButton {
 
 
 DARK_COLORS = {
-    "@window": "#171a1f",
-    "@chrome": "#111418",
-    "@panel": "#20242b",
-    "@input": "#13171c",
-    "@control": "#2a3039",
-    "@controlHover": "#343c47",
-    "@border": "#303640",
-    "@borderStrong": "#3a424e",
-    "@text": "#f1f3f5",
-    "@textMuted": "#aeb6c2",
-    "@selection": "#275da8",
-    "@selectedSurface": "#182d4b",
-    "@selectedBorder": "#3b82f6",
+    "@window": "qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #394945, stop:0.45 #24292c, stop:1 #292631)",
+    "@chrome": "rgba(19, 24, 25, 165)",
+    "@panel": "qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(244, 255, 252, 22), stop:1 rgba(244, 255, 252, 8))",
+    "@input": "rgba(10, 17, 18, 100)",
+    "@control": "qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 28), stop:1 rgba(255, 255, 255, 12))",
+    "@controlHover": "rgba(228, 255, 246, 38)",
+    "@border": "rgba(232, 255, 247, 28)",
+    "@borderStrong": "rgba(232, 255, 247, 52)",
+    "@glassEdge": "rgba(255, 255, 255, 65)",
+    "@popup": "#293331",
+    "@base": "#252d2b",
+    "@text": "#f2f7f5",
+    "@textMuted": "#b2c2bc",
+    "@textDisabled": "#768780",
+    "@selection": "#2563eb",
+    "@selectedSurface": "rgba(59, 130, 246, 35)",
+    "@selectedBorder": "#60a5fa",
     "@selectedText": "#dbeafe",
     "@selectedMuted": "#93b5df",
     "@accent": "#2563eb",
-    "@accentHover": "#2f6ff4",
-    "@accentPressed": "#1f66d1",
+    "@accentHover": "#3b75f4",
+    "@accentPressed": "#1d4ed8",
     "@accentBorder": "#60a5fa",
-    "@dangerBackground": "#3b1d24",
-    "@dangerBorder": "#7f1d1d",
-    "@dangerHover": "#4c1d24",
+    "@dangerBackground": "rgba(244, 99, 126, 24)",
+    "@dangerBorder": "#aa6373",
+    "@dangerHover": "rgba(244, 99, 126, 50)",
 }
 
 LIGHT_COLORS = {
-    "@window": "#f3f5f8",
-    "@chrome": "#ffffff",
-    "@panel": "#ffffff",
-    "@input": "#f8fafc",
-    "@control": "#f1f5f9",
-    "@controlHover": "#e2e8f0",
-    "@border": "#d9e0e8",
-    "@borderStrong": "#b8c3d1",
-    "@text": "#172033",
-    "@textMuted": "#667085",
+    "@window": "qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #d3e8df, stop:0.5 #edf1f0, stop:1 #e7e1ed)",
+    "@chrome": "rgba(255, 255, 255, 140)",
+    "@panel": "qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 175), stop:1 rgba(255, 255, 255, 85))",
+    "@input": "rgba(255, 255, 255, 115)",
+    "@control": "qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 210), stop:1 rgba(255, 255, 255, 95))",
+    "@controlHover": "rgba(255, 255, 255, 235)",
+    "@border": "rgba(62, 95, 81, 40)",
+    "@borderStrong": "rgba(62, 95, 81, 78)",
+    "@glassEdge": "rgba(255, 255, 255, 245)",
+    "@popup": "#f1f7f4",
+    "@base": "#f0f5f2",
+    "@text": "#233830",
+    "@textMuted": "#526c61",
+    "@textDisabled": "#83968c",
     "@selection": "#2563eb",
-    "@selectedSurface": "#eff6ff",
-    "@selectedBorder": "#93c5fd",
+    "@selectedSurface": "rgba(37, 99, 235, 24)",
+    "@selectedBorder": "#3b82f6",
     "@selectedText": "#1d4ed8",
     "@selectedMuted": "#52739b",
     "@accent": "#2563eb",
     "@accentHover": "#1d4ed8",
     "@accentPressed": "#1e40af",
     "@accentBorder": "#3b82f6",
-    "@dangerBackground": "#fff1f2",
-    "@dangerBorder": "#fca5a5",
-    "@dangerHover": "#ffe4e6",
+    "@dangerBackground": "rgba(242, 88, 112, 20)",
+    "@dangerBorder": "#d88b99",
+    "@dangerHover": "rgba(242, 88, 112, 40)",
 }
 
 
 def app_style(theme: str = "dark") -> str:
-    colors = LIGHT_COLORS if theme.lower() == "light" else DARK_COLORS
+    normalized = "light" if theme.lower() == "light" else "dark"
+    colors = LIGHT_COLORS if normalized == "light" else DARK_COLORS
     style = COMMON_STYLE
+    style = style.replace("@chevron", (ICONS_DIR / f"chevron-{normalized}.svg").as_posix())
+    style = style.replace("@check", (ICONS_DIR / "check.svg").as_posix())
     for token in sorted(colors, key=len, reverse=True):
         value = colors[token]
         style = style.replace(token, value)

@@ -102,8 +102,160 @@ class ImageEditorTests(unittest.TestCase):
         empty = ImageEditorDialog("", QSize(400, 400))
         self.widgets.append(empty)
         self.assertFalse(empty.buttons.button(QDialogButtonBox.StandardButton.Ok).isEnabled())
+        self.assertFalse(empty.apply_all_button.isEnabled())
+        empty._accept_all_boxes()
+        self.assertFalse(empty.apply_to_all_boxes)
         empty.accept()
         self.assertNotEqual(empty.result(), QDialog.DialogCode.Accepted)
+
+    def test_apply_all_button_accepts_current_transform(self):
+        editor = self.editor()
+        editor.canvas.set_transform(
+            {
+                "fit": "contain", "scale_x": 1.5, "scale_y": 0.8,
+                "offset_x": 0.2, "offset_y": -0.1,
+            }
+        )
+        expected = editor.image_transform()
+        self.assertFalse(editor.apply_to_all_boxes)
+        self.assertTrue(editor.apply_all_button.isEnabled())
+        QTest.mouseClick(editor.apply_all_button, Qt.MouseButton.LeftButton)
+        self.assertEqual(editor.result(), QDialog.DialogCode.Accepted)
+        self.assertTrue(editor.apply_to_all_boxes)
+        self.assertEqual(editor.image_transform(), expected)
+
+    def prepare_image_slots(self):
+        other_path = str(Path(self.directory.name) / "other.png")
+        QImage(self.path).save(other_path)
+        for index, item in enumerate(self.project.comparison_items):
+            fields = item.display_fields()[:2]
+            fields.append(
+                {
+                    "id": "second_image", "type": "image", "label": "Second image",
+                    "value": self.path if index == 0 else (other_path if index == 1 else ""),
+                }
+            )
+            item.set_fields(fields)
+            item.image_transforms[self.field_id] = normalize_image_transform({"offset_x": -0.2})
+        return other_path
+
+    def test_main_window_apply_all_copies_image_to_third_slot_only(self):
+        other_path = self.prepare_image_slots()
+        window = MainWindow()
+        self.widgets.append(window)
+        window.project = self.project
+        window.selected_item_id = self.item.id
+        window._refresh_all()
+        original_images = [item.display_fields() for item in self.project.comparison_items]
+        original_primary = [
+            dict(item.image_transforms[self.field_id])
+            for item in self.project.comparison_items
+        ]
+        expected = normalize_image_transform(
+            {
+                "fit": "contain", "scale_x": 1.5, "scale_y": 0.8,
+                "offset_x": 0.2, "offset_y": -0.1,
+            }
+        )
+
+        def accepted(editor):
+            editor.image_path = other_path
+            editor.canvas.set_transform(expected)
+            editor._accept_all_boxes()
+            return editor.result()
+
+        with patch.object(ImageEditorDialog, "exec", accepted):
+            window.open_image_editor(self.item.id, "second_image")
+        for index, item in enumerate(self.project.comparison_items):
+            self.assertEqual(item.image_transforms["second_image"], expected)
+            self.assertEqual(item.image_transforms[self.field_id], original_primary[index])
+            second = next(
+                field for field in item.display_fields() if field["id"] == "second_image"
+            )
+            self.assertEqual(second["value"], other_path)
+            self.assertEqual(item.display_fields()[2]["id"], "second_image")
+            self.assertEqual(item.display_fields()[:2], original_images[index][:2])
+        window.preview.set_selected_item("")
+        window.preview.set_current_time(self.project.item_fixed_duration)
+        frame = window.preview._render_canvas().toImage()
+        regions = [
+            rect.adjusted(2, 2, -2, -2)
+            for rect, _item_id, field_id in window.preview._image_regions
+            if field_id == "second_image"
+        ]
+        self.assertEqual(len(regions), 3)
+        for region in regions[1:]:
+            self.assertEqual(frame.copy(region), frame.copy(regions[0]))
+        restored = Project.from_dict(json.loads(json.dumps(self.project.to_dict())))
+        for item in restored.comparison_items:
+            self.assertEqual(item.image_transforms["second_image"], expected)
+            self.assertEqual(item.display_fields()[2]["value"], other_path)
+        self.item.image_transforms["second_image"]["offset_x"] = 0.5
+        self.assertEqual(
+            self.project.comparison_items[1].image_transforms["second_image"]["offset_x"],
+            0.2,
+        )
+
+    def test_designer_apply_all_stages_changes_until_final_apply(self):
+        self.prepare_image_slots()
+        original = self.project.to_dict()
+        expected = normalize_image_transform(
+            {
+                "fit": "stretch", "scale_x": 1.5, "scale_y": 0.8,
+                "offset_x": 0.2, "offset_y": -0.1,
+            }
+        )
+
+        def accepted(editor):
+            editor.canvas.set_transform(expected)
+            editor._accept_all_boxes()
+            return editor.result()
+
+        cancelled = BoxCustomizationDialog(self.project, self.item)
+        self.widgets.append(cancelled)
+        with patch.object(ImageEditorDialog, "exec", accepted):
+            cancelled._edit_image("second_image")
+        self.assertEqual(self.project.to_dict(), original)
+        cancelled.reject()
+        self.assertEqual(self.project.to_dict(), original)
+
+        dialog = BoxCustomizationDialog(self.project, self.item)
+        self.widgets.append(dialog)
+        with patch.object(ImageEditorDialog, "exec", accepted):
+            dialog._edit_image("second_image")
+        self.assertEqual(self.project.to_dict(), original)
+        dialog.apply_changes()
+        for item in self.project.comparison_items:
+            self.assertEqual(item.image_transforms["second_image"], expected)
+            self.assertEqual(item.image_transforms[self.field_id]["offset_x"], -0.2)
+            self.assertEqual(item.display_fields()[2]["value"], self.path)
+
+    def test_single_image_edit_after_apply_all_remains_local(self):
+        other_path = self.prepare_image_slots()
+        dialog = BoxCustomizationDialog(self.project, self.item)
+        self.widgets.append(dialog)
+
+        def apply_all(editor):
+            editor.width_spin.setValue(150)
+            editor._accept_all_boxes()
+            return editor.result()
+
+        def apply_single(editor):
+            editor.image_path = other_path
+            editor.width_spin.setValue(75)
+            editor.accept()
+            return editor.result()
+
+        with patch.object(ImageEditorDialog, "exec", apply_all):
+            dialog._edit_image("second_image")
+        with patch.object(ImageEditorDialog, "exec", apply_single):
+            dialog._edit_image("second_image")
+        dialog.apply_changes()
+        self.assertEqual(self.item.image_transforms["second_image"]["scale_x"], 0.75)
+        self.assertEqual(self.item.display_fields()[2]["value"], other_path)
+        for item in self.project.comparison_items[1:]:
+            self.assertEqual(item.image_transforms["second_image"]["scale_x"], 1.5)
+            self.assertEqual(item.display_fields()[2]["value"], self.path)
 
     def test_geometry_and_clipping(self):
         frame = QRectF(0, 0, 200, 100)
@@ -158,6 +310,10 @@ class ImageEditorTests(unittest.TestCase):
         preview = PreviewWidget()
         self.widgets.append(preview)
         preview.resize(1000, 700)
+        # Include more cards than the three-column viewport so this test
+        # exercises click targeting after an actual scroll.
+        self.project.comparison_items.append(ComparisonItem(name="Extra item"))
+        self.project.apply_fixed_item_timing()
         preview.set_project(self.project)
         preview.show()
         self.app.processEvents()

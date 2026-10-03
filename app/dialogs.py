@@ -40,6 +40,7 @@ class ImageEditorDialog(QDialog):
         self.setWindowTitle("Edit Image")
         self.resize(800, 650)
         self.image_path = path
+        self.apply_to_all_boxes = False
         self._default_fit = fit
         self._updating = False
         values = normalize_image_transform(transform)
@@ -83,6 +84,12 @@ class ImageEditorDialog(QDialog):
         )
         self.buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Apply")
         self.buttons.button(QDialogButtonBox.StandardButton.Ok).setObjectName("PrimaryButton")
+        self.apply_all_button = self.buttons.addButton(
+            "Apply to All Boxes", QDialogButtonBox.ButtonRole.ActionRole
+        )
+        self.apply_all_button.setToolTip(
+            "Copy this image, its position, size, and fit to the same slot in every box"
+        )
         layout.addWidget(self.buttons)
         self.choose_button.clicked.connect(self._choose_image)
         self.fit_combo.currentIndexChanged.connect(self._change_fit)
@@ -92,6 +99,7 @@ class ImageEditorDialog(QDialog):
         self.reset_button.clicked.connect(self._reset)
         self.canvas.transform_changed.connect(self._sync_controls)
         self.buttons.accepted.connect(self.accept)
+        self.apply_all_button.clicked.connect(self._accept_all_boxes)
         self.buttons.rejected.connect(self.reject)
         self._load_image()
         self._sync_controls()
@@ -103,6 +111,7 @@ class ImageEditorDialog(QDialog):
         pixmap = QPixmap(self.image_path) if self.image_path else QPixmap()
         self.canvas.set_image(pixmap)
         self.buttons.button(QDialogButtonBox.StandardButton.Ok).setEnabled(self.canvas.has_image)
+        self.apply_all_button.setEnabled(self.canvas.has_image)
         for widget in (self.fit_combo, self.width_spin, self.height_spin, self.reset_button):
             widget.setEnabled(self.canvas.has_image)
 
@@ -150,6 +159,11 @@ class ImageEditorDialog(QDialog):
     def _reset(self) -> None:
         self.canvas.set_transform({"fit": self._default_fit})
         self._sync_controls()
+
+    def _accept_all_boxes(self) -> None:
+        if self.canvas.has_image:
+            self.apply_to_all_boxes = True
+            self.accept()
 
     def accept(self) -> None:
         if self.canvas.has_image:

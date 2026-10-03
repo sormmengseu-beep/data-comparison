@@ -12,7 +12,6 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QListWidget,
     QListWidgetItem,
-    QPushButton,
     QSizePolicy,
     QVBoxLayout,
     QWidget,
@@ -105,7 +104,6 @@ class ComparisonItemRow(QWidget):
 
 class AssetPanel(QWidget):
     add_item_requested = Signal()
-    upload_image_requested = Signal()
     add_text_requested = Signal()
     add_audio_requested = Signal()
     item_selected = Signal(str)
@@ -134,14 +132,18 @@ class AssetPanel(QWidget):
 
         action_grid = QGridLayout()
         action_grid.setSpacing(6)
-        self.add_item_button = QPushButton("New Item")
+        action_grid.setColumnStretch(0, 1)
+        action_grid.setColumnStretch(1, 1)
+        self.add_item_button = IconButton("plus", "New Item")
         self.add_item_button.setObjectName("PrimaryButton")
-        self.upload_image_button = QPushButton("Set Image")
-        self.add_text_button = QPushButton("Import Text")
-        self.add_audio_button = QPushButton("Add Audio")
-        action_grid.addWidget(self.add_item_button, 0, 0)
-        action_grid.addWidget(self.add_text_button, 0, 1)
-        action_grid.addWidget(self.upload_image_button, 1, 0)
+        self.add_text_button = IconButton("file", "Import Text")
+        self.add_audio_button = IconButton("music", "Add Audio")
+        for button in (self.add_item_button, self.add_text_button, self.add_audio_button):
+            button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+            button.setText(button.accessibleName())
+            button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        action_grid.addWidget(self.add_item_button, 0, 0, 1, 2)
+        action_grid.addWidget(self.add_text_button, 1, 0)
         action_grid.addWidget(self.add_audio_button, 1, 1)
         layout.addLayout(action_grid)
 
@@ -162,7 +164,6 @@ class AssetPanel(QWidget):
         layout.addWidget(self.list_widget, 1)
 
         self.add_item_button.clicked.connect(self.add_item_requested.emit)
-        self.upload_image_button.clicked.connect(self.upload_image_requested.emit)
         self.add_text_button.clicked.connect(self.add_text_requested.emit)
         self.add_audio_button.clicked.connect(self.add_audio_requested.emit)
         self.list_widget.currentItemChanged.connect(self._current_item_changed)

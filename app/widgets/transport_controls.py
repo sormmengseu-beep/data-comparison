@@ -32,6 +32,8 @@ class TransportControls(QWidget):
     opening_animation_changed = Signal(str)
     box_duration_changed = Signal(float)
     customize_requested = Signal()
+    screenshot_requested = Signal()
+    background_requested = Signal()
 
     def __init__(self) -> None:
         super().__init__()
@@ -97,10 +99,18 @@ class TransportControls(QWidget):
             self.column_group.addButton(button, columns)
             columns_layout.addWidget(button)
         layout.addWidget(columns_group)
-        self.customize_button = IconButton("sliders", "Customize all boxes")
-        self.customize_button.setObjectName("TransportIconButton")
-        self.customize_button.setFixedSize(36, 36)
+        self.customize_button = IconButton("settings", "Customize all boxes")
+        self.customize_button.setObjectName("CustomizeButton")
+        self.customize_button.setFixedSize(40, 40)
         layout.addWidget(self.customize_button)
+        self.screenshot_button = IconButton("camera", "Save screenshot (1920 x 1080)")
+        self.screenshot_button.setObjectName("ScreenshotButton")
+        self.screenshot_button.setFixedSize(40, 40)
+        layout.addWidget(self.screenshot_button)
+        self.background_button = IconButton("image", "Canvas background")
+        self.background_button.setObjectName("BackgroundButton")
+        self.background_button.setFixedSize(40, 40)
+        layout.addWidget(self.background_button)
         layout.addStretch(1)
         layout.addWidget(self.time_label)
 
@@ -138,6 +148,8 @@ class TransportControls(QWidget):
         self.jump_end_button.clicked.connect(self.jump_end_requested.emit)
         self.column_group.idClicked.connect(self.columns_changed.emit)
         self.customize_button.clicked.connect(self.customize_requested.emit)
+        self.screenshot_button.clicked.connect(self.screenshot_requested.emit)
+        self.background_button.clicked.connect(self.background_requested.emit)
         self.opening_animation_combo.currentIndexChanged.connect(
             lambda _: self.opening_animation_changed.emit(
                 str(self.opening_animation_combo.currentData())

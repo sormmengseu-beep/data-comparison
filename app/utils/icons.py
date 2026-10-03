@@ -16,8 +16,13 @@ ICON_PATHS = {
     "last": '<path d="M19 5v14M5 6l8 6-8 6z"/>',
     "edit": '<path d="m15 5 4 4M4 20l4-1 12-12a2.8 2.8 0 0 0-4-4L4 15z"/>',
     "sliders": '<path d="M4 7h5m5 0h6M4 17h10m5 0h1"/><circle cx="11.5" cy="7" r="2.5"/><circle cx="16.5" cy="17" r="2.5"/>',
+    "settings": '<path d="M9.5 2h5l.5 3 2 1.2 2.8-1.1 2.5 4.3-2.3 2v1.2l2.3 2-2.5 4.3-2.8-1.1-2 1.2-.5 3h-5l-.5-3-2-1.2-2.8 1.1-2.5-4.3 2.3-2v-1.2l-2.3-2 2.5-4.3 2.8 1.1L9 5z"/><circle cx="12" cy="12" r="3"/>',
     "plus": '<path d="M12 5v14M5 12h14"/>',
+    "check": '<path d="m5 12 4 4L19 6"/>',
+    "save": '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12l4 4v12a2 2 0 0 1-2 2zM7 3v6h10M7 21v-8h10v8"/>',
+    "trash": '<path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6"/>',
     "image": '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 5-5 4 4 4-6 5 7"/>',
+    "camera": '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="4"/>',
     "file": '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5"/>',
     "music": '<path d="M9 18V5l11-2v13M9 8l11-2"/><ellipse cx="6" cy="18" rx="3" ry="3"/><ellipse cx="17" cy="16" rx="3" ry="3"/>',
 }

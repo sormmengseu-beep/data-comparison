@@ -6,10 +6,12 @@ from pathlib import Path
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PySide6.QtCore import QPoint
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QImage
 from PySide6.QtWidgets import QApplication
 
 from app.main_window import MainWindow, ProjectSettingsDialog
+from app.dialogs import ExportOptions
+from app.exporter import export_preview
 from app.models.comparison_item import ComparisonItem
 from app.models.project import Project
 from app.project_manager import ProjectManager
@@ -78,6 +80,58 @@ class OpeningAnimationTests(unittest.TestCase):
                 for time, frame in zip(later_times, expected):
                     with self.subTest(columns=columns, mode=mode, time=time):
                         self.assertEqual(self.preview.render_frame(time), frame)
+
+    def test_ending_holds_the_last_full_layout(self):
+        background = QColor(self.project.canvas_background_color)
+        for columns in (3, 4, 5):
+            for item_count in (1, 2, columns, columns + 2):
+                items = [ComparisonItem(name=f"Item {index}") for index in range(item_count)]
+                for index, item in enumerate(items):
+                    field_id = f"ending_{index}"
+                    item.set_fields([
+                        {"id": field_id, "type": "name", "value": "", "role": "name"}
+                    ])
+                    self.project.field_styles[field_id] = {
+                        "background_color": "#00ff00" if index == item_count - 1 else "#ff0000"
+                    }
+                self.project.comparison_items = items
+                self.project.preview_max_columns = columns
+                self.project.apply_fixed_item_timing()
+                end = self.project.total_duration()
+                for mode in ("slide_left", "reveal_left", "stagger_bottom"):
+                    with self.subTest(columns=columns, item_count=item_count, mode=mode):
+                        self.project.opening_animation = mode
+                        frame = self.preview.render_frame(end)
+                        card_width = CANVAS_WIDTH // columns
+                        visible_count = min(columns, item_count)
+                        for slot in range(columns):
+                            color = frame.pixelColor(slot * card_width + 30, 30)
+                            if slot >= visible_count:
+                                self.assertEqual(color, background)
+                            elif slot == visible_count - 1:
+                                self.assertEqual(color, QColor("lime"))
+                            else:
+                                self.assertEqual(color, QColor("red"))
+                        for seconds in (end + 0.5, end + self.project.item_fixed_duration * 10):
+                            self.assertEqual(self.preview.render_frame(seconds), frame)
+
+    def test_scroll_continues_through_last_group_then_holds_in_export(self):
+        duration = self.project.item_fixed_duration
+        self.preview.set_current_time(duration * 5.5)
+        self.assertAlmostEqual(self.preview._slide_offset_units(7), 4.0)
+        self.preview.set_current_time(duration * 6.5)
+        self.assertAlmostEqual(self.preview._slide_offset_units(7), 4.0)
+        end = self.project.total_duration()
+        frame = self.preview.render_frame(end)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "ending.png"
+            options = ExportOptions(path, "png", CANVAS_WIDTH, CANVAS_HEIGHT, 30, end + duration)
+            self.assertTrue(export_preview(self.preview, options, end + duration))
+            exported = QImage(str(path)).convertToFormat(frame.format())
+            self.assertEqual(exported, frame)
+        self.project.comparison_items.clear()
+        self.preview.set_current_time(end + duration)
+        self.assertEqual(self.preview._slide_offset_units(0), 0)
 
     def test_new_styles_have_an_entrance_and_repeatable_frames(self):
         background = QColor(self.project.canvas_background_color)

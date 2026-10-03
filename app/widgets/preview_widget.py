@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from PySide6.QtCore import QPoint, QRect, QSize, Qt, Signal
+from PySide6.QtCore import QPoint, QRect, QRectF, QSize, Qt, Signal
 from PySide6.QtGui import (
     QColor,
     QFont,
@@ -21,7 +21,7 @@ from app.settings import (
     MAX_PREVIEW_COLUMNS_1080P,
     MIN_PREVIEW_COLUMNS_1080P,
 )
-from app.utils.image_utils import ImageCache, draw_image
+from app.utils.image_utils import ImageCache, draw_image, image_target_rect
 from app.utils.shape_utils import fill_brush, shape_path
 
 
@@ -36,12 +36,16 @@ class PreviewWidget(QWidget):
         self._current_time = 0.0
         self._selected_id = ""
         self._image_cache = ImageCache()
+        self._background_path = ""
+        self._background_pixmap = QPixmap()
         self._image_regions: list[tuple[QRect, str, str]] = []
         self.setMouseTracking(True)
         self.setToolTip("Click an image to resize or reposition it")
 
     def set_project(self, project: Project) -> None:
         self._project = project
+        self._background_path = ""
+        self._background_pixmap = QPixmap()
         self.update()
 
     def set_current_time(self, seconds: float) -> None:
@@ -104,11 +108,15 @@ class PreviewWidget(QWidget):
 
     def paintEvent(self, event) -> None:
         painter = QPainter(self)
-        painter.fillRect(self.rect(), QColor("#0b0d10"))
+        background = self.palette().base().color()
+        background.setAlpha(100)
+        painter.fillRect(self.rect(), background)
         preview_rect = self._preview_rect()
         canvas = self._render_canvas()
         painter.drawPixmap(preview_rect, canvas)
-        painter.setPen(QPen(QColor("#47505c"), 1))
+        border = self.palette().text().color()
+        border.setAlpha(45)
+        painter.setPen(QPen(border, 1))
         painter.drawRect(preview_rect.adjusted(0, 0, -1, -1))
         painter.end()
 
@@ -129,6 +137,19 @@ class PreviewWidget(QWidget):
         painter = QPainter(canvas)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.fillRect(canvas.rect(), QColor(self._project.canvas_background_color))
+        background_path = self._project.canvas_background_image
+        if background_path != self._background_path:
+            self._background_path = background_path
+            self._background_pixmap = QPixmap(background_path) if background_path else QPixmap()
+        if not self._background_pixmap.isNull():
+            painter.save()
+            painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
+            target = image_target_rect(
+                self._background_pixmap.size(), QRectF(canvas.rect()),
+                self._project.canvas_background_fit,
+            )
+            painter.drawPixmap(target, self._background_pixmap, QRectF(self._background_pixmap.rect()))
+            painter.restore()
 
         visible_items = self._visible_items()
         if visible_items:
@@ -245,7 +266,13 @@ class PreviewWidget(QWidget):
         return 7.5625 * progress * progress + 0.984375
 
     def _slide_offset_units(self, item_count: int) -> float:
-        max_offset = max(0, item_count)
+        columns = max(
+            MIN_PREVIEW_COLUMNS_1080P,
+            min(MAX_PREVIEW_COLUMNS_1080P, self._project.preview_max_columns),
+        )
+        # Stop once the final page fills the layout instead of scrolling until
+        # only the last card remains on screen.
+        max_offset = max(0, item_count - columns)
         if max_offset == 0:
             return 0.0
         segment_duration = max(0.1, self._project.item_fixed_duration)

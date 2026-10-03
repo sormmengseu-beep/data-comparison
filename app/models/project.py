@@ -29,6 +29,8 @@ class Project:
     item_fixed_duration: float = DEFAULT_ITEM_DURATION
     opening_animation: str = "slide_left"
     canvas_background_color: str = "#05070a"
+    canvas_background_image: str = ""
+    canvas_background_fit: str = "cover"
     card_border_color: str = "#05070a"
     name_background_color: str = "#f45b69"
     name_text_color: str = "#ffffff"
@@ -61,6 +63,8 @@ class Project:
             "opening_animation": self.opening_animation,
             "style": {
                 "canvas_background_color": self.canvas_background_color,
+                "canvas_background_image": self.canvas_background_image,
+                "canvas_background_fit": self.canvas_background_fit,
                 "card_border_color": self.card_border_color,
                 "name_background_color": self.name_background_color,
                 "name_text_color": self.name_text_color,
@@ -104,6 +108,12 @@ class Project:
                 float(data.get("item_fixed_duration") or DEFAULT_ITEM_DURATION),
             ),
             canvas_background_color=str(style.get("canvas_background_color") or "#05070a"),
+            canvas_background_image=str(style.get("canvas_background_image") or ""),
+            canvas_background_fit=(
+                str(style.get("canvas_background_fit"))
+                if str(style.get("canvas_background_fit")) in {"cover", "contain", "stretch"}
+                else "cover"
+            ),
             card_border_color=str(style.get("card_border_color") or "#05070a"),
             name_background_color=str(style.get("name_background_color") or "#f45b69"),
             name_text_color=str(style.get("name_text_color") or "#ffffff"),
