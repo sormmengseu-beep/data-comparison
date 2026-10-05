@@ -6,7 +6,7 @@ from pathlib import Path
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PySide6.QtCore import QPoint, QRect, QSettings, Qt
-from PySide6.QtGui import QColor, QImage
+from PySide6.QtGui import QColor, QImage, QPainter
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
     QApplication,
@@ -42,6 +42,43 @@ class ParentChildLayoutTests(unittest.TestCase):
             QSizePolicy.Policy.Fixed,
         )
         dialog.deleteLater()
+
+    def test_outer_border_width_applies_and_persists(self):
+        project = Project.sample()
+        dialog = BoxCustomizationDialog(project, project.comparison_items[0])
+        dialog.border_width_spin.setValue(18)
+        dialog.apply_changes()
+        dialog.deleteLater()
+
+        self.assertEqual(project.card_border_width, 18)
+        self.assertEqual(Project.from_dict(project.to_dict()).card_border_width, 18)
+        legacy = project.to_dict()
+        legacy["style"].pop("card_border_width")
+        self.assertEqual(Project.from_dict(legacy).card_border_width, 3)
+
+    def test_selected_card_keeps_configured_outer_border_color(self):
+        project = Project.sample()
+        project.card_border_color = "#ef233c"
+        project.card_border_width = 12
+        item = project.comparison_items[0]
+        preview = PreviewWidget()
+        preview.set_project(project)
+        image = QImage(240, 240, QImage.Format.Format_ARGB32)
+        image.fill(QColor("transparent"))
+        painter = QPainter(image)
+
+        preview._draw_card(
+            painter,
+            QRect(20, 20, 200, 200),
+            item,
+            selected=True,
+            active=True,
+            columns=project.preview_max_columns,
+        )
+        painter.end()
+
+        self.assertEqual(image.pixelColor(25, 100), QColor("#ef233c"))
+        preview.deleteLater()
 
     def test_selected_image_hides_unused_text_content_controls(self):
         project = Project.sample()

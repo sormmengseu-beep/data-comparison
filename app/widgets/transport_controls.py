@@ -34,6 +34,7 @@ class TransportControls(QWidget):
     customize_requested = Signal()
     screenshot_requested = Signal()
     background_requested = Signal()
+    audio_output_changed = Signal(str)
 
     def __init__(self) -> None:
         super().__init__()
@@ -137,6 +138,15 @@ class TransportControls(QWidget):
         self.box_duration_spin.setSuffix(" sec")
         self.box_duration_spin.setMinimumWidth(120)
         opening_row.addWidget(self.box_duration_spin)
+        audio_output_label = QLabel("Audio output")
+        audio_output_label.setObjectName("TransportCaption")
+        opening_row.addSpacing(14)
+        opening_row.addWidget(audio_output_label)
+        self.audio_output_combo = QComboBox()
+        self.audio_output_combo.setMinimumWidth(240)
+        self.audio_output_combo.setMaximumWidth(360)
+        self.audio_output_combo.setToolTip("Choose where preview audio is played")
+        opening_row.addWidget(self.audio_output_combo)
         opening_row.addStretch(1)
         outer_layout.addLayout(opening_row)
 
@@ -156,6 +166,11 @@ class TransportControls(QWidget):
             )
         )
         self.box_duration_spin.valueChanged.connect(self.box_duration_changed.emit)
+        self.audio_output_combo.currentIndexChanged.connect(
+            lambda _: self.audio_output_changed.emit(
+                str(self.audio_output_combo.currentData() or "")
+            )
+        )
         self.set_columns(MIN_PREVIEW_COLUMNS_1080P)
 
     def set_playing(self, playing: bool) -> None:
@@ -175,6 +190,20 @@ class TransportControls(QWidget):
         self.box_duration_spin.blockSignals(True)
         self.box_duration_spin.setValue(max(MIN_CLIP_DURATION, float(duration)))
         self.box_duration_spin.blockSignals(False)
+
+    def set_audio_outputs(
+        self, outputs: list[tuple[str, str]], selected_key: str
+    ) -> None:
+        self.audio_output_combo.blockSignals(True)
+        self.audio_output_combo.clear()
+        for key, description in outputs:
+            self.audio_output_combo.addItem(description, key)
+        selected_index = self.audio_output_combo.findData(selected_key)
+        self.audio_output_combo.setCurrentIndex(max(0, selected_index))
+        self.audio_output_combo.setEnabled(bool(outputs))
+        if not outputs:
+            self.audio_output_combo.addItem("No audio output found", "")
+        self.audio_output_combo.blockSignals(False)
 
     def set_columns(self, columns: int) -> None:
         columns = max(MIN_PREVIEW_COLUMNS_1080P, min(MAX_PREVIEW_COLUMNS_1080P, int(columns)))

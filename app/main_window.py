@@ -13,6 +13,7 @@ from PySide6.QtCore import (
     QSettings,
     QSize,
     QTimer,
+    QUrl,
     Qt,
     Signal,
 )
@@ -68,6 +69,7 @@ from PySide6.QtWidgets import (
     QWidget,
     QDoubleSpinBox,
 )
+from PySide6.QtMultimedia import QAudioOutput, QMediaDevices, QMediaPlayer
 
 from app.models.comparison_item import ComparisonItem
 from app.models.project import Project
@@ -76,8 +78,6 @@ from app.exporter import ExportError, export_preview
 from app.project_manager import ProjectError, ProjectManager
 from app.settings import (
     APP_NAME,
-    CANVAS_HEIGHT,
-    CANVAS_WIDTH,
     DEFAULT_DURATION,
     DARK_COLORS,
     LIGHT_COLORS,
@@ -85,6 +85,7 @@ from app.settings import (
     MIN_PREVIEW_COLUMNS_1080P,
     MIN_CLIP_DURATION,
     OPENING_ANIMATION_OPTIONS,
+    PROJECT_RESOLUTION_PRESETS,
     PROJECT_EXTENSION,
     PROJECTS_DIR,
     SUPPORTED_AUDIO_FILTER,
@@ -103,6 +104,7 @@ from app.widgets.transport_controls import TransportControls
 
 SHAPE_ITEM_MIME_TYPE = "application/x-data-compare-shape-item"
 SUPPORTED_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp"}
+SUPPORTED_AUDIO_SUFFIXES = {".mp3", ".wav", ".aac", ".m4a", ".flac", ".ogg"}
 
 
 def _first_dropped_image(mime_data: QMimeData) -> str:
@@ -873,13 +875,16 @@ class BoxStylePreview(QWidget):
         item: ComparisonItem,
         project_height: int = 1080,
         parent: QWidget | None = None,
+        project_width: int = 1920,
     ) -> None:
         super().__init__(parent)
         self.item = item
         self.project_height = max(1, project_height)
+        self.project_width = max(1, project_width)
         self.image_fit = "cover"
         self.image_height_percent = 56
         self.border_color = "#05070a"
+        self.border_width = 3
         self.text_font_family = "Segoe UI"
         self.text_font_size = 0
         self.columns = MIN_PREVIEW_COLUMNS_1080P
@@ -1046,7 +1051,7 @@ class BoxStylePreview(QWidget):
         available = self.rect().adjusted(8, 8, -8, -8)
         if available.isEmpty():
             return QRect()
-        source_width = CANVAS_WIDTH / max(1, self.columns)
+        source_width = self.project_width / max(1, self.columns)
         scale = min(
             available.width() / source_width,
             available.height() / self.project_height,
@@ -1502,10 +1507,12 @@ class BoxStylePreview(QWidget):
         text_font_size: int = 0,
         columns: int = MIN_PREVIEW_COLUMNS_1080P,
         snap_enabled: bool = True,
+        border_width: int = 3,
     ) -> None:
         self.image_fit = image_fit
         self.image_height_percent = image_height_percent
         self.border_color = border_color
+        self.border_width = max(0, min(40, int(border_width)))
         self.text_font_family = text_font_family
         self.field_styles = field_styles
         self.text_font_size = text_font_size
@@ -1702,7 +1709,7 @@ class BoxStylePreview(QWidget):
 
             role = self._preview_field_role(field_data, content_index)
             style = self.field_styles.get(str(field_data.get("id", "")), {})
-            scale = card.width() / (CANVAS_WIDTH / self.columns)
+            scale = card.width() / (self.project_width / self.columns)
             background_color = QColor(style.get("background_color", "#111827"))
             inset = max(0, round(self._style_int(style, "inset", 0, 0, 96) * scale))
             band_rect = row.adjusted(inset, 0, -inset, 0)
@@ -1802,8 +1809,12 @@ class BoxStylePreview(QWidget):
             content_index += 1
 
         painter.setBrush(Qt.BrushStyle.NoBrush)
-        painter.setPen(QPen(QColor(self.border_color), 3))
-        painter.drawRect(card.adjusted(1, 1, -2, -2))
+        if self.border_width > 0:
+            scale = card.height() / max(1, self.project_height)
+            border_width = max(1, round(self.border_width * scale))
+            painter.setPen(QPen(QColor(self.border_color), border_width))
+            inset = max(1, (border_width + 1) // 2)
+            painter.drawRect(card.adjusted(inset, inset, -inset, -inset))
         if self._selected_field_id and not self._dragging_field_id:
             for region, field_id, _field_type in self._field_regions:
                 if field_id == self._selected_field_id:
@@ -1902,7 +1913,7 @@ class BoxStylePreview(QWidget):
         content_index: int,
     ) -> None:
         style = self.field_styles.get(str(field_data.get("id", "")), {})
-        scale = card.width() / (CANVAS_WIDTH / self.columns)
+        scale = card.width() / (self.project_width / self.columns)
         inset = max(0, round(self._style_int(style, "inset", 0, 0, 96) * scale))
         band_rect = row.adjusted(inset, 0, -inset, 0)
         corner_radius = max(
@@ -2101,6 +2112,42 @@ class ProjectSettingsDialog(QDialog):
         self.fps_combo = QComboBox()
         self.fps_combo.addItems(["30", "60"])
         self.fps_combo.setCurrentText(str(project.fps))
+        self.resolution_combo = QComboBox()
+        for label, width, height in PROJECT_RESOLUTION_PRESETS:
+            self.resolution_combo.addItem(
+                f"{label} - {width} x {height}", (width, height)
+            )
+        self.resolution_combo.addItem("Custom", None)
+        resolution_index = next(
+            (
+                index
+                for index in range(self.resolution_combo.count())
+                if self.resolution_combo.itemData(index)
+                == (project.width, project.height)
+            ),
+            -1,
+        )
+        self.resolution_combo.setCurrentIndex(
+            resolution_index
+            if resolution_index >= 0
+            else self.resolution_combo.count() - 1
+        )
+        resolution_size = QWidget()
+        resolution_size_layout = QHBoxLayout(resolution_size)
+        resolution_size_layout.setContentsMargins(0, 0, 0, 0)
+        resolution_size_layout.setSpacing(8)
+        self.width_spin = QSpinBox()
+        self.width_spin.setRange(320, 7680)
+        self.width_spin.setValue(project.width)
+        self.width_spin.setSuffix(" px")
+        self.height_spin = QSpinBox()
+        self.height_spin.setRange(240, 4320)
+        self.height_spin.setValue(project.height)
+        self.height_spin.setSuffix(" px")
+        resolution_size_layout.addWidget(self.width_spin)
+        resolution_size_layout.addWidget(QLabel("×"))
+        resolution_size_layout.addWidget(self.height_spin)
+        resolution_size_layout.addStretch(1)
         self.preview_columns_spin = QSpinBox()
         self.preview_columns_spin.setRange(MIN_PREVIEW_COLUMNS_1080P, MAX_PREVIEW_COLUMNS_1080P)
         self.preview_columns_spin.setValue(project.preview_max_columns)
@@ -2116,7 +2163,8 @@ class ProjectSettingsDialog(QDialog):
         self.item_duration_spin.setSingleStep(0.25)
         self.item_duration_spin.setValue(project.item_fixed_duration)
         form.addRow("Project Name", self.name_edit)
-        form.addRow("Resolution", QLabel(f"{project.width} x {project.height}"))
+        form.addRow("Resolution", self.resolution_combo)
+        form.addRow("Frame Size", resolution_size)
         form.addRow("FPS", self.fps_combo)
         form.addRow("Preview Columns", self.preview_columns_spin)
         form.addRow("Opening Animation", self.opening_animation_combo)
@@ -2124,6 +2172,8 @@ class ProjectSettingsDialog(QDialog):
         self.animation_length_label = QLabel()
         form.addRow("Animation Length", self.animation_length_label)
         self.item_duration_spin.valueChanged.connect(self._update_animation_length)
+        self.resolution_combo.currentIndexChanged.connect(self._resolution_changed)
+        self._resolution_changed()
         self._update_animation_length(self.item_duration_spin.value())
         tabs.addTab(general_page, "General")
 
@@ -2131,10 +2181,22 @@ class ProjectSettingsDialog(QDialog):
         design_form = QFormLayout(design_page)
         self.canvas_color_button = ColorButton(project.canvas_background_color)
         self.border_color_button = ColorButton(project.card_border_color)
+        self.border_width_spin = QSpinBox()
+        self.border_width_spin.setRange(0, 40)
+        self.border_width_spin.setSuffix(" px")
+        self.border_width_spin.setSpecialValueText("None")
+        self.border_width_spin.setValue(project.card_border_width)
         self.text_font_combo = QFontComboBox()
         self.text_font_combo.setCurrentFont(QFont(project.text_font_family))
         design_form.addRow("Canvas Background", self.canvas_color_button)
-        design_form.addRow("Box Border", self.border_color_button)
+        border_row = QWidget()
+        border_layout = QHBoxLayout(border_row)
+        border_layout.setContentsMargins(0, 0, 0, 0)
+        border_layout.setSpacing(8)
+        border_layout.addWidget(self.border_color_button)
+        border_layout.addWidget(self.border_width_spin)
+        border_layout.addStretch(1)
+        design_form.addRow("Box Border", border_row)
         design_form.addRow("Text Font", self.text_font_combo)
 
         self.band_color_buttons: dict[str, tuple[ColorButton, ColorButton]] = {}
@@ -2177,18 +2239,31 @@ class ProjectSettingsDialog(QDialog):
 
     def apply_to(self, project: Project) -> None:
         project.name = self.name_edit.text().strip() or "Untitled Project"
+        project.width = self.width_spin.value()
+        project.height = self.height_spin.value()
         project.fps = int(self.fps_combo.currentText())
         project.preview_max_columns = int(self.preview_columns_spin.value())
         project.opening_animation = str(self.opening_animation_combo.currentData())
         project.item_fixed_duration = float(self.item_duration_spin.value())
         project.canvas_background_color = self.canvas_color_button.color()
         project.card_border_color = self.border_color_button.color()
+        project.card_border_width = self.border_width_spin.value()
         project.text_font_family = self.text_font_combo.currentFont().family()
         for key, (background_button, text_button) in self.band_color_buttons.items():
             setattr(project, f"{key}_background_color", background_button.color())
             setattr(project, f"{key}_text_color", text_button.color())
         project.field_styles.clear()
         project.apply_fixed_item_timing()
+
+    def _resolution_changed(self, *_args) -> None:
+        preset = self.resolution_combo.currentData()
+        is_custom = preset is None
+        if preset is not None:
+            width, height = preset
+            self.width_spin.setValue(int(width))
+            self.height_spin.setValue(int(height))
+        self.width_spin.setEnabled(is_custom)
+        self.height_spin.setEnabled(is_custom)
 
     def _update_animation_length(self, box_duration: float) -> None:
         duration = self._item_count * box_duration if self._item_count else 0.0
@@ -2335,7 +2410,20 @@ class BoxCustomizationDialog(QDialog):
         form.addRow("Font size", self.text_font_size_spin)
 
         self.border_color_button = ColorButton(project.card_border_color)
-        form.addRow("Box border", self.border_color_button)
+        self.border_width_spin = QSpinBox()
+        self.border_width_spin.setRange(0, 40)
+        self.border_width_spin.setSuffix(" px")
+        self.border_width_spin.setSpecialValueText("None")
+        self.border_width_spin.setValue(project.card_border_width)
+        self.border_width_spin.setToolTip("Outer border thickness at 1080p; choose None to hide it.")
+        border_row = QWidget()
+        border_layout = QHBoxLayout(border_row)
+        border_layout.setContentsMargins(0, 0, 0, 0)
+        border_layout.setSpacing(8)
+        border_layout.addWidget(self.border_color_button)
+        border_layout.addWidget(self.border_width_spin)
+        border_layout.addStretch(1)
+        form.addRow("Box border", border_row)
         self.snap_objects_check = QCheckBox("Snap to edges, centers, and objects")
         self.snap_objects_check.setChecked(True)
         self.snap_objects_check.setToolTip(
@@ -2615,7 +2703,11 @@ class BoxCustomizationDialog(QDialog):
         preview_layout.setContentsMargins(22, 20, 22, 18)
         preview_title = QLabel("Live preview")
         preview_title.setObjectName("DesignerPreviewTitle")
-        self.box_preview = BoxStylePreview(self._image_item, self.project.height)
+        self.box_preview = BoxStylePreview(
+            self._image_item,
+            self.project.height,
+            project_width=self.project.width,
+        )
         self.box_preview.image_clicked.connect(self._edit_image)
         self.box_preview.field_selected.connect(self._preview_field_selected)
         self.box_preview.item_dropped.connect(self._preview_item_dropped)
@@ -2669,6 +2761,7 @@ class BoxCustomizationDialog(QDialog):
         self.save_preset_button.clicked.connect(self._save_custom_preset)
         self.delete_preset_button.clicked.connect(self._delete_custom_preset)
         self.border_color_button.color_changed.connect(self._update_preview)
+        self.border_width_spin.valueChanged.connect(self._update_preview)
         self.snap_objects_check.toggled.connect(self._update_preview)
         self.field_order_list.itemSelectionChanged.connect(self._load_selected_field_style)
         self.field_order_list.model().rowsMoved.connect(self._field_order_changed)
@@ -2774,6 +2867,7 @@ class BoxCustomizationDialog(QDialog):
             font_size = max(0, min(120, int(preset.get("text_font_size") or 0)))
         except (TypeError, ValueError):
             font_size = 0
+        border_width = self._bounded_int(preset.get("border_width"), 3, 0, 40)
         try:
             preview_columns = int(preset.get("preview_columns") or 0)
         except (TypeError, ValueError):
@@ -2876,6 +2970,7 @@ class BoxCustomizationDialog(QDialog):
         return {
             "version": 2 if normalized_objects else 1,
             "border_color": self._valid_color(preset.get("border_color"), "#05070a"),
+            "border_width": border_width,
             "text_font_family": str(preset.get("text_font_family") or "Segoe UI"),
             "text_font_size": font_size,
             "preview_columns": preview_columns,
@@ -3016,6 +3111,7 @@ class BoxCustomizationDialog(QDialog):
         self.text_font_combo.setCurrentFont(QFont(str(preset["text_font_family"])))
         self.text_font_size_spin.setValue(int(preset["text_font_size"]))
         self.border_color_button.set_color(str(preset["border_color"]))
+        self.border_width_spin.setValue(int(preset["border_width"]))
         self._apply_layout_template(str(preset.get("layout_template") or ""))
         objects = preset.get("objects", [])
         if preset_data.startswith("custom:") and isinstance(objects, list) and objects:
@@ -3367,6 +3463,7 @@ class BoxCustomizationDialog(QDialog):
         return {
             "version": 2,
             "border_color": self.border_color_button.color(),
+            "border_width": self.border_width_spin.value(),
             "text_font_family": self.text_font_combo.currentFont().family(),
             "text_font_size": self.text_font_size_spin.value(),
             "preview_columns": int(self.columns_combo.currentData()),
@@ -3388,6 +3485,7 @@ class BoxCustomizationDialog(QDialog):
         self.project.text_font_family = self.text_font_combo.currentFont().family()
         self.project.text_font_size = self.text_font_size_spin.value()
         self.project.card_border_color = self.border_color_button.color()
+        self.project.card_border_width = self.border_width_spin.value()
         self.project.field_styles = {
             field_id: dict(style) for field_id, style in self.field_styles.items()
         }
@@ -3451,7 +3549,7 @@ class BoxCustomizationDialog(QDialog):
             fields,
             field_id,
             self.field_styles,
-            QSize(CANVAS_WIDTH // columns, self.project.height),
+            QSize(self.project.width // columns, self.project.height),
             self.image_height_slider.value(),
         )
         dialog = ImageEditorDialog(
@@ -3478,7 +3576,8 @@ class BoxCustomizationDialog(QDialog):
         )
         self.text_font_combo.setCurrentFont(QFont(self.project.text_font_family))
         self.border_color_button.set_color(self.project.card_border_color)
-        width = CANVAS_WIDTH // columns
+        self.border_width_spin.setValue(self.project.card_border_width)
+        width = self.project.width // columns
         self.box_size_label.setText(f"{width} x {self.project.height} px per box")
         self._update_preview()
 
@@ -3492,6 +3591,7 @@ class BoxCustomizationDialog(QDialog):
             self.text_font_size_spin.value(),
             int(self.columns_combo.currentData()),
             self.snap_objects_check.isChecked(),
+            border_width=self.border_width_spin.value(),
         )
 
     def _selected_field_id(self) -> str:
@@ -4255,9 +4355,19 @@ class MainWindow(QMainWindow):
         self.selected_item_id = self.project.comparison_items[0].id if self.project.comparison_items else ""
         self.current_time = 0.0
         self.playing = False
+        self._undo_stack: list[tuple[dict, str]] = []
+        self._redo_stack: list[tuple[dict, str]] = []
+        self._restoring_history = False
+        self._audio_source_paths: tuple[str, ...] = ()
+        self._audio_players: list[QMediaPlayer] = []
+        self._audio_outputs: list[QAudioOutput] = []
         self._elapsed = QElapsedTimer()
         self._last_elapsed_ms = 0
         self.preferences = QSettings("DataCompareTools", "DataComparisonVideoMaker")
+        self._audio_device_key = str(
+            self.preferences.value("audio_output_device", "") or ""
+        )
+        self._media_devices = QMediaDevices(self)
         self.theme = str(self.preferences.value("theme", "dark")).lower()
         if self.theme not in {"dark", "light"}:
             self.theme = "dark"
@@ -4282,6 +4392,8 @@ class MainWindow(QMainWindow):
         self.playback_timer.timeout.connect(self._playback_tick)
         QShortcut(QKeySequence(Qt.Key.Key_Space), self, self.toggle_playback)
 
+        self._media_devices.audioOutputsChanged.connect(self._refresh_audio_outputs)
+        self._refresh_audio_outputs()
         self._refresh_all()
 
     def _build_ui(self) -> None:
@@ -4292,8 +4404,6 @@ class MainWindow(QMainWindow):
         command_layout.setSpacing(8)
         app_title = QLabel("Data Compare")
         app_title.setObjectName("AppTitle")
-        self.project_title = QLabel()
-        self.project_title.setObjectName("ProjectTitle")
         self.theme_combo = QComboBox()
         self.theme_combo.addItems(["Dark", "Light"])
         self.theme_combo.setCurrentText(self.theme.title())
@@ -4301,8 +4411,6 @@ class MainWindow(QMainWindow):
         self.toolbar_export_button = QPushButton("Export")
         self.toolbar_export_button.setObjectName("PrimaryButton")
         command_layout.addWidget(app_title)
-        command_layout.addSpacing(8)
-        command_layout.addWidget(self.project_title)
         command_layout.addStretch(1)
         command_layout.addWidget(QLabel("Theme"))
         command_layout.addWidget(self.theme_combo)
@@ -4348,8 +4456,13 @@ class MainWindow(QMainWindow):
         self._add_action(file_menu, "Exit", self.close, QKeySequence.StandardKey.Quit)
 
         edit_menu = self.menuBar().addMenu("Edit")
-        self._add_action(edit_menu, "Undo", lambda: self._info("Undo will be available after editing history is enabled."), QKeySequence.StandardKey.Undo)
-        self._add_action(edit_menu, "Redo", lambda: self._info("Redo will be available after editing history is enabled."), QKeySequence.StandardKey.Redo)
+        self.undo_action = self._add_action(
+            edit_menu, "Undo", self.undo, QKeySequence.StandardKey.Undo
+        )
+        self.redo_action = self._add_action(
+            edit_menu, "Redo", self.redo, QKeySequence.StandardKey.Redo
+        )
+        self._update_history_actions()
         self._add_action(edit_menu, "Delete", self.delete_selected_item, QKeySequence.StandardKey.Delete)
         self._add_action(edit_menu, "Duplicate", self.duplicate_selected_item, QKeySequence("Ctrl+D"))
 
@@ -4389,6 +4502,7 @@ class MainWindow(QMainWindow):
         self.transport.columns_changed.connect(self.set_preview_columns)
         self.transport.opening_animation_changed.connect(self.set_opening_animation)
         self.transport.box_duration_changed.connect(self.set_box_duration)
+        self.transport.audio_output_changed.connect(self.set_audio_output_device)
         self.transport.customize_requested.connect(self.open_box_customization)
         self.transport.screenshot_requested.connect(self.save_screenshot)
         self.transport.background_requested.connect(self.open_canvas_background)
@@ -4403,6 +4517,78 @@ class MainWindow(QMainWindow):
         menu.addAction(action)
         return action
 
+    def _history_snapshot(self) -> dict:
+        return {
+            "project": deepcopy(self.project.to_dict()),
+            "selected_item_id": self.selected_item_id,
+            "current_time": self.current_time,
+        }
+
+    def _record_project_change(self, before: dict, label: str) -> None:
+        if self._restoring_history or before["project"] == self.project.to_dict():
+            return
+        self._undo_stack.append((before, label))
+        del self._undo_stack[:-100]
+        self._redo_stack.clear()
+        self._update_history_actions()
+
+    def _restore_history_snapshot(self, snapshot: dict) -> None:
+        self._restoring_history = True
+        try:
+            self.pause_playback()
+            self.project = Project.from_dict(deepcopy(snapshot["project"]))
+            selected_id = str(snapshot.get("selected_item_id", ""))
+            self.selected_item_id = (
+                selected_id
+                if self.project.item_by_id(selected_id) is not None
+                else (
+                    self.project.comparison_items[0].id
+                    if self.project.comparison_items
+                    else ""
+                )
+            )
+            self.current_time = clamp(
+                float(snapshot.get("current_time", 0.0)),
+                0.0,
+                self.project.total_duration(),
+            )
+            self._refresh_all()
+        finally:
+            self._restoring_history = False
+
+    def _update_history_actions(self) -> None:
+        if not hasattr(self, "undo_action"):
+            return
+        undo_label = self._undo_stack[-1][1] if self._undo_stack else ""
+        redo_label = self._redo_stack[-1][1] if self._redo_stack else ""
+        self.undo_action.setText(f"Undo {undo_label}" if undo_label else "Undo")
+        self.redo_action.setText(f"Redo {redo_label}" if redo_label else "Redo")
+        self.undo_action.setEnabled(bool(self._undo_stack))
+        self.redo_action.setEnabled(bool(self._redo_stack))
+
+    def _clear_history(self) -> None:
+        self._undo_stack.clear()
+        self._redo_stack.clear()
+        self._update_history_actions()
+
+    def undo(self) -> None:
+        if not self._undo_stack:
+            return
+        snapshot, label = self._undo_stack.pop()
+        self._redo_stack.append((self._history_snapshot(), label))
+        self._restore_history_snapshot(snapshot)
+        self._update_history_actions()
+        self.statusBar().showMessage(f"Undid {label.lower()}", 2500)
+
+    def redo(self) -> None:
+        if not self._redo_stack:
+            return
+        snapshot, label = self._redo_stack.pop()
+        self._undo_stack.append((self._history_snapshot(), label))
+        self._restore_history_snapshot(snapshot)
+        self._update_history_actions()
+        self.statusBar().showMessage(f"Redid {label.lower()}", 2500)
+
     def _refresh_all(self) -> None:
         self.project.apply_fixed_item_timing()
         self._normalize_field_schema()
@@ -4413,6 +4599,7 @@ class MainWindow(QMainWindow):
         self.transport.set_columns(self.project.preview_max_columns)
         self.transport.set_opening_animation(self.project.opening_animation)
         self.transport.set_box_duration(self.project.item_fixed_duration)
+        self._sync_audio_sources()
         self.select_item(self.selected_item_id, update_asset_panel=False)
         self.set_current_time(self.current_time)
         self._update_status()
@@ -4435,7 +4622,6 @@ class MainWindow(QMainWindow):
                 setattr(item, key, "")
 
     def _update_status(self) -> None:
-        self.project_title.setText(self.project.name)
         self.status_label.setText(
             f"{self.project.name} | {self.project.width} x {self.project.height} | "
             f"{self.project.fps} FPS | {format_timestamp(self.current_time)}"
@@ -4452,13 +4638,16 @@ class MainWindow(QMainWindow):
             self.assets.select_item(item_id)
         self._update_status()
 
-    def set_current_time(self, seconds: float) -> None:
+    def set_current_time(self, seconds: float, sync_audio: bool = True) -> None:
         self.current_time = clamp(seconds, 0.0, self.project.total_duration())
         self.preview.set_current_time(self.current_time)
         self.timeline.set_current_time(self.current_time)
+        if sync_audio:
+            self._seek_audio(self.current_time)
         self._update_status()
 
     def set_preview_columns(self, columns: int) -> None:
+        before = self._history_snapshot()
         self.project.preview_max_columns = max(
             MIN_PREVIEW_COLUMNS_1080P,
             min(MAX_PREVIEW_COLUMNS_1080P, int(columns)),
@@ -4466,15 +4655,19 @@ class MainWindow(QMainWindow):
         self.transport.set_columns(self.project.preview_max_columns)
         self.preview.update()
         self._update_status()
+        self._record_project_change(before, "preview columns")
 
     def set_opening_animation(self, animation: str) -> None:
+        before = self._history_snapshot()
         if animation not in {value for _, value in OPENING_ANIMATION_OPTIONS}:
             animation = "slide_left"
         self.project.opening_animation = animation
         self.transport.set_opening_animation(animation)
         self.preview.update()
+        self._record_project_change(before, "opening animation")
 
     def set_box_duration(self, duration: float) -> None:
+        before = self._history_snapshot()
         self.project.item_fixed_duration = max(MIN_CLIP_DURATION, float(duration))
         self.project.apply_fixed_item_timing()
         self.transport.set_box_duration(self.project.item_fixed_duration)
@@ -4483,8 +4676,10 @@ class MainWindow(QMainWindow):
         self.timeline.set_project(self.project)
         self.timeline.set_selected_item(self.selected_item_id)
         self._update_status()
+        self._record_project_change(before, "box duration")
 
     def add_comparison_item(self) -> None:
+        before = self._history_snapshot()
         schema = (
             self.project.comparison_items[0].display_fields()
             if self.project.comparison_items
@@ -4509,6 +4704,7 @@ class MainWindow(QMainWindow):
         self.project.apply_fixed_item_timing()
         self.selected_item_id = item.id
         self._refresh_all()
+        self._record_project_change(before, "add item")
 
     def add_text(self) -> None:
         template = (
@@ -4517,7 +4713,12 @@ class MainWindow(QMainWindow):
             or ComparisonItem(name="Item", rank="#1", category="CATEGORY", value="Value")
         )
         schema = template.display_fields()
-        preview = BoxStylePreview(template, self.project.height, self)
+        preview = BoxStylePreview(
+            template,
+            self.project.height,
+            self,
+            self.project.width,
+        )
         preview.resize(640, 1080)
         columns = self.project.preview_max_columns
         preview.set_style(
@@ -4529,12 +4730,14 @@ class MainWindow(QMainWindow):
             self.project.field_styles,
             self.project.text_font_size,
             columns,
+            border_width=self.project.card_border_width,
         )
         import_schema = preview.fields_in_visual_order()
         preview.deleteLater()
         dialog = TextImportDialog(self, schema=import_schema)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
+        before = self._history_snapshot()
         imported = dialog.imported_items()
         if dialog.replaces_items():
             self.project.comparison_items.clear()
@@ -4567,6 +4770,7 @@ class MainWindow(QMainWindow):
         self.selected_item_id = first_new_id
         self.current_time = 0.0
         self._refresh_all()
+        self._record_project_change(before, "import text data")
         self.statusBar().showMessage(f"Imported {len(imported)} items", 3500)
 
     def open_canvas_background(self) -> None:
@@ -4574,8 +4778,10 @@ class MainWindow(QMainWindow):
         dialog = CanvasBackgroundDialog(self.project, self.current_time, self)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
+        before = self._history_snapshot()
         dialog.apply_to(self.project)
         self.preview.set_project(self.project)
+        self._record_project_change(before, "canvas background")
         self.statusBar().showMessage("Updated canvas background", 3500)
 
     def open_box_customization(self, item_id: str = "") -> None:
@@ -4586,8 +4792,10 @@ class MainWindow(QMainWindow):
         dialog = BoxCustomizationDialog(self.project, item, self)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
+        before = self._history_snapshot()
         dialog.apply_changes()
         self._refresh_all()
+        self._record_project_change(before, "box design")
         self.statusBar().showMessage("Updated box content and design", 3500)
 
     def open_image_editor(self, item_id: str, field_id: str) -> None:
@@ -4608,7 +4816,7 @@ class MainWindow(QMainWindow):
             fields,
             field_id,
             self.project.field_styles,
-            QSize(CANVAS_WIDTH // columns, self.project.height),
+            QSize(self.project.width // columns, self.project.height),
             percent,
         )
         dialog = ImageEditorDialog(
@@ -4617,6 +4825,7 @@ class MainWindow(QMainWindow):
         )
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
+        before = self._history_snapshot()
         field["value"] = dialog.image_path
         item.set_fields(fields)
         item.image_transforms[field_id] = dialog.image_transform()
@@ -4636,6 +4845,7 @@ class MainWindow(QMainWindow):
                     existing_item.set_fields(existing_fields)
                     existing_item.image_transforms[field_id] = dict(transform)
         self._refresh_all()
+        self._record_project_change(before, "image edit")
         message = (
             "Applied image and placement to all boxes"
             if dialog.apply_to_all_boxes else f"Updated image for {item.name}"
@@ -4658,8 +4868,10 @@ class MainWindow(QMainWindow):
         if item is None:
             self._warning("The selected item could not be found.")
             return
+        before = self._history_snapshot()
         item.set_image_path(path)
         self._refresh_all()
+        self._record_project_change(before, "import image")
 
     def import_audio(self) -> None:
         path, _ = QFileDialog.getOpenFileName(
@@ -4668,15 +4880,32 @@ class MainWindow(QMainWindow):
             str(Path.home()),
             SUPPORTED_AUDIO_FILTER,
         )
-        if path:
-            self.project.audio_paths.append(path)
-            self._info(f"Imported audio:\n{path}")
-            self._update_status()
+        if not path:
+            return
+        audio_path = Path(path).resolve()
+        if not audio_path.is_file() or audio_path.suffix.lower() not in SUPPORTED_AUDIO_SUFFIXES:
+            self._warning("The selected audio file could not be opened or is not supported.")
+            return
+        normalized = str(audio_path)
+        if normalized in self.project.audio_paths:
+            self.statusBar().showMessage(f"Audio already added: {audio_path.name}", 3500)
+            return
+        before = self._history_snapshot()
+        self.project.audio_paths.append(normalized)
+        self._sync_audio_sources()
+        self.timeline.set_project(self.project)
+        output_name = self._selected_audio_device_description()
+        output_detail = f" | Output: {output_name}" if output_name else ""
+        self.statusBar().showMessage(
+            f"Imported audio: {audio_path.name}{output_detail}", 5000
+        )
+        self._record_project_change(before, "import audio")
 
     def update_item_properties(self, changes: dict) -> None:
         item = self.project.item_by_id(str(changes.get("id", "")))
         if item is None:
             return
+        before = self._history_snapshot()
         for key, value in changes.items():
             if key == "id":
                 continue
@@ -4691,11 +4920,13 @@ class MainWindow(QMainWindow):
         if "duration" in changes:
             self.project.apply_fixed_item_timing()
         self._refresh_non_destructive()
+        self._record_project_change(before, "item properties")
 
     def update_item_fields(self, item_id: str, fields: list) -> None:
         item = self.project.item_by_id(item_id)
         if item is None:
             return
+        before = self._history_snapshot()
         item.set_fields(fields)
         for existing_item in self.project.comparison_items:
             if existing_item.id == item_id:
@@ -4708,6 +4939,7 @@ class MainWindow(QMainWindow):
             if field_id in active_field_ids
         }
         self._refresh_non_destructive()
+        self._record_project_change(before, "item fields")
 
     def _fields_for_schema(
         self,
@@ -4771,12 +5003,14 @@ class MainWindow(QMainWindow):
         item = self.project.item_by_id(item_id)
         if item is None:
             return
+        before = self._history_snapshot()
         self.project.item_fixed_duration = max(MIN_CLIP_DURATION, float(duration))
         self.project.apply_fixed_item_timing()
         self.transport.set_box_duration(self.project.item_fixed_duration)
         self.preview.update()
         self.timeline.set_project(self.project)
         self._update_status()
+        self._record_project_change(before, "item timing")
 
     def _refresh_non_destructive(self) -> None:
         self.preview.update()
@@ -4800,17 +5034,20 @@ class MainWindow(QMainWindow):
         )
         if response != QMessageBox.StandardButton.Yes:
             return
+        before = self._history_snapshot()
         self.project.comparison_items = [
             existing for existing in self.project.comparison_items if existing.id != self.selected_item_id
         ]
         self.selected_item_id = self.project.comparison_items[0].id if self.project.comparison_items else ""
         self._refresh_all()
+        self._record_project_change(before, "delete item")
 
     def duplicate_selected_item(self) -> None:
         item = self.project.item_by_id(self.selected_item_id)
         if item is None:
             self._warning("Select an item to duplicate.")
             return
+        before = self._history_snapshot()
         duplicate_data = item.to_dict()
         duplicate_data.pop("id", None)
         duplicate_data["name"] = f"{item.name} Copy"
@@ -4823,14 +5060,22 @@ class MainWindow(QMainWindow):
         self.project.apply_fixed_item_timing()
         self.selected_item_id = duplicate.id
         self._refresh_all()
+        self._record_project_change(before, "duplicate item")
 
     def new_project(self) -> None:
         if not self._confirm_discard():
             return
-        self.project = Project.sample()
+        project = Project.sample()
+        dialog = ProjectSettingsDialog(project, self)
+        dialog.setWindowTitle("Create Project")
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        dialog.apply_to(project)
+        self.project = project
         self.project_path = None
         self.selected_item_id = self.project.comparison_items[0].id if self.project.comparison_items else ""
         self.current_time = 0.0
+        self._clear_history()
         self._refresh_all()
 
     def open_project(self) -> None:
@@ -4852,6 +5097,7 @@ class MainWindow(QMainWindow):
         self.project_path = Path(path)
         self.selected_item_id = self.project.comparison_items[0].id if self.project.comparison_items else ""
         self.current_time = 0.0
+        self._clear_history()
         self._refresh_all()
 
     def save_project(self) -> None:
@@ -4882,9 +5128,11 @@ class MainWindow(QMainWindow):
     def open_project_settings(self) -> None:
         dialog = ProjectSettingsDialog(self.project, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
+            before = self._history_snapshot()
             dialog.apply_to(self.project)
             self.set_current_time(min(self.current_time, self.project.total_duration()))
             self._refresh_all()
+            self._record_project_change(before, "project settings")
 
     def save_screenshot(self) -> None:
         self.pause_playback()
@@ -4899,8 +5147,8 @@ class MainWindow(QMainWindow):
         options = ExportOptions(
             path=Path(dialog.selectedFiles()[0]),
             format_name="png",
-            width=CANVAS_WIDTH,
-            height=CANVAS_HEIGHT,
+            width=self.project.width,
+            height=self.project.height,
             fps=self.project.fps,
             duration=self.project.total_duration(),
         )
@@ -4919,6 +5167,8 @@ class MainWindow(QMainWindow):
             self.project.total_duration(),
             self.project.content_duration(),
             self,
+            project_width=self.project.width,
+            project_height=self.project.height,
         )
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
@@ -4943,7 +5193,11 @@ class MainWindow(QMainWindow):
 
         try:
             completed = export_preview(
-                self.preview, options, self.current_time, report_progress
+                self.preview,
+                options,
+                self.current_time,
+                report_progress,
+                audio_paths=self.project.audio_paths,
             )
         except (ExportError, OSError) as exc:
             self._warning(str(exc))
@@ -4963,6 +5217,9 @@ class MainWindow(QMainWindow):
             self.set_current_time(0.0)
         self.playing = True
         self.transport.set_playing(True)
+        self._seek_audio(self.current_time)
+        for player in self._audio_players:
+            player.play()
         self._elapsed.restart()
         self._last_elapsed_ms = 0
         self.playback_timer.start()
@@ -4971,10 +5228,167 @@ class MainWindow(QMainWindow):
         self.playing = False
         self.transport.set_playing(False)
         self.playback_timer.stop()
+        for player in self._audio_players:
+            player.pause()
 
     def stop_playback(self) -> None:
         self.pause_playback()
         self.set_current_time(0.0)
+
+    @staticmethod
+    def _audio_device_id(device) -> str:
+        return bytes(device.id()).hex()
+
+    def _available_audio_devices(self) -> list:
+        return list(QMediaDevices.audioOutputs())
+
+    def _choose_audio_device_id(self, devices: list) -> str:
+        device_ids = {self._audio_device_id(device) for device in devices}
+        if self._audio_device_key in device_ids:
+            return self._audio_device_key
+        if not devices:
+            return ""
+
+        default_device = QMediaDevices.defaultAudioOutput()
+        default_id = (
+            self._audio_device_id(default_device)
+            if not default_device.isNull()
+            else ""
+        )
+        default_description = default_device.description().lower()
+        # Some Realtek drivers expose an unused alternate jack as the Windows
+        # default. Prefer the physical Speakers endpoint on first use, while the
+        # selector still lets the user choose headphones, a display, or digital out.
+        if not self._audio_device_key and (
+            "2nd output" in default_description or "digital output" in default_description
+        ):
+            speaker = next(
+                (
+                    device
+                    for device in devices
+                    if device.description().lower().startswith("speakers")
+                ),
+                None,
+            )
+            if speaker is not None:
+                return self._audio_device_id(speaker)
+        return default_id if default_id in device_ids else self._audio_device_id(devices[0])
+
+    def _selected_audio_device(self):
+        devices = self._available_audio_devices()
+        selected_id = self._choose_audio_device_id(devices)
+        return next(
+            (
+                device
+                for device in devices
+                if self._audio_device_id(device) == selected_id
+            ),
+            None,
+        )
+
+    def _selected_audio_device_description(self) -> str:
+        device = self._selected_audio_device()
+        return device.description() if device is not None else ""
+
+    def _refresh_audio_outputs(self) -> None:
+        devices = self._available_audio_devices()
+        selected_id = self._choose_audio_device_id(devices)
+        device_changed = selected_id != self._audio_device_key
+        self._audio_device_key = selected_id
+        self.transport.set_audio_outputs(
+            [
+                (self._audio_device_id(device), device.description())
+                for device in devices
+            ],
+            selected_id,
+        )
+        if device_changed and self._audio_source_paths:
+            self._sync_audio_sources(force=True)
+
+    def set_audio_output_device(self, device_id: str) -> None:
+        if not device_id or device_id == self._audio_device_key:
+            return
+        devices = self._available_audio_devices()
+        device = next(
+            (
+                candidate
+                for candidate in devices
+                if self._audio_device_id(candidate) == device_id
+            ),
+            None,
+        )
+        if device is None:
+            self._refresh_audio_outputs()
+            return
+        self._audio_device_key = device_id
+        self.preferences.setValue("audio_output_device", device_id)
+        self._sync_audio_sources(force=True)
+        self.statusBar().showMessage(
+            f"Audio output: {device.description()}", 5000
+        )
+
+    def _sync_audio_sources(self, force: bool = False) -> None:
+        paths = tuple(
+            str(Path(path).resolve())
+            for path in self.project.audio_paths
+            if Path(path).is_file()
+            and Path(path).suffix.lower() in SUPPORTED_AUDIO_SUFFIXES
+        )
+        if paths == self._audio_source_paths and not force:
+            return
+        for player in self._audio_players:
+            player.stop()
+            player.deleteLater()
+        for output in self._audio_outputs:
+            output.deleteLater()
+        self._audio_players = []
+        self._audio_outputs = []
+        self._audio_source_paths = paths
+        device = self._selected_audio_device()
+        for path in paths:
+            output = QAudioOutput(device, self) if device is not None else QAudioOutput(self)
+            output.setMuted(False)
+            output.setVolume(1.0 / max(1, len(paths)))
+            player = QMediaPlayer(self)
+            player.setAudioOutput(output)
+            player.mediaStatusChanged.connect(
+                lambda status, source=player: self._audio_status_changed(source, status)
+            )
+            player.errorOccurred.connect(
+                lambda _error, message, source_path=path: self._audio_error(
+                    source_path, message
+                )
+            )
+            player.setSource(QUrl.fromLocalFile(path))
+            self._audio_outputs.append(output)
+            self._audio_players.append(player)
+        self._seek_audio(self.current_time)
+
+    def _audio_status_changed(
+        self,
+        player: QMediaPlayer,
+        status: QMediaPlayer.MediaStatus,
+    ) -> None:
+        if status not in {
+            QMediaPlayer.MediaStatus.LoadedMedia,
+            QMediaPlayer.MediaStatus.BufferedMedia,
+        }:
+            return
+        player.setPosition(round(self.current_time * 1000))
+        if self.playing:
+            player.play()
+
+    def _seek_audio(self, seconds: float) -> None:
+        position = max(0, round(seconds * 1000))
+        for player in self._audio_players:
+            player.setPosition(position)
+
+    def _audio_error(self, path: str, message: str) -> None:
+        detail = message.strip() or "the audio decoder rejected this file"
+        self.statusBar().showMessage(
+            f"Could not play {Path(path).name}: {detail}",
+            7000,
+        )
 
     def _playback_tick(self) -> None:
         if not self.playing:
@@ -4987,7 +5401,7 @@ class MainWindow(QMainWindow):
             self.set_current_time(self.project.total_duration())
             self.pause_playback()
             return
-        self.set_current_time(next_time)
+        self.set_current_time(next_time, sync_audio=False)
 
     def _confirm_discard(self) -> bool:
         response = QMessageBox.question(

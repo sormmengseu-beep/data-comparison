@@ -27,7 +27,12 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from app.settings import ROOT_DIR, SUPPORTED_TEXT_FILTER, SUPPORTED_IMAGE_FILTER
+from app.settings import (
+    PROJECT_RESOLUTION_PRESETS,
+    ROOT_DIR,
+    SUPPORTED_IMAGE_FILTER,
+    SUPPORTED_TEXT_FILTER,
+)
 from app.models.comparison_item import normalize_image_transform
 from app.widgets.image_editor import ImageEditorCanvas
 from app.utils.icons import IconButton
@@ -563,6 +568,8 @@ class ExportDialog(QDialog):
         project_duration: float,
         content_duration: float,
         parent: QWidget | None = None,
+        project_width: int = 1920,
+        project_height: int = 1080,
     ) -> None:
         super().__init__(parent)
         self.setWindowTitle("Export")
@@ -581,8 +588,14 @@ class ExportDialog(QDialog):
         self.format_combo.addItem("PNG current frame", "png")
 
         self.resolution_combo = QComboBox()
-        self.resolution_combo.addItem("Full HD - 1920 x 1080", (1920, 1080))
-        self.resolution_combo.addItem("HD - 1280 x 720", (1280, 720))
+        project_size = (int(project_width), int(project_height))
+        self.resolution_combo.addItem(
+            f"Project - {project_size[0]} x {project_size[1]}", project_size
+        )
+        for label, width, height in PROJECT_RESOLUTION_PRESETS:
+            size = (width, height)
+            if size != project_size:
+                self.resolution_combo.addItem(f"{label} - {width} x {height}", size)
         self.resolution_combo.addItem("Preview - 960 x 540", (960, 540))
 
         self.fps_combo = QComboBox()

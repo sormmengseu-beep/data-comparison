@@ -32,6 +32,7 @@ class Project:
     canvas_background_image: str = ""
     canvas_background_fit: str = "cover"
     card_border_color: str = "#05070a"
+    card_border_width: int = 3
     name_background_color: str = "#f45b69"
     name_text_color: str = "#ffffff"
     category_background_color: str = "#050505"
@@ -66,6 +67,7 @@ class Project:
                 "canvas_background_image": self.canvas_background_image,
                 "canvas_background_fit": self.canvas_background_fit,
                 "card_border_color": self.card_border_color,
+                "card_border_width": self.card_border_width,
                 "name_background_color": self.name_background_color,
                 "name_text_color": self.name_text_color,
                 "category_background_color": self.category_background_color,
@@ -96,8 +98,8 @@ class Project:
             opening_animation = "slide_left"
         project = cls(
             name=str(data.get("project_name") or data.get("name") or "Untitled Project"),
-            width=int(resolution.get("width") or CANVAS_WIDTH),
-            height=int(resolution.get("height") or CANVAS_HEIGHT),
+            width=_project_dimension(resolution.get("width"), CANVAS_WIDTH, 320, 7680),
+            height=_project_dimension(resolution.get("height"), CANVAS_HEIGHT, 240, 4320),
             fps=int(data.get("fps") or DEFAULT_FPS),
             duration=max(1.0, float(data.get("duration") or DEFAULT_DURATION)),
             background=str(data.get("background") or "Dark"),
@@ -115,6 +117,7 @@ class Project:
                 else "cover"
             ),
             card_border_color=str(style.get("card_border_color") or "#05070a"),
+            card_border_width=_card_border_width(style.get("card_border_width")),
             name_background_color=str(style.get("name_background_color") or "#f45b69"),
             name_text_color=str(style.get("name_text_color") or "#ffffff"),
             category_background_color=str(style.get("category_background_color") or "#050505"),
@@ -222,6 +225,23 @@ def _layout_height(value: object, default: int) -> int:
         return max(35, min(75, int(value)))
     except (TypeError, ValueError):
         return default
+
+
+def _project_dimension(
+    value: object, default: int, minimum: int, maximum: int
+) -> int:
+    try:
+        return max(minimum, min(maximum, int(value)))
+    except (TypeError, ValueError):
+        return default
+
+
+def _card_border_width(value: object) -> int:
+    """Normalize the outer card border while keeping old projects at 3 px."""
+    try:
+        return max(0, min(40, int(value)))
+    except (TypeError, ValueError):
+        return 3
 
 
 def _field_styles(value: object) -> dict[str, dict[str, str]]:

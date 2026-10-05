@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import os
+import shutil
+import subprocess
 import tempfile
 from pathlib import Path
 from typing import Callable
@@ -24,6 +26,7 @@ def export_preview(
     options: ExportOptions,
     current_time: float,
     progress: ProgressCallback | None = None,
+    audio_paths: list[str] | None = None,
 ) -> bool:
     options.path.parent.mkdir(parents=True, exist_ok=True)
     size = QSize(options.width, options.height)
@@ -38,6 +41,17 @@ def export_preview(
         import numpy as np
     except ImportError as exc:
         raise ExportError("Video export requires OpenCV and NumPy.") from exc
+
+    valid_audio_paths = [
+        Path(path).resolve()
+        for path in (audio_paths or [])
+        if Path(path).is_file()
+    ]
+    ffmpeg = shutil.which("ffmpeg") if valid_audio_paths else None
+    if valid_audio_paths and ffmpeg is None:
+        raise ExportError(
+            "Audio export requires FFmpeg. Install FFmpeg or remove the audio tracks."
+        )
 
     suffix = f".{options.format_name}"
     descriptor, temporary_name = tempfile.mkstemp(
@@ -79,5 +93,86 @@ def export_preview(
 
     if progress is not None:
         progress(total_frames, total_frames)
-    temporary_path.replace(options.path)
+    if valid_audio_paths:
+        try:
+            _mux_audio(
+                ffmpeg or "ffmpeg",
+                temporary_path,
+                options.path,
+                valid_audio_paths,
+                options.duration,
+                options.format_name,
+            )
+        finally:
+            temporary_path.unlink(missing_ok=True)
+    else:
+        temporary_path.replace(options.path)
     return True
+
+
+def _mux_audio(
+    ffmpeg: str,
+    video_path: Path,
+    output_path: Path,
+    audio_paths: list[Path],
+    duration: float,
+    format_name: str,
+) -> None:
+    """Copy rendered video and mix all imported audio tracks into the result."""
+    descriptor, muxed_name = tempfile.mkstemp(
+        prefix=".comparison_audio_",
+        suffix=f".{format_name}",
+        dir=output_path.parent,
+    )
+    os.close(descriptor)
+    muxed_path = Path(muxed_name)
+    muxed_path.unlink(missing_ok=True)
+    command = [ffmpeg, "-y", "-v", "error", "-i", str(video_path)]
+    for audio_path in audio_paths:
+        command.extend(["-i", str(audio_path)])
+    if len(audio_paths) == 1:
+        audio_map = "1:a:0"
+    else:
+        inputs = "".join(f"[{index}:a:0]" for index in range(1, len(audio_paths) + 1))
+        command.extend(
+            [
+                "-filter_complex",
+                f"{inputs}amix=inputs={len(audio_paths)}:duration=longest:dropout_transition=2[aout]",
+            ]
+        )
+        audio_map = "[aout]"
+    audio_codec = "aac" if format_name == "mp4" else "libmp3lame"
+    command.extend(
+        [
+            "-map",
+            "0:v:0",
+            "-map",
+            audio_map,
+            "-c:v",
+            "copy",
+            "-c:a",
+            audio_codec,
+            "-t",
+            f"{max(0.1, duration):.6f}",
+            str(muxed_path),
+        ]
+    )
+    startupinfo = None
+    if os.name == "nt":
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    try:
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            check=False,
+            startupinfo=startupinfo,
+        )
+        if result.returncode != 0 or not muxed_path.is_file():
+            detail = result.stderr.strip().splitlines()
+            reason = detail[-1] if detail else "FFmpeg did not create the output file."
+            raise ExportError(f"The audio track could not be added to the video: {reason}")
+        muxed_path.replace(output_path)
+    finally:
+        muxed_path.unlink(missing_ok=True)

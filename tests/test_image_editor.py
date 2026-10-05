@@ -290,6 +290,30 @@ class ImageEditorTests(unittest.TestCase):
         )
         self.assertEqual(free_frame, QSize(320, 432))
 
+    def test_transparent_image_pixels_reveal_existing_background(self):
+        transparent_path = str(Path(self.directory.name) / "transparent.png")
+        source = QImage(40, 40, QImage.Format.Format_ARGB32)
+        source.fill(Qt.GlobalColor.transparent)
+        painter = QPainter(source)
+        painter.fillRect(QRect(12, 12, 16, 16), QColor("red"))
+        painter.end()
+        self.assertTrue(source.save(transparent_path))
+
+        target = QImage(80, 80, QImage.Format.Format_RGB32)
+        target.fill(QColor("green"))
+        painter = QPainter(target)
+        draw_image(
+            painter,
+            ImageCache(),
+            transparent_path,
+            QRect(0, 0, 80, 80),
+            "stretch",
+        )
+        painter.end()
+
+        self.assertEqual(target.pixelColor(5, 5), QColor("green"))
+        self.assertEqual(target.pixelColor(40, 40), QColor("red"))
+
     def test_persistence_replacement_and_field_isolation(self):
         self.item.image_transforms[self.field_id] = {"scale_x": 1.5, "offset_x": 0.2, "fit": "contain"}
         restored = Project.from_dict(json.loads(json.dumps(self.project.to_dict())))

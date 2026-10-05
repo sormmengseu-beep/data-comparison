@@ -1,0 +1,4084 @@
+{
+    "project_name": "50 Famous Scientists and Their Greatest Discoveries",
+    "resolution": {
+        "width": 3840,
+        "height": 2160
+    },
+    "fps": 60,
+    "duration": 350.0,
+    "background": "Dark",
+    "preview_max_columns": 4,
+    "item_fixed_duration": 7.0,
+    "opening_animation": "alternating",
+    "style": {
+        "canvas_background_color": "#ffc76c",
+        "canvas_background_image": "",
+        "canvas_background_fit": "cover",
+        "card_border_color": "#ffffff",
+        "card_border_width": 5,
+        "name_background_color": "#f45b69",
+        "name_text_color": "#ffffff",
+        "category_background_color": "#050505",
+        "category_text_color": "#ffffff",
+        "rank_background_color": "#fbb10b",
+        "rank_text_color": "#080808",
+        "value_background_color": "#087be8",
+        "value_text_color": "#ffffff",
+        "text_font_family": "Segoe UI",
+        "text_font_size": 0,
+        "image_fit": "cover",
+        "image_height_percent_3": 56,
+        "image_height_percent_4": 58,
+        "image_height_percent_5": 60,
+        "field_styles": {
+            "field_37bf9b6c": {
+                "background_color": "#ffaa7f",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "0",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#ffaa7f",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "0",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "overlay_x": "0",
+                "overlay_y": "544",
+                "overlay_width": "1000",
+                "overlay_height": "352"
+            },
+            "field_name": {
+                "background_color": "#ffff00",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "5",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#ffff00",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "70",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#f45b69",
+                "overlay_x": "0",
+                "overlay_y": "454",
+                "overlay_width": "1000",
+                "overlay_height": "90"
+            },
+            "field_category": {
+                "background_color": "#ffaa00",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "5",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#ffaa00",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "70",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#050505",
+                "overlay_x": "0",
+                "overlay_y": "896",
+                "overlay_width": "1000",
+                "overlay_height": "104"
+            },
+            "field_7f9806df": {
+                "background_color": "#55ff7f",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "0",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#55ff7f",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "0",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "overlay_x": "0",
+                "overlay_y": "86",
+                "overlay_width": "1000",
+                "overlay_height": "367"
+            },
+            "field_image": {
+                "height_weight": "100",
+                "parent_id": "",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "shape": "rectangle",
+                "overlay_x": "74",
+                "overlay_y": "100",
+                "overlay_width": "853",
+                "overlay_height": "340"
+            },
+            "field_48268448": {
+                "height_weight": "100",
+                "parent_id": "",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "shape": "rectangle",
+                "overlay_x": "74",
+                "overlay_y": "558",
+                "overlay_width": "853",
+                "overlay_height": "324"
+            },
+            "field_97d8cacf": {
+                "background_color": "#55ffff",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "5",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#55ffff",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "70",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "overlay_x": "0",
+                "overlay_y": "0",
+                "overlay_width": "1000",
+                "overlay_height": "86"
+            }
+        }
+    },
+    "comparison_items": [
+        {
+            "name": "Albert Einstein",
+            "rank": "#1",
+            "category": "Theory of Relativity",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\01_Realistic_historical_port.jpg",
+            "start_time": 0.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1879\u20131955",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Theory of Relativity",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\01_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\01_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Albert Einstein",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_9edc15c4"
+        },
+        {
+            "name": "Isaac Newton",
+            "rank": "#2",
+            "category": "Laws of Motion & Gravity",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\02_Realistic_historical_port.jpg",
+            "start_time": 7.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1643\u20131727",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Laws of Motion & Gravity",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\02_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\02_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Isaac Newton",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_40b4d5a0"
+        },
+        {
+            "name": "Galileo Galilei",
+            "rank": "#3",
+            "category": "Astronomical Discoveries",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\03_Realistic_historical_port.jpg",
+            "start_time": 14.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1564\u20131642",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Astronomical Discoveries",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\03_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\03_Historical_scientific_sce.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Galileo Galilei",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_d32a752f"
+        },
+        {
+            "name": "Nikola Tesla",
+            "rank": "#4",
+            "category": "AC Electrical System",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\04_Realistic_historical_port.jpg",
+            "start_time": 21.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1856\u20131943",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "AC Electrical System",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\04_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\04_Historical_electrical_lab.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Nikola Tesla",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_2ee9c482"
+        },
+        {
+            "name": "Thomas Edison",
+            "rank": "#5",
+            "category": "Practical Electric Light",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\05_Realistic_historical_port.jpg",
+            "start_time": 28.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1847\u20131931",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Practical Electric Light",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\05_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\05_Historical_invention_scen.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Thomas Edison",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_301bc23d"
+        },
+        {
+            "name": "Marie Curie",
+            "rank": "#6",
+            "category": "Radium & Polonium",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\06_Realistic_historical_port.jpg",
+            "start_time": 35.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1867\u20131934",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Radium & Polonium",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\06_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\06_Historical_chemistry_labo.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Marie Curie",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_eff160a5"
+        },
+        {
+            "name": "Charles Darwin",
+            "rank": "#7",
+            "category": "Theory of Evolution",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\07_Realistic_historical_port.jpg",
+            "start_time": 42.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1809\u20131882",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Theory of Evolution",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\07_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\07_Scientific_illustration_r.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Charles Darwin",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_ba2fffcc"
+        },
+        {
+            "name": "Stephen Hawking",
+            "rank": "#8",
+            "category": "Hawking Radiation",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\08_Realistic_historical_port.jpg",
+            "start_time": 49.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1942\u20132018",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Hawking Radiation",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\08_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\08_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Stephen Hawking",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_40bba849"
+        },
+        {
+            "name": "Michael Faraday",
+            "rank": "#9",
+            "category": "Electromagnetic Induction",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\09_Realistic_historical_port.jpg",
+            "start_time": 56.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1791\u20131867",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Electromagnetic Induction",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\09_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\09_Historical_physics_experi.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Michael Faraday",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_45e1ea1d"
+        },
+        {
+            "name": "Louis Pasteur",
+            "rank": "#10",
+            "category": "Pasteurization",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\10_Realistic_historical_port.jpg",
+            "start_time": 63.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1822\u20131895",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Pasteurization",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\10_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\10_Historical_laboratory_sce.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Louis Pasteur",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_002ec916"
+        },
+        {
+            "name": "Alexander Graham Bell",
+            "rank": "#11",
+            "category": "Telephone",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\11_Realistic_historical_port.jpg",
+            "start_time": 70.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1847\u20131922",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Telephone",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\11_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\11_Detailed_historical_image.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Alexander Graham Bell",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_7b6b5d23"
+        },
+        {
+            "name": "Johannes Kepler",
+            "rank": "#12",
+            "category": "Laws of Planetary Motion",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\12_Realistic_historical_port.jpg",
+            "start_time": 77.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1571\u20131630",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Laws of Planetary Motion",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\12_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\12_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Johannes Kepler",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_b4dde03f"
+        },
+        {
+            "name": "Nicolaus Copernicus",
+            "rank": "#13",
+            "category": "Heliocentric Model",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\13_Realistic_historical_port.jpg",
+            "start_time": 84.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1473\u20131543",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Heliocentric Model",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\13_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\13_Historical_astronomy_visu.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Nicolaus Copernicus",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_cc049924"
+        },
+        {
+            "name": "James Clerk Maxwell",
+            "rank": "#14",
+            "category": "Electromagnetic Theory",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\14_Realistic_historical_port.jpg",
+            "start_time": 91.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1831\u20131879",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Electromagnetic Theory",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\14_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\14_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "James Clerk Maxwell",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_d57e8fd5"
+        },
+        {
+            "name": "Niels Bohr",
+            "rank": "#15",
+            "category": "Bohr Atomic Model",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\15_Realistic_historical_port.jpg",
+            "start_time": 98.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1885\u20131962",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Bohr Atomic Model",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\15_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\15_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Niels Bohr",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_9f9a312a"
+        },
+        {
+            "name": "Max Planck",
+            "rank": "#16",
+            "category": "Quantum Theory",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\16_Realistic_historical_port.jpg",
+            "start_time": 105.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1858\u20131947",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Quantum Theory",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\16_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\16_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Max Planck",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_2dc0f0cd"
+        },
+        {
+            "name": "Ernest Rutherford",
+            "rank": "#17",
+            "category": "Atomic Nucleus",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\17_Realistic_historical_port.jpg",
+            "start_time": 112.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1871\u20131937",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Atomic Nucleus",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\17_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\17_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Ernest Rutherford",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_91898e50"
+        },
+        {
+            "name": "Alan Turing",
+            "rank": "#18",
+            "category": "Foundations of Computer Science",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\18_Realistic_historical_port.jpg",
+            "start_time": 119.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1912\u20131954",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Foundations of Computer Science",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\18_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\18_Historical_computing_scen.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Alan Turing",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_f341adf3"
+        },
+        {
+            "name": "J. Robert Oppenheimer",
+            "rank": "#19",
+            "category": "Atomic Bomb Development",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\19_Realistic_historical_port.jpg",
+            "start_time": 126.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1904\u20131967",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Atomic Bomb Development",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\19_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\19_Historical_scientific_vis.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "J. Robert Oppenheimer",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_9a658bcd"
+        },
+        {
+            "name": "Richard Feynman",
+            "rank": "#20",
+            "category": "Quantum Electrodynamics",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\20_Realistic_historical_port.jpg",
+            "start_time": 133.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1918\u20131988",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Quantum Electrodynamics",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\20_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\20_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Richard Feynman",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_0b1dc43c"
+        },
+        {
+            "name": "Benjamin Franklin",
+            "rank": "#21",
+            "category": "Lightning & Electricity Research",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\21_Realistic_historical_port.jpg",
+            "start_time": 140.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1706\u20131790",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Lightning & Electricity Research",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\21_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\21_Historical_scientific_sce.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Benjamin Franklin",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_f7c2f2ed"
+        },
+        {
+            "name": "Leonardo da Vinci",
+            "rank": "#22",
+            "category": "Engineering & Anatomy Studies",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\22_Realistic_historical_port.jpg",
+            "start_time": 147.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1452\u20131519",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Engineering & Anatomy Studies",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\22_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\22_Renaissance_workshop_fill.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Leonardo da Vinci",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_afda3b2f"
+        },
+        {
+            "name": "Archimedes",
+            "rank": "#23",
+            "category": "Archimedes' Principle",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\23_Realistic_historically_in.jpg",
+            "start_time": 154.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "c. 287\u2013212 BC",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Archimedes' Principle",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\23_Realistic_historically_in.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\23_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Archimedes",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_6a35b2b1"
+        },
+        {
+            "name": "Blaise Pascal",
+            "rank": "#24",
+            "category": "Pascal's Law",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\24_Realistic_historical_port.jpg",
+            "start_time": 161.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1623\u20131662",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Pascal's Law",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\24_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\24_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Blaise Pascal",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_cca32183"
+        },
+        {
+            "name": "Gregor Mendel",
+            "rank": "#25",
+            "category": "Laws of Genetics",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\25_Realistic_historical_port.jpg",
+            "start_time": 168.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1822\u20131884",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Laws of Genetics",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\25_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\25_Historical_botanical_expe.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Gregor Mendel",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_97724276"
+        },
+        {
+            "name": "Dmitri Mendeleev",
+            "rank": "#26",
+            "category": "Periodic Table",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\26_Realistic_historical_port.jpg",
+            "start_time": 175.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1834\u20131907",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Periodic Table",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\26_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\26_Historical_chemistry_work.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Dmitri Mendeleev",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_afb286d2"
+        },
+        {
+            "name": "Alessandro Volta",
+            "rank": "#27",
+            "category": "Electric Battery",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\27_Realistic_historical_port.jpg",
+            "start_time": 182.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1745\u20131827",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Electric Battery",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\27_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\27_Detailed_historical_visua.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Alessandro Volta",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_5c3e04ce"
+        },
+        {
+            "name": "Andr\u00e9-Marie Amp\u00e8re",
+            "rank": "#28",
+            "category": "Electrodynamics",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\28_Realistic_historical_port.jpg",
+            "start_time": 189.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1775\u20131836",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Electrodynamics",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\28_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\28_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Andr\u00e9-Marie Amp\u00e8re",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_aec99942"
+        },
+        {
+            "name": "James Watt",
+            "rank": "#29",
+            "category": "Improved Steam Engine",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\29.jpg",
+            "start_time": 196.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1736\u20131819",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Improved Steam Engine",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\29.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\29_Detailed_historical_visua.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "James Watt",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_2639c744"
+        },
+        {
+            "name": "Guglielmo Marconi",
+            "rank": "#30",
+            "category": "Radio Communication",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\30_Realistic_historical_port.jpg",
+            "start_time": 203.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1874\u20131937",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Radio Communication",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\30_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\30_Historical_wireless_teleg.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Guglielmo Marconi",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_3885a5bc"
+        },
+        {
+            "name": "Alexander Fleming",
+            "rank": "#31",
+            "category": "Penicillin",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\31.jpg",
+            "start_time": 210.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1881\u20131955",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Penicillin",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\31.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\31_Historical_laboratory_sce.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Alexander Fleming",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_e8bee4e0"
+        },
+        {
+            "name": "Edwin Hubble",
+            "rank": "#32",
+            "category": "Expanding Universe Evidence",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\32_Realistic_historical_port.jpg",
+            "start_time": 217.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1889\u20131953",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Expanding Universe Evidence",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\32_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\32_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Edwin Hubble",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_415283a2"
+        },
+        {
+            "name": "Enrico Fermi",
+            "rank": "#33",
+            "category": "Nuclear Chain Reaction",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\33_Realistic_historical_port.jpg",
+            "start_time": 224.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1901\u20131954",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Nuclear Chain Reaction",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\33_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\33_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Enrico Fermi",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_e6fa68bc"
+        },
+        {
+            "name": "Werner Heisenberg",
+            "rank": "#34",
+            "category": "Uncertainty Principle",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\34_Realistic_historical_port.jpg",
+            "start_time": 231.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1901\u20131976",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Uncertainty Principle",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\34_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\34_Scientific_quantum_visual.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Werner Heisenberg",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_33c51509"
+        },
+        {
+            "name": "Erwin Schr\u00f6dinger",
+            "rank": "#35",
+            "category": "Schr\u00f6dinger Equation",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\35_Realistic_historical_port.jpg",
+            "start_time": 238.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1887\u20131961",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Schr\u00f6dinger Equation",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\35_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\35_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Erwin Schr\u00f6dinger",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_7e01a1ec"
+        },
+        {
+            "name": "Antoine Lavoisier",
+            "rank": "#36",
+            "category": "Law of Conservation of Mass",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\36_Realistic_historical_port.jpg",
+            "start_time": 245.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1743\u20131794",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Law of Conservation of Mass",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\36_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\36_Historical_chemistry_expe.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Antoine Lavoisier",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_a631188f"
+        },
+        {
+            "name": "Alfred Nobel",
+            "rank": "#37",
+            "category": "Dynamite",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\37_Realistic_historical_port.jpg",
+            "start_time": 252.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1833\u20131896",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Dynamite",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\37_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\37.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Alfred Nobel",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_6d1f9595"
+        },
+        {
+            "name": "Tim Berners-Lee",
+            "rank": "#38",
+            "category": "World Wide Web",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\38_Realistic_portrait_of_Tim.jpg",
+            "start_time": 259.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1955\u2013Present",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "World Wide Web",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\38_Realistic_portrait_of_Tim.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\38_Conceptual_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Tim Berners-Lee",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_f043a5d2"
+        },
+        {
+            "name": "Ada Lovelace",
+            "rank": "#39",
+            "category": "Early Computer Algorithm",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\39_Realistic_historical_port.jpg",
+            "start_time": 266.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1815\u20131852",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Early Computer Algorithm",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\39_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\39_Historical_computing_visu.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Ada Lovelace",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_fa710eb5"
+        },
+        {
+            "name": "Rosalind Franklin",
+            "rank": "#40",
+            "category": "DNA Structure Research",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\40_Realistic_historical_port.jpg",
+            "start_time": 273.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1920\u20131958",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "DNA Structure Research",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\40_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\40_Historical_scientific_vis.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Rosalind Franklin",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_154d56f5"
+        },
+        {
+            "name": "Robert Hooke",
+            "rank": "#41",
+            "category": "Discovery and Naming of Cells",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\41_Realistic_historically_in.jpg",
+            "start_time": 280.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1635\u20131703",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Discovery and Naming of Cells",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\41_Realistic_historically_in.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\41_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Robert Hooke",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_7c8f9d0f"
+        },
+        {
+            "name": "Antonie van Leeuwenhoek",
+            "rank": "#42",
+            "category": "Microorganisms",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\42_Realistic_historical_port.jpg",
+            "start_time": 287.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1632\u20131723",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Microorganisms",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\42_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\42_Historical_scientific_vis.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Antonie van Leeuwenhoek",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_d5130f11"
+        },
+        {
+            "name": "Carl Linnaeus",
+            "rank": "#43",
+            "category": "Biological Classification",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\43_Realistic_historical_port.jpg",
+            "start_time": 294.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1707\u20131778",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Biological Classification",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\43_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\43_Scientific_natural-histor.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Carl Linnaeus",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_1f8c41e4"
+        },
+        {
+            "name": "Edward Jenner",
+            "rank": "#44",
+            "category": "Smallpox Vaccine",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\44_Realistic_historical_port.jpg",
+            "start_time": 301.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1749\u20131823",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Smallpox Vaccine",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\44_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\44_Historical_medical_visual.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Edward Jenner",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_c6825a9a"
+        },
+        {
+            "name": "Joseph Priestley",
+            "rank": "#45",
+            "category": "Oxygen Research",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\45.jpg",
+            "start_time": 308.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1733\u20131804",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Oxygen Research",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\45.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\45_Historical_chemistry_labo.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Joseph Priestley",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_e9cf3eed"
+        },
+        {
+            "name": "Christiaan Huygens",
+            "rank": "#46",
+            "category": "Wave Theory of Light",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\46.jpg",
+            "start_time": 315.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1629\u20131695",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Wave Theory of Light",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\46.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\46_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Christiaan Huygens",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_838093a6"
+        },
+        {
+            "name": "Henri Becquerel",
+            "rank": "#47",
+            "category": "Radioactivity",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\47_Realistic_historical_port.jpg",
+            "start_time": 322.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1852\u20131908",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Radioactivity",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\47_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\47_Historical_scientific_exp.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Henri Becquerel",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_bb62c272"
+        },
+        {
+            "name": "John Dalton",
+            "rank": "#48",
+            "category": "Atomic Theory",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\48.jpg",
+            "start_time": 329.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1766\u20131844",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Atomic Theory",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\48.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\48_Scientific_visualization_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "John Dalton",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_46756a34"
+        },
+        {
+            "name": "Georg Ohm",
+            "rank": "#49",
+            "category": "Ohm's Law",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\49.jpg",
+            "start_time": 336.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1789\u20131854",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Ohm's Law",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\49.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\49_Historical_electrical_exp.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Georg Ohm",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_32431de6"
+        },
+        {
+            "name": "Charles Babbage",
+            "rank": "#50",
+            "category": "Analytical Engine",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\50_Realistic_historical_port.jpg",
+            "start_time": 343.0,
+            "duration": 7.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_37bf9b6c",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Year",
+                    "value": "1791\u20131871",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Discover",
+                    "value": "Analytical Engine",
+                    "role": "category"
+                },
+                {
+                    "id": "field_7f9806df",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "+",
+                    "role": ""
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img-1\\50_Realistic_historical_port.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_48268448",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\4\\zapi-img\\50_Highly_detailed_historica.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_97d8cacf",
+                    "type": "text",
+                    "label": "Name",
+                    "value": "Charles Babbage",
+                    "role": ""
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_fcff3b90"
+        }
+    ],
+    "timeline_clips": [],
+    "audio_paths": []
+}

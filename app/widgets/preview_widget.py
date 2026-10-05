@@ -16,8 +16,6 @@ from PySide6.QtWidgets import QSizePolicy, QWidget
 from app.models.comparison_item import ComparisonItem
 from app.models.project import Project
 from app.settings import (
-    CANVAS_HEIGHT,
-    CANVAS_WIDTH,
     MAX_PREVIEW_COLUMNS_1080P,
     MIN_PREVIEW_COLUMNS_1080P,
 )
@@ -81,8 +79,8 @@ class PreviewWidget(QWidget):
         if preview.isEmpty() or not preview.contains(point):
             return None
         canvas_point = QPoint(
-            int((point.x() - preview.x()) * CANVAS_WIDTH / preview.width()),
-            int((point.y() - preview.y()) * CANVAS_HEIGHT / preview.height()),
+            int((point.x() - preview.x()) * self._project.width / preview.width()),
+            int((point.y() - preview.y()) * self._project.height / preview.height()),
         )
         for region, item_id, field_id in reversed(self._image_regions):
             if region.contains(canvas_point):
@@ -124,16 +122,23 @@ class PreviewWidget(QWidget):
         available = self.rect().adjusted(18, 18, -18, -18)
         if available.width() <= 0 or available.height() <= 0:
             return QRect()
-        scale = min(available.width() / CANVAS_WIDTH, available.height() / CANVAS_HEIGHT)
-        width = int(CANVAS_WIDTH * scale)
-        height = int(CANVAS_HEIGHT * scale)
+        canvas_width = max(1, self._project.width)
+        canvas_height = max(1, self._project.height)
+        scale = min(
+            available.width() / canvas_width,
+            available.height() / canvas_height,
+        )
+        width = int(canvas_width * scale)
+        height = int(canvas_height * scale)
         x = available.x() + (available.width() - width) // 2
         y = available.y() + (available.height() - height) // 2
         return QRect(x, y, width, height)
 
     def _render_canvas(self) -> QPixmap:
         self._image_regions = []
-        canvas = QPixmap(CANVAS_WIDTH, CANVAS_HEIGHT)
+        canvas_width = max(1, self._project.width)
+        canvas_height = max(1, self._project.height)
+        canvas = QPixmap(canvas_width, canvas_height)
         painter = QPainter(canvas)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.fillRect(canvas.rect(), QColor(self._project.canvas_background_color))
@@ -170,14 +175,16 @@ class PreviewWidget(QWidget):
         count = max_columns
         gap = 0
         side_margin = 0
-        track_width = CANVAS_WIDTH - side_margin * 2
+        canvas_width = max(1, self._project.width)
+        canvas_height = max(1, self._project.height)
+        track_width = canvas_width - side_margin * 2
         card_width = max(1, int((track_width - gap * (count - 1)) / max(1, count)))
         y = 0
-        card_height = CANVAS_HEIGHT - y
+        card_height = canvas_height - y
         x = side_margin
         slide_offset = self._slide_offset_units(len(items))
         step = card_width + gap
-        viewport = QRect(0, y, CANVAS_WIDTH, card_height)
+        viewport = QRect(0, y, canvas_width, card_height)
 
         painter.save()
         painter.setClipRect(viewport)
@@ -239,7 +246,12 @@ class PreviewWidget(QWidget):
         painter.save()
         painter.setOpacity(opacity)
         if animation == "reveal_left":
-            reveal = QRect(0, 0, round(CANVAS_WIDTH * eased), CANVAS_HEIGHT)
+            reveal = QRect(
+                0,
+                0,
+                round(max(1, self._project.width) * eased),
+                max(1, self._project.height),
+            )
             painter.setClipRect(reveal, Qt.ClipOperation.IntersectClip)
         # Keep all content, including fonts and image crops, at the same scale.
         if scale != 1.0:
@@ -403,7 +415,7 @@ class PreviewWidget(QWidget):
                     painter.clipBoundingRect().toAlignedRect()
                 )
                 image_region = painter.transform().mapRect(visible_slice).intersected(
-                    QRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+                    QRect(0, 0, max(1, self._project.width), max(1, self._project.height))
                 )
                 if not image_region.isEmpty():
                     self._image_regions.append((image_region, item.id, field_id))
@@ -494,10 +506,28 @@ class PreviewWidget(QWidget):
             remaining_text_weight -= weight
             content_index += 1
 
-        border = QColor("#60a5fa" if selected else self._style(item, "card_border_color"))
         painter.setBrush(Qt.BrushStyle.NoBrush)
-        painter.setPen(QPen(border, 5 if selected else 3))
-        painter.drawRect(rect.adjusted(1, 1, -2, -2))
+        border = QColor(self._style(item, "card_border_color"))
+        border_width = self._project.card_border_width
+        if border_width > 0:
+            painter.setPen(QPen(border, border_width))
+            inset = max(1, (border_width + 1) // 2)
+            painter.drawRect(rect.adjusted(inset, inset, -inset, -inset))
+        if selected:
+            # Selection is an editor-only affordance. Draw it separately from the
+            # configured border so selecting a card does not hide its chosen color.
+            selection_pen = QPen(QColor("#60a5fa"), 2)
+            selection_pen.setStyle(Qt.PenStyle.DashLine)
+            painter.setPen(selection_pen)
+            selection_inset = max(2, border_width + 2)
+            painter.drawRect(
+                rect.adjusted(
+                    selection_inset,
+                    selection_inset,
+                    -selection_inset,
+                    -selection_inset,
+                )
+            )
         painter.restore()
 
     def _style(self, item: ComparisonItem, name: str) -> str:
@@ -716,4 +746,8 @@ class PreviewWidget(QWidget):
     def _draw_empty_state(self, painter: QPainter) -> None:
         painter.setPen(QColor("#9ca3af"))
         painter.setFont(QFont(self._project.text_font_family, 34, QFont.Weight.Bold))
-        painter.drawText(QRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT), Qt.AlignmentFlag.AlignCenter, "Add comparison items to preview your video")
+        painter.drawText(
+            QRect(0, 0, max(1, self._project.width), max(1, self._project.height)),
+            Qt.AlignmentFlag.AlignCenter,
+            "Add comparison items to preview your video",
+        )

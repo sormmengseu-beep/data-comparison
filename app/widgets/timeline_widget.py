@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from PySide6.QtCore import QPoint, QRect, QTimer, Qt, Signal
 from PySide6.QtGui import QColor, QFont, QKeyEvent, QLinearGradient, QMouseEvent, QPainter, QPen
 from PySide6.QtWidgets import (
@@ -152,6 +154,8 @@ class TimelineCanvas(QWidget):
                 self._draw_comparison_clips(painter, y, track.color)
             elif track.name == "Images":
                 self._draw_image_markers(painter, y, track.color)
+            elif track.name == "Audio":
+                self._draw_audio_clips(painter, y, track.color)
             y += self.track_height + self.track_gap
 
     def _draw_comparison_clips(self, painter: QPainter, y: int, color: QColor) -> None:
@@ -181,6 +185,35 @@ class TimelineCanvas(QWidget):
                 continue
             rect = QRect(self.time_to_x(item.start_time), y + 12, max(8, int(item.duration * self.pixels_per_second)), self.track_height - 24)
             painter.drawRoundedRect(rect, 4, 4)
+
+    def _draw_audio_clips(self, painter: QPainter, y: int, color: QColor) -> None:
+        paths = [path for path in self.project.audio_paths if Path(path).is_file()]
+        if not paths:
+            return
+        clip_width = max(8, int(self.project.total_duration() * self.pixels_per_second))
+        available_height = self.track_height - 10
+        clip_height = max(6, available_height // len(paths))
+        for index, path in enumerate(paths):
+            top = y + 5 + index * clip_height
+            height = min(clip_height - 2, y + self.track_height - 5 - top)
+            if height <= 0:
+                break
+            rect = QRect(self.time_to_x(0), top, clip_width, height)
+            painter.setBrush(color)
+            painter.setPen(QPen(QColor("#92400e"), 1))
+            painter.drawRoundedRect(rect, 3, 3)
+            if height >= 14:
+                painter.setPen(QColor("#1c1917"))
+                label = painter.fontMetrics().elidedText(
+                    Path(path).name,
+                    Qt.TextElideMode.ElideRight,
+                    max(0, rect.width() - 12),
+                )
+                painter.drawText(
+                    rect.adjusted(6, 0, -6, 0),
+                    Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft,
+                    label,
+                )
 
     def _draw_playhead(self, painter: QPainter) -> None:
         x = self.time_to_x(self.current_time)

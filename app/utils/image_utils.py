@@ -166,8 +166,13 @@ def draw_image(
         return
     painter.save()
     painter.setClipRect(frame, Qt.ClipOperation.IntersectClip)
-    painter.fillRect(frame, QColor("#111827"))
-    if transform and path and Path(path).is_file():
+    has_source = bool(path and Path(path).is_file())
+    # Do not paint an opaque backing behind real images. Qt preserves the alpha
+    # channel in PNG/WebP pixmaps, so transparent pixels should reveal the card
+    # or canvas below them. Missing/corrupt images still use the opaque placeholder.
+    if not has_source:
+        painter.fillRect(frame, QColor("#111827"))
+    if transform and has_source:
         pixmap = cache.pixmap(path)
         target = image_target_rect(pixmap.size(), QRectF(frame), fit, transform, crop_x, crop_y)
         painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)

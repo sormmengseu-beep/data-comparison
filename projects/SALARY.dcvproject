@@ -1,0 +1,4122 @@
+{
+    "project_name": "Football Comparison",
+    "resolution": {
+        "width": 1920,
+        "height": 1080
+    },
+    "fps": 60,
+    "duration": 288.0,
+    "background": "Dark",
+    "preview_max_columns": 3,
+    "item_fixed_duration": 6.0,
+    "opening_animation": "stagger_bottom",
+    "style": {
+        "canvas_background_color": "#62ffd0",
+        "canvas_background_image": "",
+        "canvas_background_fit": "cover",
+        "card_border_color": "#3aef55",
+        "card_border_width": 8,
+        "name_background_color": "#f45b69",
+        "name_text_color": "#ffffff",
+        "category_background_color": "#050505",
+        "category_text_color": "#ffffff",
+        "rank_background_color": "#fbb10b",
+        "rank_text_color": "#080808",
+        "value_background_color": "#087be8",
+        "value_text_color": "#ffffff",
+        "text_font_family": "Segoe UI",
+        "text_font_size": 0,
+        "image_fit": "cover",
+        "image_height_percent_3": 56,
+        "image_height_percent_4": 58,
+        "image_height_percent_5": 60,
+        "field_styles": {
+            "field_27169e8e": {
+                "background_color": "#69ef7d",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "0",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#69ef7d",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "0",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "overlay_x": "0",
+                "overlay_y": "625",
+                "overlay_width": "1000",
+                "overlay_height": "375"
+            },
+            "field_019bf05e": {
+                "background_color": "#71ebc7",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "1",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#71ebc7",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "0",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "overlay_x": "0",
+                "overlay_y": "110",
+                "overlay_width": "1000",
+                "overlay_height": "367"
+            },
+            "field_name": {
+                "background_color": "#5b417f",
+                "text_color": "#d9ff18",
+                "outline_color": "#000000",
+                "outline_width": "4",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#5b417f",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "50",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#f45b69",
+                "overlay_x": "0",
+                "overlay_y": "0",
+                "overlay_width": "1000",
+                "overlay_height": "110"
+            },
+            "field_category": {
+                "background_color": "#37b1d6",
+                "text_color": "#fff023",
+                "outline_color": "#000000",
+                "outline_width": "4",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#37b1d6",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "70",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#050505",
+                "overlay_x": "0",
+                "overlay_y": "477",
+                "overlay_width": "1000",
+                "overlay_height": "147"
+            },
+            "field_image": {
+                "height_weight": "100",
+                "parent_id": "",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "shape": "rectangle",
+                "overlay_x": "129",
+                "overlay_y": "141",
+                "overlay_width": "732",
+                "overlay_height": "301"
+            },
+            "field_ee34cd84": {
+                "height_weight": "100",
+                "parent_id": "",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "shape": "rectangle",
+                "overlay_x": "129",
+                "overlay_y": "652",
+                "overlay_width": "732",
+                "overlay_height": "330"
+            }
+        }
+    },
+    "comparison_items": [
+        {
+            "name": "Qatar",
+            "rank": "#1",
+            "category": "$3996",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\01_Simple_flat_2D_flag_of_Qa.jpg",
+            "start_time": 0.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Qatar",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$3996",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\01_Simple_flat_2D_flag_of_Qa.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.3591126235409674,
+                    "scale_y": 1.3591126235409674,
+                    "offset_x": 0.009297387133662264,
+                    "offset_y": 0.04328784494613326
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_0ea0281f"
+        },
+        {
+            "name": "Singapore",
+            "rank": "#2",
+            "category": "$3968",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\02_Simple_flat_2D_flag_of_Si.jpg",
+            "start_time": 6.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Singapore",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$3968",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\02_Simple_flat_2D_flag_of_Si.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.0,
+                    "scale_y": 1.0,
+                    "offset_x": 0.0,
+                    "offset_y": 0.0
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_48b7259c"
+        },
+        {
+            "name": "Israel",
+            "rank": "#3",
+            "category": "$3122",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\03_Simple_flat_2D_flag_of_Is.jpg",
+            "start_time": 12.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Israel",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$3122",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\03_Simple_flat_2D_flag_of_Is.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.1295124575936886,
+                    "scale_y": 1.1295124575936886,
+                    "offset_x": -0.008326241540147442,
+                    "offset_y": 0.00048226643313604165
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_b2bb4f19"
+        },
+        {
+            "name": "Bahrain",
+            "rank": "#4",
+            "category": "$2965",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\04_Simple_flat_2D_flag_of_Ba.jpg",
+            "start_time": 18.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Bahrain",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$2965",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\04_Simple_flat_2D_flag_of_Ba.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.2121042782941538,
+                    "scale_y": 1.2121042782941538,
+                    "offset_x": 0.01497442061780839,
+                    "offset_y": -0.12152160012918378
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_c9eedaf5"
+        },
+        {
+            "name": "South Korea",
+            "rank": "#5",
+            "category": "$2845",
+            "value": "Value",
+            "image_path": "C:/Users/ADMIN/Downloads/Flag_of_South_Korea_2K_20261004124259.jpg",
+            "start_time": 24.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "South Korea",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$2845",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/Users/ADMIN/Downloads/Flag_of_South_Korea_2K_20261004124259.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.0,
+                    "scale_y": 1.0,
+                    "offset_x": 0.0,
+                    "offset_y": 0.0
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_e52ba16d"
+        },
+        {
+            "name": "United Arab Emirates",
+            "rank": "#6",
+            "category": "$2843",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\06_Simple_flat_2D_flag_of_th.jpg",
+            "start_time": 30.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "United Arab Emirates",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$2843",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\06_Simple_flat_2D_flag_of_th.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_f682bb36"
+        },
+        {
+            "name": "Kuwait",
+            "rank": "#7",
+            "category": "$2067",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\07_Simple_flat_2D_flag_of_Ku.jpg",
+            "start_time": 36.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Kuwait",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$2067",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\07_Simple_flat_2D_flag_of_Ku.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.4291444835655056,
+                    "scale_y": 1.4291444835655056,
+                    "offset_x": -0.0008675036718607093,
+                    "offset_y": -0.0009327399479846358
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_09e05699"
+        },
+        {
+            "name": "Brunei",
+            "rank": "#8",
+            "category": "$1968",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\08_Simple_flat_2D_flag_of_brun.jpg",
+            "start_time": 42.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Brunei",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$1968",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\08_Simple_flat_2D_flag_of_brun.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.0,
+                    "scale_y": 1.0,
+                    "offset_x": 0.0,
+                    "offset_y": 0.0
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_0fcfcb6a"
+        },
+        {
+            "name": "Saudi Arabia",
+            "rank": "#9",
+            "category": "$1879",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\09_Simple_flat_2D_flag_of_Sa.jpg",
+            "start_time": 48.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Saudi Arabia",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$1879",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\09_Simple_flat_2D_flag_of_Sa.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_51e2f0af"
+        },
+        {
+            "name": "Cyprus",
+            "rank": "#10",
+            "category": "$1862",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\10_Simple_flat_2D_flag_of_Cy.jpg",
+            "start_time": 54.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Cyprus",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$1862",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\10_Simple_flat_2D_flag_of_Cy.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_112a3de2"
+        },
+        {
+            "name": "Japan",
+            "rank": "#11",
+            "category": "$1837",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\11_Simple_flat_2D_flag_of_Ja.jpg",
+            "start_time": 60.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Japan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$1837",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\11_Simple_flat_2D_flag_of_Ja.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_b7f84e4c"
+        },
+        {
+            "name": "Oman",
+            "rank": "#12",
+            "category": "$1813",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\12_Simple_flat_2D_flag_of_Om.jpg",
+            "start_time": 66.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Oman",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$1813",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\12_Simple_flat_2D_flag_of_Om.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_dc26c92e"
+        },
+        {
+            "name": "China",
+            "rank": "#13",
+            "category": "$1063",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\13_Simple_flat_2D_flag_of_Ch.jpg",
+            "start_time": 72.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "China",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$1063",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\13_Simple_flat_2D_flag_of_Ch.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_e5cf9821"
+        },
+        {
+            "name": "Malaysia",
+            "rank": "#14",
+            "category": "$835",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\14_Simple_flat_2D_flag_of_Ma.jpg",
+            "start_time": 78.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Malaysia",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$835",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\14_Simple_flat_2D_flag_of_Ma.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_18cd354e"
+        },
+        {
+            "name": "Armenia",
+            "rank": "#15",
+            "category": "$745",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\15_Simple_flat_2D_flag_of_Ar.jpg",
+            "start_time": 84.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Armenia",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$745",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\15_Simple_flat_2D_flag_of_Ar.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.4011262064431298,
+                    "scale_y": 1.4011262064431298,
+                    "offset_x": -0.0026932807363576872,
+                    "offset_y": -0.0028958154477319253
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_2ce32109"
+        },
+        {
+            "name": "Jordan",
+            "rank": "#16",
+            "category": "$730",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\16_Simple_flat_2D_flag_of_Jo.jpg",
+            "start_time": 90.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Jordan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$730",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\16_Simple_flat_2D_flag_of_Jo.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_67a7d2e7"
+        },
+        {
+            "name": "Maldives",
+            "rank": "#17",
+            "category": "$710",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\17_Simple_flat_2D_flag_of_ma.jpg",
+            "start_time": 96.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Maldives",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$710",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\17_Simple_flat_2D_flag_of_ma.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_24324f62"
+        },
+        {
+            "name": "Georgia",
+            "rank": "#18",
+            "category": "$695",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\18_Simple_flat_2D_flag_of_Ge.jpg",
+            "start_time": 102.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Georgia",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$695",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\18_Simple_flat_2D_flag_of_Ge.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.269494556100631,
+                    "scale_y": 1.269494556100631,
+                    "offset_x": -0.005887317498047213,
+                    "offset_y": -0.006330043773900535
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_129a503b"
+        },
+        {
+            "name": "Kazakhstan",
+            "rank": "#19",
+            "category": "$656",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\19_Simple_flat_2D_flag_of_Ka.jpg",
+            "start_time": 108.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Kazakhstan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$656",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\19_Simple_flat_2D_flag_of_Ka.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.1461653590474103,
+                    "scale_y": 1.1461653590474103,
+                    "offset_x": 0.020729286288260637,
+                    "offset_y": 0.02228812861713786
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_0968c03f"
+        },
+        {
+            "name": "Turkey",
+            "rank": "#20",
+            "category": "$635",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\20_Simple_flat_2D_flag_of_Tu.jpg",
+            "start_time": 114.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Turkey",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$635",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\20_Simple_flat_2D_flag_of_Tu.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_359c89cd"
+        },
+        {
+            "name": "Iraq",
+            "rank": "#21",
+            "category": "$583",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\21_Simple_flat_2D_flag_of_Ir.jpg",
+            "start_time": 120.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Iraq",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$583",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\21_Simple_flat_2D_flag_of_Ir.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_1cbe9492"
+        },
+        {
+            "name": "India",
+            "rank": "#22",
+            "category": "$580",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\22_Simple_flat_2D_flag_of_In.jpg",
+            "start_time": 126.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "India",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$580",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\22_Simple_flat_2D_flag_of_In.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.3407343542990724,
+                    "scale_y": 1.3407343542990724,
+                    "offset_x": 0.0018885446709038416,
+                    "offset_y": 0.0020305632301556914
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_fd526285"
+        },
+        {
+            "name": "Palestine",
+            "rank": "#23",
+            "category": "$580",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\23_Simple_flat_2D_flag_of_Pa.jpg",
+            "start_time": 132.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Palestine",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$580",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\23_Simple_flat_2D_flag_of_Pa.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.3384959314890674,
+                    "scale_y": 1.3384959314890674,
+                    "offset_x": -0.0024629558826009,
+                    "offset_y": -0.002648170164972568
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_2c9c1e06"
+        },
+        {
+            "name": "Thailand",
+            "rank": "#24",
+            "category": "$545",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\24_Simple_flat_2D_flag_of_Th.jpg",
+            "start_time": 138.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Thailand",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$545",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\24_Simple_flat_2D_flag_of_Th.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_6422cbf3"
+        },
+        {
+            "name": "Mongolia",
+            "rank": "#25",
+            "category": "$485",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\25_Simple_flat_2D_flag_of_Mo.jpg",
+            "start_time": 144.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Mongolia",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$485",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\25_Simple_flat_2D_flag_of_Mo.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_7f2ea1d0"
+        },
+        {
+            "name": "Vietnam",
+            "rank": "#26",
+            "category": "$465",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\26_Simple_flat_2D_flag_of_Vi.jpg",
+            "start_time": 150.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Vietnam",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$465",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\26_Simple_flat_2D_flag_of_Vi.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_a01a0a1b"
+        },
+        {
+            "name": "Azerbaijan",
+            "rank": "#27",
+            "category": "$452",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\27_Simple_flat_2D_flag_of_Az.jpg",
+            "start_time": 156.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Azerbaijan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$452",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\27_Simple_flat_2D_flag_of_Az.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_44c37248"
+        },
+        {
+            "name": "Kyrgyzstan",
+            "rank": "#28",
+            "category": "$407",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\28_Simple_flat_2D_flag_of_Ky.jpg",
+            "start_time": 162.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Kyrgyzstan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$407",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\28_Simple_flat_2D_flag_of_Ky.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_69509c19"
+        },
+        {
+            "name": "Uzbekistan",
+            "rank": "#29",
+            "category": "$390",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\29_Simple_flat_2D_flag_of_Uz.jpg",
+            "start_time": 168.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Uzbekistan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$390",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\29_Simple_flat_2D_flag_of_Uz.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.2992090913827499,
+                    "scale_y": 1.2992090913827499,
+                    "offset_x": -0.005214626778378815,
+                    "offset_y": -0.005606766712113015
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_3e730ced"
+        },
+        {
+            "name": "Indonesia",
+            "rank": "#30",
+            "category": "$345",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\30_Simple_flat_2D_flag_of_In.jpg",
+            "start_time": 174.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Indonesia",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$345",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\30_Simple_flat_2D_flag_of_In.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.156965925925926,
+                    "scale_y": 1.156965925925926,
+                    "offset_x": 0.003816296296296277,
+                    "offset_y": 0.004103281777777808
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_fdd2a370"
+        },
+        {
+            "name": "Philippines",
+            "rank": "#31",
+            "category": "$318",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\31_Simple_flat_2D_flag_of_th.jpg",
+            "start_time": 180.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Philippines",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$318",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\31_Simple_flat_2D_flag_of_th.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.4335049298426028,
+                    "scale_y": 1.4335049298426028,
+                    "offset_x": -0.0078109790567386745,
+                    "offset_y": -0.00839836468180535
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_347f954a"
+        },
+        {
+            "name": "Cambodia",
+            "rank": "#32",
+            "category": "$300",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\32_Simple_flat_2D_flag_of_Ca.jpg",
+            "start_time": 186.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Cambodia",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$300",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\32_Simple_flat_2D_flag_of_Ca.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.145956607495069,
+                    "scale_y": 1.145956607495069,
+                    "offset_x": 0.008875739644970368,
+                    "offset_y": 0.009543195266272208
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_cf2f3c63"
+        },
+        {
+            "name": "Iran",
+            "rank": "#33",
+            "category": "$290",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\33_Simple_flat_2D_flag_of_Ir.jpg",
+            "start_time": 192.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Iran",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$290",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\33_Simple_flat_2D_flag_of_Ir.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.3169590749405753,
+                    "scale_y": 1.3169590749405753,
+                    "offset_x": 0.006798393715335627,
+                    "offset_y": 0.009689635131802037
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_69181340"
+        },
+        {
+            "name": "Lebanon",
+            "rank": "#34",
+            "category": "$250",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\34_Simple_flat_2D_flag_of_Le.jpg",
+            "start_time": 198.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Lebanon",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$250",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\34_Simple_flat_2D_flag_of_Le.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.1905967126890207,
+                    "scale_y": 1.1905967126890207,
+                    "offset_x": 0.0029906640368179108,
+                    "offset_y": 0.00321556197238666
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_9ba04977"
+        },
+        {
+            "name": "Turkmenistan",
+            "rank": "#35",
+            "category": "$250",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\35_Simple_flat_2D_flag_of_Tu.jpg",
+            "start_time": 204.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Turkmenistan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$250",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\35_Simple_flat_2D_flag_of_Tu.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.0,
+                    "scale_y": 1.0,
+                    "offset_x": 0.0,
+                    "offset_y": 0.0
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_a1704437"
+        },
+        {
+            "name": "Bangladesh",
+            "rank": "#36",
+            "category": "$234",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\36_Simple_flat_2D_flag_of_Ba.jpg",
+            "start_time": 210.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Bangladesh",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$234",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\36_Simple_flat_2D_flag_of_Ba.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.3972548748293128,
+                    "scale_y": 1.3972548748293128,
+                    "offset_x": 0.05217089684348121,
+                    "offset_y": -0.013654980720507047
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_c7710801"
+        },
+        {
+            "name": "Tajikistan",
+            "rank": "#37",
+            "category": "$225",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\37_Simple_flat_2D_flag_of_Ta.jpg",
+            "start_time": 216.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Tajikistan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$225",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\37_Simple_flat_2D_flag_of_Ta.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.3679683888184226,
+                    "scale_y": 1.3679683888184226,
+                    "offset_x": -0.009281277906909989,
+                    "offset_y": -0.009979230005509758
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_c5a54bdc"
+        },
+        {
+            "name": "Bhutan",
+            "rank": "#38",
+            "category": "$220",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\38_Simple_flat_2D_flag_of_Bh.jpg",
+            "start_time": 222.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Bhutan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$220",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\38_Simple_flat_2D_flag_of_Bh.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_00c6ed72"
+        },
+        {
+            "name": "Laos",
+            "rank": "#39",
+            "category": "$218",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\39_Simple_flat_2D_flag_of_La.jpg",
+            "start_time": 228.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Laos",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$218",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\39_Simple_flat_2D_flag_of_La.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_f407e15b"
+        },
+        {
+            "name": "Nepal",
+            "rank": "#40",
+            "category": "$212",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\40_Simple_flat_2D_flag_of_Ne.jpg",
+            "start_time": 234.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Nepal",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$212",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\40_Simple_flat_2D_flag_of_Ne.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_9a55075b"
+        },
+        {
+            "name": "Afghanistan",
+            "rank": "#41",
+            "category": "$205",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\41_Simple_flat_2D_flag_of_Af.jpg",
+            "start_time": 240.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Afghanistan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$205",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\41_Simple_flat_2D_flag_of_Af.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_b6726e64"
+        },
+        {
+            "name": "Sri Lanka",
+            "rank": "#42",
+            "category": "$195",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\42_Simple_flat_2D_flag_of_Sr.jpg",
+            "start_time": 246.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Sri Lanka",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$195",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\42_Simple_flat_2D_flag_of_Sr.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.0492832626549309,
+                    "scale_y": 1.0492832626549309,
+                    "offset_x": -3.5698392927300746e-05,
+                    "offset_y": -0.00661746013371581
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_e258e5fb"
+        },
+        {
+            "name": "Timor-Leste",
+            "rank": "#43",
+            "category": "$175",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\43_Simple_flat_2D_flag_of_Ti.jpg",
+            "start_time": 252.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Timor-Leste",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$175",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\43_Simple_flat_2D_flag_of_Ti.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_ad67f860"
+        },
+        {
+            "name": "Pakistan",
+            "rank": "#44",
+            "category": "$165",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\44_Simple_flat_2D_flag_of_Pa.jpg",
+            "start_time": 258.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Pakistan",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$165",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\44_Simple_flat_2D_flag_of_Pa.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_52a162ee"
+        },
+        {
+            "name": "Myanmar",
+            "rank": "#45",
+            "category": "$135",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\45_Simple_flat_2D_flag_of_My.jpg",
+            "start_time": 264.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Myanmar",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$135",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\45_Simple_flat_2D_flag_of_My.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_d5545f4d"
+        },
+        {
+            "name": "Yemen",
+            "rank": "#46",
+            "category": "$110",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\46_Simple_flat_2D_flag_of_Ye.jpg",
+            "start_time": 270.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Yemen",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$110",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\46_Simple_flat_2D_flag_of_Ye.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.3829286647812329,
+                    "scale_y": 1.3829286647812329,
+                    "offset_x": 0.0008158936239479115,
+                    "offset_y": 0.0008772488244688667
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_dc841298"
+        },
+        {
+            "name": "North Korea",
+            "rank": "#47",
+            "category": "$100",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\47_Simple_flat_2D_flag_of_No.jpg",
+            "start_time": 276.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "North Korea",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$100",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\47_Simple_flat_2D_flag_of_No.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_image": {
+                    "fit": "cover",
+                    "scale_x": 1.2017761998685077,
+                    "scale_y": 1.2017761998685077,
+                    "offset_x": 0.003247074293228177,
+                    "offset_y": 0.003491254280078937
+                },
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_dd7b9c6f"
+        },
+        {
+            "name": "Syria",
+            "rank": "#48",
+            "category": "$65",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\3\\zapi-img\\48_Simple_flat_2D_flag_of_Sy.jpg",
+            "start_time": 282.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_27169e8e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_019bf05e",
+                    "type": "text",
+                    "label": "Text",
+                    "value": "",
+                    "role": ""
+                },
+                {
+                    "id": "field_name",
+                    "type": "name",
+                    "label": "Name",
+                    "value": "Syria",
+                    "role": "name"
+                },
+                {
+                    "id": "field_category",
+                    "type": "text",
+                    "label": "Category",
+                    "value": "$65",
+                    "role": "category"
+                },
+                {
+                    "id": "field_image",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\3\\zapi-img\\48_Simple_flat_2D_flag_of_Sy.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_ee34cd84",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:/YT/9-Data comparison/3/IOCN/converted/da08c75d-f08a-465a-b417-5ce558ceee04.png",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_ee34cd84": {
+                    "fit": "cover",
+                    "scale_x": 0.8926364234056542,
+                    "scale_y": 0.8926364234056542,
+                    "offset_x": -0.003578364436352628,
+                    "offset_y": 0.00046022353714665967
+                }
+            },
+            "id": "item_22c5e69b"
+        }
+    ],
+    "timeline_clips": [],
+    "audio_paths": [
+        "C:\\YT\\9-Data comparison\\Vibe Tracks - Take You Home Tonight Festival Progressive House NCS - Fanmade.mp3"
+    ]
+}
