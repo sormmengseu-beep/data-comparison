@@ -96,6 +96,7 @@ class ParentChildLayoutTests(unittest.TestCase):
         self.assertTrue(dialog.field_label_edit.isHidden())
         self.assertTrue(dialog.field_value_edit.isHidden())
         self.assertFalse(dialog.field_browse_button.isHidden())
+        self.assertFalse(dialog.image_shape_combo.isHidden())
         self.assertFalse(dialog.image_gradient_combo.isHidden())
 
         text_row = next(
@@ -107,7 +108,30 @@ class ParentChildLayoutTests(unittest.TestCase):
         self.assertFalse(dialog.field_label_edit.isHidden())
         self.assertFalse(dialog.field_value_edit.isHidden())
         self.assertTrue(dialog.field_browse_button.isHidden())
+        self.assertTrue(dialog.image_shape_combo.isHidden())
         dialog.deleteLater()
+
+    def test_selected_image_can_be_masked_as_a_circle_and_persisted(self):
+        project = Project.sample()
+        dialog = BoxCustomizationDialog(project, project.comparison_items[0])
+        fields = dialog._image_item.display_fields()
+        image_id = next(str(field["id"]) for field in fields if field["type"] == "image")
+        image_row = next(
+            row
+            for row in range(dialog.field_order_list.count())
+            if dialog.field_order_list.item(row).data(Qt.ItemDataRole.UserRole) == image_id
+        )
+        dialog.field_order_list.setCurrentRow(image_row)
+
+        circle_index = dialog.image_shape_combo.findData("circle")
+        self.assertGreaterEqual(circle_index, 0)
+        dialog.image_shape_combo.setCurrentIndex(circle_index)
+        self.assertEqual(dialog.field_styles[image_id]["shape"], "circle")
+
+        dialog.apply_changes()
+        dialog.deleteLater()
+        restored = Project.from_dict(project.to_dict())
+        self.assertEqual(restored.field_styles[image_id]["shape"], "circle")
 
     def test_hierarchy_is_applied_to_every_box_and_persisted(self):
         project = Project.sample()

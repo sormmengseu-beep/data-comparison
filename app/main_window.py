@@ -2594,6 +2594,18 @@ class BoxCustomizationDialog(QDialog):
         self.image_height_spin.setToolTip(
             "Relative height for this image only. 200% makes it twice the height of a 100% image."
         )
+        self.image_shape_label = QLabel("Image shape")
+        self.image_shape_combo = QComboBox()
+        for label, value in (
+            ("Rectangle", "rectangle"),
+            ("Rounded rectangle", "rounded"),
+            ("Circle", "circle"),
+            ("Ellipse", "ellipse"),
+        ):
+            self.image_shape_combo.addItem(label, value)
+        self.image_shape_combo.setToolTip(
+            "Mask the selected image inside the chosen shape."
+        )
         self.image_gradient_label = QLabel("Image gradient")
         self.image_gradient_combo = QComboBox()
         for label, value in (
@@ -2615,6 +2627,7 @@ class BoxCustomizationDialog(QDialog):
         content_form.addRow("Value", self.field_value_edit)
         content_form.addRow("", self.field_browse_button)
         content_form.addRow(self.image_height_label, self.image_height_spin)
+        content_form.addRow(self.image_shape_label, self.image_shape_combo)
         content_form.addRow(self.image_gradient_label, self.image_gradient_combo)
         content_form.addRow(
             self.image_gradient_color_label, self.image_gradient_color_button
@@ -2775,6 +2788,9 @@ class BoxCustomizationDialog(QDialog):
         self.field_value_edit.textEdited.connect(self._selected_field_content_changed)
         self.field_browse_button.clicked.connect(self._browse_selected_image)
         self.image_height_spin.valueChanged.connect(self._selected_image_height_changed)
+        self.image_shape_combo.currentIndexChanged.connect(
+            self._selected_image_shape_changed
+        )
         self.image_gradient_combo.currentIndexChanged.connect(
             self._selected_image_gradient_changed
         )
@@ -3655,6 +3671,10 @@ class BoxCustomizationDialog(QDialog):
         self.image_height_spin.setValue(
             self._bounded_int(image_style.get("height_weight"), 100, 25, 400)
         )
+        shape_index = self.image_shape_combo.findData(
+            normalized_shape(image_style.get("shape"))
+        )
+        self.image_shape_combo.setCurrentIndex(max(0, shape_index))
         gradient_index = self.image_gradient_combo.findData(
             image_style.get("gradient_mode", "none")
         )
@@ -3667,6 +3687,8 @@ class BoxCustomizationDialog(QDialog):
         )
         self.image_height_label.setVisible(is_image)
         self.image_height_spin.setVisible(is_image)
+        self.image_shape_label.setVisible(is_image)
+        self.image_shape_combo.setVisible(is_image)
         self.image_gradient_label.setVisible(is_image)
         self.image_gradient_combo.setVisible(is_image)
         self.image_gradient_color_label.setVisible(is_image)
@@ -3799,6 +3821,18 @@ class BoxCustomizationDialog(QDialog):
         if self.field_types.get(field_id) != "image":
             return
         self.field_styles.setdefault(field_id, {})["height_weight"] = str(value)
+        self._update_preview()
+
+    def _selected_image_shape_changed(self, *_args) -> None:
+        if self._loading_field_content:
+            return
+        field_id = self._selected_field_id()
+        if self.field_types.get(field_id) != "image":
+            return
+        style = self.field_styles.setdefault(
+            field_id, self._complete_image_style({})
+        )
+        style["shape"] = normalized_shape(self.image_shape_combo.currentData())
         self._update_preview()
 
     def _selected_image_gradient_changed(self, *_args) -> None:

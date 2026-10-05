@@ -1,0 +1,3096 @@
+{
+    "project_name": "Football Comparison",
+    "resolution": {
+        "width": 3840,
+        "height": 2160
+    },
+    "fps": 60,
+    "duration": 252.0,
+    "background": "Dark",
+    "preview_max_columns": 3,
+    "item_fixed_duration": 6.0,
+    "opening_animation": "stagger_top",
+    "style": {
+        "canvas_background_color": "#ffffff",
+        "canvas_background_image": "",
+        "canvas_background_fit": "cover",
+        "card_border_color": "#000000",
+        "card_border_width": 10,
+        "name_background_color": "#f45b69",
+        "name_text_color": "#ffffff",
+        "category_background_color": "#050505",
+        "category_text_color": "#ffffff",
+        "rank_background_color": "#fbb10b",
+        "rank_text_color": "#080808",
+        "value_background_color": "#087be8",
+        "value_text_color": "#ffffff",
+        "text_font_family": "Segoe UI",
+        "text_font_size": 40,
+        "image_fit": "cover",
+        "image_height_percent_3": 56,
+        "image_height_percent_4": 58,
+        "image_height_percent_5": 60,
+        "field_styles": {
+            "field_9b6cbc3b": {
+                "background_color": "#ffffff",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "0",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#ffffff",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "0",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "overlay_x": "0",
+                "overlay_y": "0",
+                "overlay_width": "1000",
+                "overlay_height": "381"
+            },
+            "field_3367a865": {
+                "height_weight": "100",
+                "parent_id": "",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "shape": "rectangle",
+                "overlay_x": "0",
+                "overlay_y": "381",
+                "overlay_width": "1000",
+                "overlay_height": "509"
+            },
+            "field_05b797e0": {
+                "background_color": "#2563eb",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "container_color": "",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "0",
+                "border_color": "#000000",
+                "border_width": "0",
+                "alignment": "center",
+                "font_weight": "700",
+                "font_size": "60",
+                "height_weight": "100",
+                "padding": "14",
+                "inset": "0",
+                "corner_radius": "0",
+                "parent_id": "",
+                "shape": "rectangle",
+                "overlay_x": "0",
+                "overlay_y": "0",
+                "overlay_width": "1000",
+                "overlay_height": "92"
+            },
+            "field_a7dd4219": {
+                "background_color": "#2563eb",
+                "text_color": "#ffffff",
+                "outline_color": "#000000",
+                "outline_width": "0",
+                "border_color": "#000000",
+                "border_width": "0",
+                "container_color": "#2563eb",
+                "inset": "0",
+                "corner_radius": "0",
+                "alignment": "center",
+                "font_size": "50",
+                "height_weight": "100",
+                "padding": "14",
+                "font_weight": "700",
+                "parent_id": "",
+                "shape": "rectangle",
+                "fill_mode": "solid",
+                "gradient_color_2": "#2563eb",
+                "overlay_x": "0",
+                "overlay_y": "890",
+                "overlay_width": "1000",
+                "overlay_height": "110"
+            },
+            "field_62f177aa": {
+                "height_weight": "100",
+                "parent_id": "",
+                "gradient_mode": "none",
+                "gradient_color": "#000000",
+                "gradient_opacity": "65",
+                "shape": "circle",
+                "overlay_x": "302",
+                "overlay_y": "114",
+                "overlay_width": "400",
+                "overlay_height": "230"
+            }
+        }
+    },
+    "comparison_items": [
+        {
+            "name": "Facebook",
+            "rank": "#1",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\01_Professional_portrait_of_.jpg",
+            "start_time": 0.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\01_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Facebook",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Mark Zuckerberg",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\01_Facebook_app_icon_recogni.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 2.0829782054368806,
+                    "scale_y": 2.0829782054368806,
+                    "offset_x": -0.007504380424136314,
+                    "offset_y": -0.019284228750849786
+                }
+            },
+            "id": "item_b007259b"
+        },
+        {
+            "name": "YouTube",
+            "rank": "#2",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\02_Professional_group_portra.jpg",
+            "start_time": 6.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\02_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "YouTube",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Steve Chen / Chad Hurley / Jawed Karim",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\02_YouTube_app_icon_recogniz.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.884516765285996,
+                    "scale_y": 1.884516765285996,
+                    "offset_x": -0.003030142112982387,
+                    "offset_y": -0.011384457048262464
+                }
+            },
+            "id": "item_3931575d"
+        },
+        {
+            "name": "Google",
+            "rank": "#3",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\03_Professional_portrait_of_.jpg",
+            "start_time": 12.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\03_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Google",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Larry Page / Sergey Brin",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\03_Google_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.7653616547817732,
+                    "scale_y": 1.7653616547817732,
+                    "offset_x": 0.0025822926108769583,
+                    "offset_y": 0.004153669428934742
+                }
+            },
+            "id": "item_c4ecc5d3"
+        },
+        {
+            "name": "Apple",
+            "rank": "#4",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\04_Professional_group_portra.jpg",
+            "start_time": 18.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\04_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Apple",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Steve Jobs / Steve Wozniak / Ronald Wayne",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\04_Apple_app_icon_recognizab.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.2866009204470745,
+                    "scale_y": 1.2866009204470745,
+                    "offset_x": -0.01592798260253876,
+                    "offset_y": 0.010913573689138405
+                }
+            },
+            "id": "item_2bfcbb25"
+        },
+        {
+            "name": "Microsoft",
+            "rank": "#5",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\05_Professional_portrait_of_.jpg",
+            "start_time": 24.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\05_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Microsoft",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Bill Gates / Paul Allen",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\05_Microsoft_app_icon_recogn.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.1913979669245942,
+                    "scale_y": 1.1913979669245942,
+                    "offset_x": -0.015447996296425966,
+                    "offset_y": -0.010832178446228267
+                }
+            },
+            "id": "item_30f059ca"
+        },
+        {
+            "name": "Amazon",
+            "rank": "#6",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\06_Professional_portrait_of_.jpg",
+            "start_time": 30.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\06_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Amazon",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Jeff Bezos",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\06_Amazon_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.987188507346848,
+                    "scale_y": 1.987188507346848,
+                    "offset_x": 0.012258517378608016,
+                    "offset_y": 0.022010680190793913
+                }
+            },
+            "id": "item_d65131f8"
+        },
+        {
+            "name": "Instagram",
+            "rank": "#7",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\07_Professional_portrait_of_.jpg",
+            "start_time": 36.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\07_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Instagram",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Kevin Systrom / Mike Krieger",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\07_Instagram_app_icon_recogn.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.56876061942096,
+                    "scale_y": 1.56876061942096,
+                    "offset_x": 0.004816554316158373,
+                    "offset_y": -0.0028158621695939905
+                }
+            },
+            "id": "item_2adb020d"
+        },
+        {
+            "name": "WhatsApp",
+            "rank": "#8",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\08_Professional_portrait_of_.jpg",
+            "start_time": 42.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\08_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "WhatsApp",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Jan Koum / Brian Acton",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\08_WhatsApp_app_icon_recogni.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.1564102564102563,
+                    "scale_y": 1.1564102564102563,
+                    "offset_x": -0.004076265614727112,
+                    "offset_y": -0.007253937828152299
+                }
+            },
+            "id": "item_88bdc828"
+        },
+        {
+            "name": "Telegram",
+            "rank": "#9",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\09_Professional_portrait_of_.jpg",
+            "start_time": 48.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\09_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Telegram",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Pavel Durov / Nikolai Durov",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\09_Telegram_app_icon_recogni.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.873410812724422,
+                    "scale_y": 1.873410812724422,
+                    "offset_x": -0.01603479492236881,
+                    "offset_y": -0.016518742455237084
+                }
+            },
+            "id": "item_60c33ca2"
+        },
+        {
+            "name": "Snapchat",
+            "rank": "#10",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\10_Professional_group_portra.jpg",
+            "start_time": 54.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\10_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Snapchat",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Evan Spiegel / Bobby Murphy / Reggie Brown",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\10_Snapchat_app_icon_recogni.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.4748242552976283,
+                    "scale_y": 1.4748242552976283,
+                    "offset_x": -0.0039731594624630474,
+                    "offset_y": -0.024476618055313735
+                }
+            },
+            "id": "item_e52287be"
+        },
+        {
+            "name": "TikTok",
+            "rank": "#11",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\11_Professional_portrait_of_.jpg",
+            "start_time": 60.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\11_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "TikTok",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Zhang Yiming / ByteDance",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\11_TikTok_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_f58dbe9a"
+        },
+        {
+            "name": "Twitter (X)",
+            "rank": "#12",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\12_Professional_group_portra.jpg",
+            "start_time": 66.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\12_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Twitter (X)",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Jack Dorsey / Noah Glass / Biz Stone / Evan Williams",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\12_X_app_icon_recognizable_w.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.3254503616042075,
+                    "scale_y": 1.3254503616042075,
+                    "offset_x": 0.011443129520052553,
+                    "offset_y": 0.011788495602146695
+                }
+            },
+            "id": "item_d9d0e751"
+        },
+        {
+            "name": "LinkedIn",
+            "rank": "#13",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\13_Professional_portrait_of_.jpg",
+            "start_time": 72.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\13_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "LinkedIn",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Reid Hoffman / Allen Blue / Konstantin Guericke / Eric Ly / Jean-Luc Vaillant",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\13_LinkedIn_app_icon_recogni.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.6846583388121847,
+                    "scale_y": 1.6846583388121847,
+                    "offset_x": -0.006602673679596771,
+                    "offset_y": -0.006801949545178163
+                }
+            },
+            "id": "item_fb2d442b"
+        },
+        {
+            "name": "Pinterest",
+            "rank": "#14",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\14_Professional_group_portra.jpg",
+            "start_time": 78.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\14_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Pinterest",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Ben Silbermann / Paul Sciarra / Evan Sharp",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\14_Pinterest_app_icon_recogn.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.6296863401043624,
+                    "scale_y": 1.6296863401043624,
+                    "offset_x": 0.003001534680601048,
+                    "offset_y": -0.000572242924608217
+                }
+            },
+            "id": "item_858f3b35"
+        },
+        {
+            "name": "Reddit",
+            "rank": "#15",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\15_Professional_portrait_of_.jpg",
+            "start_time": 84.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\15_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Reddit",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Steve Huffman / Alexis Ohanian / Aaron Swartz",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\15_Reddit_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.918693841770765,
+                    "scale_y": 1.918693841770765,
+                    "offset_x": -0.019175980714442376,
+                    "offset_y": -0.019754732647473836
+                }
+            },
+            "id": "item_4dadeca3"
+        },
+        {
+            "name": "Discord",
+            "rank": "#16",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\16_Professional_portrait_of_.jpg",
+            "start_time": 90.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\16_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Discord",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Jason Citron / Stan Vishnevskiy",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\16_Discord_app_icon_recogniz.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.6412441207707482,
+                    "scale_y": 1.6412441207707482,
+                    "offset_x": -0.013324230010620552,
+                    "offset_y": -0.013726369749371676
+                }
+            },
+            "id": "item_55c84763"
+        },
+        {
+            "name": "Spotify",
+            "rank": "#17",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\17_Professional_portrait_of_.jpg",
+            "start_time": 96.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\17_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Spotify",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Daniel Ek / Martin Lorentzon",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\17_Spotify_app_icon_recogniz.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_f6b89716"
+        },
+        {
+            "name": "Netflix",
+            "rank": "#18",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\18_Professional_portrait_of_.jpg",
+            "start_time": 102.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\18_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Netflix",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Reed Hastings / Marc Randolph",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\18_Netflix_app_icon_recogniz.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_711a0255"
+        },
+        {
+            "name": "Airbnb",
+            "rank": "#19",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\19_Professional_group_portra.jpg",
+            "start_time": 108.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\19_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Airbnb",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Brian Chesky / Joe Gebbia / Nathan Blecharczyk",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\19_Airbnb_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_9e642708"
+        },
+        {
+            "name": "Uber",
+            "rank": "#20",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\20_Professional_portrait_of_.jpg",
+            "start_time": 114.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\20_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Uber",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Garrett Camp / Travis Kalanick",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\20_Uber_app_icon_recognizabl.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_c9bbf5a6"
+        },
+        {
+            "name": "Zoom",
+            "rank": "#21",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\21_Professional_portrait_of_.jpg",
+            "start_time": 120.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\21_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Zoom",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Eric Yuan",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\21_Zoom_app_icon_recognizabl.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.5263916283147054,
+                    "scale_y": 1.5263916283147054,
+                    "offset_x": 0.001136861713784798,
+                    "offset_y": 0.0011711734355288061
+                }
+            },
+            "id": "item_3a15e9c2"
+        },
+        {
+            "name": "Canva",
+            "rank": "#22",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\22_Professional_group_portra.jpg",
+            "start_time": 126.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\22_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Canva",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Melanie Perkins / Cliff Obrecht / Cameron Adams",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\22_Canva_app_icon_recognizab.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_6c87d382"
+        },
+        {
+            "name": "Dropbox",
+            "rank": "#23",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\23_Professional_portrait_of_.jpg",
+            "start_time": 132.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\23_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Dropbox",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Drew Houston / Arash Ferdowsi",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\23_Dropbox_app_icon_recogniz.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.8907983707386533,
+                    "scale_y": 1.8907983707386533,
+                    "offset_x": 0.008465184458994246,
+                    "offset_y": 0.008720672923551416
+                }
+            },
+            "id": "item_761fd6e1"
+        },
+        {
+            "name": "PayPal",
+            "rank": "#24",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\24_Professional_group_portra.jpg",
+            "start_time": 138.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\24_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "PayPal",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Max Levchin / Peter Thiel / Luke Nosek / Ken Howery",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\24_PayPal_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.7670116160299745,
+                    "scale_y": 1.7670116160299745,
+                    "offset_x": -0.0050117358426202425,
+                    "offset_y": 0.0041720914293983564
+                }
+            },
+            "id": "item_4e587a39"
+        },
+        {
+            "name": "Shazam",
+            "rank": "#25",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\25_Professional_group_portra.jpg",
+            "start_time": 144.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\25_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Shazam",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Chris Barton / Philip Inghelbrecht / Avery Wang / Dhiraj Mukherjee",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\25_Shazam_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.2184352399737017,
+                    "scale_y": 1.2184352399737017,
+                    "offset_x": -0.001038790269559442,
+                    "offset_y": -0.00107014208856023
+                }
+            },
+            "id": "item_788dd277"
+        },
+        {
+            "name": "Twitch",
+            "rank": "#26",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\26_Professional_group_portra.jpg",
+            "start_time": 150.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\26_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Twitch",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Justin Kan / Emmett Shear / Michael Seibel / Kyle Vogt",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\26_Twitch_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.661427030125255,
+                    "scale_y": 1.661427030125255,
+                    "offset_x": 0.01077092089229855,
+                    "offset_y": 0.02865057030114377
+                }
+            },
+            "id": "item_ceb6f1b4"
+        },
+        {
+            "name": "GitHub",
+            "rank": "#27",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\27_Professional_group_portra.jpg",
+            "start_time": 156.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\27_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "GitHub",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Tom Preston-Werner / Chris Wanstrath / P. J. Hyett / Scott Chacon",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\27_GitHub_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.5559631821170283,
+                    "scale_y": 1.5559631821170283,
+                    "offset_x": 0.0030486353444933965,
+                    "offset_y": 0.04013119666090753
+                }
+            },
+            "id": "item_d692871c"
+        },
+        {
+            "name": "Quora",
+            "rank": "#28",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\28_Professional_portrait_of_.jpg",
+            "start_time": 162.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\28_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Quora",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Adam D'Angelo / Charlie Cheever",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\28_Quora_app_icon_recognizab.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_23b6bc8e"
+        },
+        {
+            "name": "Tumblr",
+            "rank": "#29",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\29_Professional_portrait_of_.jpg",
+            "start_time": 168.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\29_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Tumblr",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "David Karp",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\29_Tumblr_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.286222121074192,
+                    "scale_y": 1.286222121074192,
+                    "offset_x": 0.003752844788347698,
+                    "offset_y": 0.0038661097215976284
+                }
+            },
+            "id": "item_a8e42115"
+        },
+        {
+            "name": "Viber",
+            "rank": "#30",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\30_Professional_portrait_of_.jpg",
+            "start_time": 174.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\30_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Viber",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Talmon Marco / Igor Magazinnik",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\30_Viber_app_icon_recognizab.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.4459237343852729,
+                    "scale_y": 1.4459237343852729,
+                    "offset_x": 0.00501314924391838,
+                    "offset_y": 0.005164451534982315
+                }
+            },
+            "id": "item_72f17c60"
+        },
+        {
+            "name": "LINE",
+            "rank": "#31",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\31_Professional_group_portra.jpg",
+            "start_time": 180.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\31_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "LINE",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "NHN Japan",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\31_LINE_app_icon_recognizabl.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.5137699143553336,
+                    "scale_y": 1.5137699143553336,
+                    "offset_x": 0.0003688414388887391,
+                    "offset_y": -0.018203639523430126
+                }
+            },
+            "id": "item_592c4236"
+        },
+        {
+            "name": "WeChat",
+            "rank": "#32",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\32_Professional_portrait_of_.jpg",
+            "start_time": 186.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\32_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "WeChat",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Allen Zhang / Tencent",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\32_WeChat_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.7465401365325501,
+                    "scale_y": 1.7465401365325501,
+                    "offset_x": -0.003564487272422312,
+                    "offset_y": -0.003672067371187573
+                }
+            },
+            "id": "item_b9fe66ea"
+        },
+        {
+            "name": "Baidu",
+            "rank": "#33",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\33_Professional_portrait_of_.jpg",
+            "start_time": 192.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\33_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Baidu",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Robin Li / Eric Xu",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\33_Baidu_app_icon_recognizab.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.746667745578988,
+                    "scale_y": 1.746667745578988,
+                    "offset_x": -0.017370690672465883,
+                    "offset_y": -0.017894956990548355
+                }
+            },
+            "id": "item_1a4ca393"
+        },
+        {
+            "name": "Alibaba",
+            "rank": "#34",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\34_Professional_portrait_of_.jpg",
+            "start_time": 198.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\34_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Alibaba",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Jack Ma and founding team",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\34_Alibaba_app_icon_recogniz.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.2469033530571993,
+                    "scale_y": 1.2469033530571993,
+                    "offset_x": 0.00037475345167659047,
+                    "offset_y": 0.0003860639180249785
+                }
+            },
+            "id": "item_722d8f93"
+        },
+        {
+            "name": "Temu",
+            "rank": "#35",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\35_Professional_portrait_rep.jpg",
+            "start_time": 204.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\35_Professional_portrait_rep.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Temu",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "PDD Holdings",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\35_Temu_app_icon_recognizabl.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 2.0317567498171965,
+                    "scale_y": 2.0317567498171965,
+                    "offset_x": 0.00044884752759077884,
+                    "offset_y": 0.00046239423365488687
+                }
+            },
+            "id": "item_e5c457ff"
+        },
+        {
+            "name": "SHEIN",
+            "rank": "#36",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\36_Professional_portrait_of_.jpg",
+            "start_time": 210.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\36_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "SHEIN",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Chris Xu",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\36_SHEIN_app_icon_recognizab.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.6804927932028524,
+                    "scale_y": 1.6804927932028524,
+                    "offset_x": -0.012211695046469788,
+                    "offset_y": -0.025897271821898923
+                }
+            },
+            "id": "item_6dd186b8"
+        },
+        {
+            "name": "CapCut",
+            "rank": "#37",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\37_Professional_portrait_of_.jpg",
+            "start_time": 216.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\37_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "CapCut",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "ByteDance",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\37_CapCut_app_icon_recogniza.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.3908678500986194,
+                    "scale_y": 1.3908678500986194,
+                    "offset_x": -0.002001972386587725,
+                    "offset_y": -0.0020623940883962074
+                }
+            },
+            "id": "item_daf2f20a"
+        },
+        {
+            "name": "Duolingo",
+            "rank": "#38",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\38_Professional_portrait_of_.jpg",
+            "start_time": 222.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\38_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Duolingo",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Luis von Ahn / Severin Hacker",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\38_Duolingo_app_icon_recogni.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.2684685765469328,
+                    "scale_y": 1.2684685765469328,
+                    "offset_x": 0.004489735106033673,
+                    "offset_y": 0.00024655554833078147
+                }
+            },
+            "id": "item_2acaa405"
+        },
+        {
+            "name": "Khan Academy",
+            "rank": "#39",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\39_Professional_portrait_of_.jpg",
+            "start_time": 228.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\39_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Khan Academy",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Sal Khan",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\39_Khan_Academy_app_icon_rec.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.7066666666666668,
+                    "scale_y": 1.7066666666666668,
+                    "offset_x": -0.012307692307692304,
+                    "offset_y": 0.01436970541195895
+                }
+            },
+            "id": "item_a8143afe"
+        },
+        {
+            "name": "Coursera",
+            "rank": "#40",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\40_Professional_portrait_of_.jpg",
+            "start_time": 234.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\40_Professional_portrait_of_.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "Coursera",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Andrew Ng / Daphne Koller",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\40_Coursera_app_icon_recogni.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.180876953421332,
+                    "scale_y": 1.180876953421332,
+                    "offset_x": -0.013120922470034935,
+                    "offset_y": -0.013516926166313656
+                }
+            },
+            "id": "item_ac93d1ac"
+        },
+        {
+            "name": "ChatGPT",
+            "rank": "#41",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\41_Professional_group_portra.jpg",
+            "start_time": 240.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\41_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "ChatGPT",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "OpenAI",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\41_ChatGPT_app_icon_recogniz.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {
+                "field_62f177aa": {
+                    "fit": "cover",
+                    "scale_x": 1.0,
+                    "scale_y": 1.0,
+                    "offset_x": 0.0,
+                    "offset_y": 0.0
+                }
+            },
+            "id": "item_a8cc77a9"
+        },
+        {
+            "name": "OpenAI",
+            "rank": "#42",
+            "category": "CATEGORY",
+            "value": "Value",
+            "image_path": "C:\\YT\\9-Data comparison\\5\\2\\42_Professional_group_portra.jpg",
+            "start_time": 246.0,
+            "duration": 6.0,
+            "animation": "slide_left",
+            "image_fit": "",
+            "image_crop_x": 0.0,
+            "image_crop_y": 0.0,
+            "image_height_percent_3": 0,
+            "image_height_percent_4": 0,
+            "image_height_percent_5": 0,
+            "card_border_color": "",
+            "name_background_color": "",
+            "name_text_color": "",
+            "category_background_color": "",
+            "category_text_color": "",
+            "rank_background_color": "",
+            "rank_text_color": "",
+            "value_background_color": "",
+            "value_text_color": "",
+            "custom_fields": [
+                {
+                    "id": "field_9b6cbc3b",
+                    "type": "shape",
+                    "label": "Rectangle",
+                    "value": "Text",
+                    "role": ""
+                },
+                {
+                    "id": "field_3367a865",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\2\\42_Professional_group_portra.jpg",
+                    "role": "image"
+                },
+                {
+                    "id": "field_05b797e0",
+                    "type": "shape",
+                    "label": "app",
+                    "value": "OpenAI",
+                    "role": ""
+                },
+                {
+                    "id": "field_a7dd4219",
+                    "type": "text",
+                    "label": "Name founder",
+                    "value": "Sam Altman / Elon Musk / Greg Brockman / Ilya Sutskever / Wojciech Zaremba / John Schulman and others",
+                    "role": ""
+                },
+                {
+                    "id": "field_62f177aa",
+                    "type": "image",
+                    "label": "Image",
+                    "value": "C:\\YT\\9-Data comparison\\5\\1\\42_OpenAI_logo_recognizable_.jpg",
+                    "role": "image"
+                }
+            ],
+            "image_transforms": {},
+            "id": "item_555461fb"
+        }
+    ],
+    "timeline_clips": [],
+    "audio_paths": []
+}
