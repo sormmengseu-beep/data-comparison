@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 
@@ -33,9 +34,25 @@ OPENING_ANIMATION_OPTIONS = (
     ("Reveal left to right", "reveal_left"),
 )
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+def _resource_root() -> Path:
+    """Return the read-only root for bundled resources such as icons."""
+    bundle_root = getattr(sys, "_MEIPASS", None)
+    if bundle_root:
+        return Path(bundle_root)
+    return Path(__file__).resolve().parents[1]
+
+
+def _runtime_root() -> Path:
+    """Return the writable root used for user projects and exports."""
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return _resource_root()
+
+
+RESOURCE_ROOT = _resource_root()
+ROOT_DIR = _runtime_root()
 PROJECTS_DIR = ROOT_DIR / "projects"
-ASSETS_DIR = ROOT_DIR / "assets"
+ASSETS_DIR = RESOURCE_ROOT / "assets"
 ICONS_DIR = ASSETS_DIR / "icons"
 TEMPLATES_DIR = ASSETS_DIR / "templates"
 
@@ -45,7 +62,10 @@ SUPPORTED_TEXT_FILTER = "Data files (*.csv *.tsv *.txt *.json);;All files (*.*)"
 
 
 def ensure_app_directories() -> None:
-    for path in (PROJECTS_DIR, ASSETS_DIR, ICONS_DIR, TEMPLATES_DIR):
+    writable_paths = [PROJECTS_DIR, ROOT_DIR / "exports"]
+    if not getattr(sys, "frozen", False):
+        writable_paths.extend([ASSETS_DIR, ICONS_DIR, TEMPLATES_DIR])
+    for path in writable_paths:
         path.mkdir(parents=True, exist_ok=True)
 
 
